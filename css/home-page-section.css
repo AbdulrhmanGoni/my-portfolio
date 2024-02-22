@@ -1,0 +1,35 @@
+.home-profile-image img {
+    width: 100%;
+    max-width: 280px;
+}
+
+@media (min-width: 600px) {
+
+    .home-profile-image img {
+        max-width: 430px;
+    }
+
+    .container {
+        width: 600px;
+    }
+}
+
+@media (min-width: 900px) {
+
+    .home-page-container {
+        flex-direction: row;
+    }
+}
+
+.contact-icons a {
+    display: flex;
+    width: 45px;
+    height: 45px;
+    padding: var(--standard-px);
+    transition: .3s;
+    background-color: var(--secondary-bg-color);
+}
+
+.contact-icon {
+    width: 100%;
+}
