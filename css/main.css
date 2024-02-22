@@ -4,6 +4,7 @@
 @import url("./utilities.css");
 @import url("./header.css");
 @import url("./home-page-section.css");
+@import url("./about-section.css");
 
 * {
   box-sizing: border-box;
