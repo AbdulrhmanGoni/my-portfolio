@@ -17,8 +17,9 @@ header {
 }
 
 #nav-menu-icon {
-    font-size: 30px;
+    width: 33px;
     display: none;
+    cursor: pointer;
 }
 
 #nav-menu {

@@ -6,6 +6,7 @@
 @import url("./home-page-section.css");
 @import url("./about-section.css");
 @import url("./skills-section.css");
+@import url("./projects-section.css");
 
 * {
   box-sizing: border-box;
