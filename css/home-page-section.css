@@ -21,15 +21,20 @@
     }
 }
 
-.contact-icons a {
-    display: flex;
-    width: 45px;
-    height: 45px;
-    padding: var(--standard-px);
-    transition: .3s;
-    background-color: var(--secondary-bg-color);
-}
+.contact-icons {
+    & a {
+        display: flex;
+        width: 45px;
+        height: 45px;
+        padding: var(--standard-px);
+        border-radius: 5px;
+        transition: .3s;
+        background-color: var(--secondary-bg-color);
+        box-shadow: -2px 2px 4px 0px var(--primary-color)
+    }
 
-.contact-icon {
-    width: 100%;
+    & a img {
+        width: 100%;
+    }
+
 }

@@ -1,10 +1,15 @@
-.about-profile-image img {
-    width: 100%;
-    max-width: 280px;
-}
+.about-content {
 
-@media (min-width: 600px) {
-    .about-profile-image img {
+    & .content {
+        max-width: 500px;
+    }
+
+    & .content p {
+        font-size: 19px;
+    }
+
+    & .about-profile-image img {
+        width: 100%;
         max-width: 360px;
     }
 }

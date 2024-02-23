@@ -37,7 +37,12 @@ if (skills) {
             }
         })
         skill.addEventListener("mouseleave", () => {
-            skill.removeChild(skill.querySelector(".tooltip"))
+            const tooltip = skill.querySelector(".tooltip")
+            tooltip && skill.removeChild(tooltip)
+        })
+        document.addEventListener("scroll", () => {
+            const tooltip = skill.querySelector(".tooltip")
+            tooltip && skill.removeChild(tooltip)
         })
     })
 }
