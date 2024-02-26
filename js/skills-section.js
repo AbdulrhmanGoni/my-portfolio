@@ -21,18 +21,20 @@ if (skills) {
         skill.addEventListener("mouseenter", () => {
             if (!skill.querySelector(".tooltip")) {
                 const skillPosition = skill.getBoundingClientRect();
-                var x = skillPosition.x + skillPosition.width / 2;
-                var y = skillPosition.y + skillPosition.height / 2;
+                let skillPositionX = skillPosition.x + skillPosition.width / 2;
+                let skillPositionY = skillPosition.y + skillPosition.height / 2;
 
                 const skillDescriptio = skill.querySelector("img")?.getAttribute("alt");
                 if (skillDescriptio) {
                     tooltip.textContent = skillDescriptio;
                     skill.appendChild(tooltip);
                     const tooltipPosition = tooltip.getBoundingClientRect();
-                    const tooltipWifth = tooltipPosition.width;
+                    const tooltipWidth = tooltipPosition.width;
                     const tooltipHeight = tooltipPosition.height;
-                    tooltip.style.top = `${y - tooltipHeight / 2}px`;
-                    tooltip.style.left = `${x - tooltipWifth / 2}px`;
+                    const tooltipTopPosition = skillPositionY - tooltipHeight / 2
+                    const tooltipLeftPosition = skillPositionX - tooltipWidth / 2
+                    tooltip.style.top = `${tooltipTopPosition < 0 ? 0 : tooltipTopPosition}px`;
+                    tooltip.style.left = `${tooltipLeftPosition < 0 ? 0 : tooltipLeftPosition}px`;
                 }
             }
         })
