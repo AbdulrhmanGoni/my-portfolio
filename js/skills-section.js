@@ -27,14 +27,25 @@ if (skills) {
                 const skillDescriptio = skill.querySelector("img")?.getAttribute("alt");
                 if (skillDescriptio) {
                     tooltip.textContent = skillDescriptio;
+                    tooltip.style.textWrap = "nowrap"
                     skill.appendChild(tooltip);
                     const tooltipPosition = tooltip.getBoundingClientRect();
                     const tooltipWidth = tooltipPosition.width;
                     const tooltipHeight = tooltipPosition.height;
                     const tooltipTopPosition = skillPositionY - tooltipHeight / 2
-                    const tooltipLeftPosition = skillPositionX - tooltipWidth / 2
-                    tooltip.style.top = `${tooltipTopPosition < 0 ? 0 : tooltipTopPosition}px`;
+                    let tooltipLeftPosition = skillPositionX - tooltipWidth / 2
+
+                    if (tooltipLeftPosition + tooltipWidth > window.innerWidth) {
+                        const overflowGap = (tooltipLeftPosition + tooltipWidth) - window.innerWidth
+                        tooltipLeftPosition -= overflowGap
+                    }
+
                     tooltip.style.left = `${tooltipLeftPosition < 0 ? 0 : tooltipLeftPosition}px`;
+                    tooltip.style.top = `${tooltipTopPosition < 0 ? 0 : tooltipTopPosition}px`;
+
+                    if (tooltipWidth > window.innerWidth) {
+                        tooltip.style.textWrap = "wrap"
+                    }
                 }
             }
         })
