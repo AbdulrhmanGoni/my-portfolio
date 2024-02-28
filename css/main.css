@@ -33,40 +33,22 @@ img {
   user-select: none;
 }
 
+img[alt="Abdulrhman's image"] {
+  border: solid 2px white;
+  border-radius: 50%;
+}
+
+::selection {
+  background-color: var(--secondary-color);
+  color: white
+}
+
 .container {
   margin-right: auto;
   margin-left: auto;
   padding-right: 14px;
   padding-left: 14px;
   width: 100%;
-}
-
-@media (min-width: 600px) {
-  .container {
-    width: 600px;
-  }
-}
-
-@media (min-width: 900px) {
-  .about-content {
-    flex-direction: row-reverse;
-  }
-
-  .container {
-    width: 800px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    width: 1100px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .container {
-    width: 1300px;
-  }
 }
 
 section {
@@ -80,6 +62,43 @@ section {
 
 .section-title {
   font-size: 25px;
+}
+
+.text-content {
+  max-width: 100%;
+}
+
+@media (min-width: 600px) {
+  .container {
+    width: 560px;
+  }
+}
+
+@media (min-width: 900px) {
+
+  .container {
+    width: 800px;
+  }
+
+  .text-content {
+    max-width: 475px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1100px;
+  }
+
+  .text-content {
+    max-width: 700px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    width: 1300px;
+  }
 }
 
 footer {
