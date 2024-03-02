@@ -43,6 +43,7 @@
     }
 
     & .skill:hover {
+        transition: .3s;
         box-shadow: 0 0 9px -2px var(--primary-color);
     }
 }

@@ -8,6 +8,16 @@
     padding: var(--standard-px);
     border-radius: 6px;
     box-shadow: 0 0 15px -10px var(--primary-color);
+    transition: 0.3s;
+
+    &:hover {
+        box-shadow: 0 0 24px -10px var(--primary-color);
+        transform: scale(1.02);
+    }
+
+    & h2 strong {
+        color: var(--primary-color);
+    }
 
     & p {
         flex: 1;

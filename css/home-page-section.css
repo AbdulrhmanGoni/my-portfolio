@@ -33,6 +33,10 @@
         box-shadow: -2px 2px 4px 0px var(--primary-color)
     }
 
+    & a:hover {
+        transform: scale(1.1);
+    }
+
     & a img {
         width: 100%;
     }
