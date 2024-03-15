@@ -30,23 +30,6 @@
         gap: var(--standard-px);
     }
 
-    & a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--primary-color);
-        gap: var(--standard-px);
-        padding: 4px;
-        border-radius: 6px;
-        transition: .3s;
-        text-align: center;
-        width: 100%;
-    }
-
-    & a:hover {
-        background-color: var(--secondary-color);
-    }
-
     & a img {
         background-color: white;
         border-radius: 23%;

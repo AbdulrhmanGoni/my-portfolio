@@ -8,6 +8,12 @@
 
     scroll-behavior: smooth;
 
+    --primary-button-bg: var(--primary-color);
+    --primary-button-bg-hover: var(--secondary-color);
+
+    --secondary-button-bg: #7700ff;
+    --secondary-button-bg-hover: #5e00c9;
+
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: 400;
