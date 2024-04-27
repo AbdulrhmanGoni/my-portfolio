@@ -34,7 +34,7 @@ jobs:
       - name: Deploy the project to "deployment" branch
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
           folder: dist
           branch: deployment
           commit-message: "Deploy Portfolio Website"
