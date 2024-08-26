@@ -1,45 +1,51 @@
 .about-content {
 
-    & .text-content>div {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        font-size: 17px;
-        padding: var(--standard-px);
-        background-color: var(--primary-bg-color);
-        border-radius: 5px;
-        margin-bottom: calc(var(--standard-px) * 2);
-    }
+  & .text-content>div {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 17px;
+    padding: var(--standard-px);
+    background-color: var(--primary-bg-color);
+    border-radius: 5px;
+    margin-bottom: calc(var(--standard-px) * 2);
+  }
 
-    & .text-content>div strong {
-        color: var(--primary-color);
-    }
+  & .text-content>div strong {
+    color: var(--primary-color);
+  }
 
-    & .text-content h2 {
-        position: relative;
-        margin-bottom: var(--standard-px);
-        padding-left: 12px;
-        line-height: 28px;
-    }
+  & .text-content h2 {
+    position: relative;
+    margin-bottom: var(--standard-px);
+    padding-left: 12px;
+    line-height: 28px;
+  }
 
-    & .text-content h2::before {
-        content: " ";
-        position: absolute;
-        height: 100%;
-        width: 6px;
-        left: 0px;
-        background-color: var(--primary-color);
-        border-radius: 2px;
-    }
+  & .text-content h2::before {
+    content: " ";
+    position: absolute;
+    height: 100%;
+    width: 6px;
+    left: 0px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+  }
 
-    & .about-profile-image img {
-        width: 100%;
-        max-width: 360px;
+  & .about-profile-image img {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  @media (max-width: 900px) {
+    .about-profile-image img {
+      display: none;
     }
+  }
 }
 
 @media (min-width: 900px) {
-    .about-content {
-        flex-direction: row-reverse;
-    }
+  .about-content {
+    flex-direction: row-reverse;
+  }
 }
