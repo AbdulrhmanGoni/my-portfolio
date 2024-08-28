@@ -2,7 +2,7 @@
     flex-wrap: wrap;
 }
 
-#project-card {
+.project-card {
     max-width: 365px;
     background-color: var(--primary-bg-color);
     padding: var(--standard-px);
