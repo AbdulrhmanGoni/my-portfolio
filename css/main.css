@@ -7,6 +7,7 @@
 @import url("./about-section.css");
 @import url("./skills-section.css");
 @import url("./projects-section.css");
+@import url("./outlined-card-animation.css");
 
 * {
   box-sizing: border-box;
