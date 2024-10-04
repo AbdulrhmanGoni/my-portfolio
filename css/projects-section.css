@@ -2,6 +2,10 @@
     flex-wrap: wrap;
 }
 
+:is(:has(.project-card)) {
+    border-radius: 6px;
+}
+
 .project-card {
     max-width: 365px;
     background-color: var(--primary-bg-color);
