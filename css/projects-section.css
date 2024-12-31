@@ -55,8 +55,8 @@
     transform: scale(1.02);
 }
 
-@media (max-width: 359px) {
-    #project-card .project-card-actions {
+@media (max-width: 400px) {
+    .project-card .project-card-actions {
         flex-wrap: wrap;
     }
 }
