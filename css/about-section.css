@@ -44,8 +44,8 @@
   }
 }
 
-@media (min-width: 900px) {
+/* @media (min-width: 900px) {
   .about-content {
     flex-direction: row-reverse;
   }
-}
+} */
