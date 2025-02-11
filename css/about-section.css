@@ -1,6 +1,6 @@
 .about-content {
 
-  & .text-content>div {
+  & .about-paragraph>div {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -11,18 +11,18 @@
     margin-bottom: calc(var(--standard-px) * 2);
   }
 
-  & .text-content>div strong {
+  & .about-paragraph>div strong {
     color: var(--primary-color);
   }
 
-  & .text-content h2 {
+  & .about-paragraph h2 {
     position: relative;
     margin-bottom: var(--standard-px);
     padding-left: 12px;
     line-height: 28px;
   }
 
-  & .text-content h2::before {
+  & .about-paragraph h2::before {
     content: " ";
     position: absolute;
     height: 100%;

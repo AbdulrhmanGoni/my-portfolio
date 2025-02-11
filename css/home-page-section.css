@@ -3,6 +3,10 @@
     max-width: 280px;
 }
 
+.intro-paragraph {
+    max-width: 100%;
+}
+
 @media (min-width: 600px) {
 
     .home-profile-image img {
@@ -18,6 +22,17 @@
 
     .home-page-container {
         flex-direction: row;
+    }
+
+    .intro-paragraph {
+        max-width: 475px;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .intro-paragraph {
+        max-width: 700px;
     }
 }
 
