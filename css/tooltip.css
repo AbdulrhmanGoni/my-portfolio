@@ -1,0 +1,11 @@
+.tooltip {
+    position: fixed;
+    transition: .3s;
+    padding: 5px;
+    animation: tooltip-appearing .3s ease-in;
+    background-color: black;
+    text-wrap: nowrap;
+    z-index: 10000;
+    border-radius: 5px;
+    box-shadow: 0 0 7px -4px var(--primary-color)
+}

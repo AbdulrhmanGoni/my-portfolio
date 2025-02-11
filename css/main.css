@@ -8,6 +8,7 @@
 @import url("./skills-section.css");
 @import url("./projects-section.css");
 @import url("./outlined-card-animation.css");
+@import url("./tooltip.css");
 
 * {
   box-sizing: border-box;
