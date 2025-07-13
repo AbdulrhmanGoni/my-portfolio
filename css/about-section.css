@@ -5,7 +5,7 @@
     flex-direction: column;
     gap: 12px;
     font-size: 17px;
-    padding: var(--standard-px);
+    padding: calc(var(--standard-px) * 1.5);
     background-color: var(--primary-bg-color);
     border-radius: 5px;
     margin-bottom: calc(var(--standard-px) * 2);
