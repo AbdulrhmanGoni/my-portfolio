@@ -131,21 +131,6 @@ const skillsData = {
             style: "width: 120px;",
         },
     ],
-    "To learn in future": [
-        {
-            imgSrc: "./icons/rabbitmq.svg",
-            description: "RabbitMQ - a message broker",
-        },
-        {
-            imgSrc: "./icons/kubernets.svg",
-            description: "Kubernetes - Containers manager",
-        },
-        {
-            imgSrc: "./icons/elasticsearch.svg",
-            description:
-                "Elasticsearch - a RESTful search and analytics engine",
-        },
-    ],
 };
 
 const skillsSectionContainer = document.getElementById(
