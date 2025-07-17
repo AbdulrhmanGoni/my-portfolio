@@ -40,22 +40,13 @@ const skillsData = {
             imgStyle: "border-radius: 50%",
         },
         {
-            imgSrc: "./icons/mongodb.svg",
-            description: "Mongo Database (NoSQL)",
+            imgSrc: "./icons/hono.svg",
+            description: "Hono 🔥 - JavaScript + TypeScript Web apps framework",
         },
         {
             imgSrc: "./icons/express.svg",
             description: "Express.js - JavaScript framework",
             imgStyle: "background: white;width: 40px;border-radius: 50%;",
-        },
-        {
-            imgSrc: "./icons/mongoose.png",
-            description: "mongoose - MongoDB client library",
-            style: "width: 100px;",
-        },
-        {
-            imgSrc: "./icons/redis.svg",
-            description: "Redis - Multi-usage database",
         },
         {
             imgSrc: "./icons/bun.svg",
@@ -66,8 +57,19 @@ const skillsData = {
             description: "Nest.js - JavaScript + TypeScript Back-End Framework",
         },
         {
-            imgSrc: "./icons/hono.svg",
-            description: "Hono 🔥 - JavaScript + TypeScript Web apps framework",
+            imgSrc: "./icons/nginx.svg",
+            description: "Nginx - as Proxy server and load balancer",
+            style: "width: 120px;",
+        },
+    ],
+    "Databases": [
+        {
+            imgSrc: "./icons/mongodb.svg",
+            description: "Mongo Database (NoSQL)",
+        },
+        {
+            imgSrc: "./icons/redis.svg",
+            description: "Redis - Multi-usage database",
         },
         {
             imgSrc: "./icons/postgresql.svg",
@@ -76,6 +78,12 @@ const skillsData = {
         {
             imgSrc: "./icons/sql.svg",
             description: "SQL Language - for any relational database",
+        },
+        {
+            imgSrc: "./icons/qdrant.svg",
+            description:
+                "Qdrant - Vector database and semantic search engine",
+            style: "width: 120px;",
         },
     ],
     "Fron-End": [
@@ -98,37 +106,8 @@ const skillsData = {
         },
         { imgSrc: "./icons/tailwind-css.svg", description: "Tailwind - CSS Framework" },
         {
-            imgSrc: "./icons/Material-UI.svg",
-            description: "Components library for React",
-        },
-        {
             imgSrc: "./icons/react-query.svg",
             description: "Asynchronous state manager for React",
-        },
-        {
-            imgSrc: "./icons/rollup.svg",
-            description: "Rollup Bundler",
-            imgStyle: "height: 40px;",
-        },
-        {
-            imgSrc: "./icons/skeleton-ui.png",
-            description: "UI Toolkit for Sveltekit & Tailwind CSS",
-            style: "width: 65px;",
-        },
-        { imgSrc: "./icons/redux.svg", description: "Redux - State manager" },
-        { imgSrc: "./icons/bootstrap.svg", description: "Bootstrap - CSS Framework" },
-    ],
-    "Exploring & Learning & Practising": [
-        {
-            imgSrc: "./icons/nginx.svg",
-            description: "Nginx - Proxy server and load balancer",
-            style: "width: 120px;",
-        },
-        {
-            imgSrc: "./icons/qdrant.svg",
-            description:
-                "Qdrant - Vector database and semantic search engine",
-            style: "width: 120px;",
         },
     ],
 };
