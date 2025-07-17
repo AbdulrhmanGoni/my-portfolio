@@ -33,6 +33,13 @@ const skillsData = {
             style: "width: 120px;",
         },
         {
+            imgSrc: "./icons/deno.svg",
+            description:
+                "Secure & Modern JavaScript + TypeScript runtime environment",
+            style: "width: 65px;",
+            imgStyle: "border-radius: 50%",
+        },
+        {
             imgSrc: "./icons/mongodb.svg",
             description: "Mongo Database (NoSQL)",
         },
@@ -62,6 +69,14 @@ const skillsData = {
             imgSrc: "./icons/hono.svg",
             description: "Hono 🔥 - JavaScript + TypeScript Web apps framework",
         },
+        {
+            imgSrc: "./icons/postgresql.svg",
+            description: "PostgreSQL - Relational Database",
+        },
+        {
+            imgSrc: "./icons/sql.svg",
+            description: "SQL Language - for any relational database",
+        },
     ],
     "Fron-End": [
         {
@@ -77,7 +92,11 @@ const skillsData = {
             imgSrc: "./icons/vite.svg",
             description: "Vite.js - Web dev builder tool",
         },
-        { imgSrc: "./icons/redux.svg", description: "Redux - State manager" },
+        {
+            imgSrc: "./icons/svelte.svg",
+            description: "Sveltekit - Front-End framework",
+        },
+        { imgSrc: "./icons/tailwind-css.svg", description: "Tailwind - CSS Framework" },
         {
             imgSrc: "./icons/Material-UI.svg",
             description: "Components library for React",
@@ -91,38 +110,19 @@ const skillsData = {
             description: "Rollup Bundler",
             imgStyle: "height: 40px;",
         },
-        { imgSrc: "./icons/tailwind-css.svg", description: "Tailwind - CSS Framework" },
         {
             imgSrc: "./icons/skeleton-ui.png",
             description: "UI Toolkit for Sveltekit & Tailwind CSS",
             style: "width: 65px;",
         },
+        { imgSrc: "./icons/redux.svg", description: "Redux - State manager" },
         { imgSrc: "./icons/bootstrap.svg", description: "Bootstrap - CSS Framework" },
     ],
     "Exploring & Learning & Practising": [
         {
-            imgSrc: "./icons/postgresql.svg",
-            description: "PostgreSQL - Relational Database",
-        },
-        {
-            imgSrc: "./icons/svelte.svg",
-            description: "Sveltekit - Front-End framework",
-        },
-        {
-            imgSrc: "./icons/sql.svg",
-            description: "SQL Language - for any relational database",
-        },
-        {
             imgSrc: "./icons/nginx.svg",
             description: "Nginx - Proxy server and load balancer",
             style: "width: 120px;",
-        },
-        {
-            imgSrc: "./icons/deno.svg",
-            description:
-                "Secure & Modern JavaScript + TypeScript runtime environment",
-            style: "width: 65px;",
-            imgStyle: "border-radius: 50%",
         },
         {
             imgSrc: "./icons/qdrant.svg",
