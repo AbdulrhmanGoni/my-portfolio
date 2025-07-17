@@ -3,7 +3,8 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--primary-bg-color);
+    background-color: color-mix(in srgb, var(--primary-bg-color) 85%, transparent);
+
     z-index: 1000;
 }
 
