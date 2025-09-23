@@ -1,0 +1,40 @@
+---
+import type { ProjectData } from "../data/projects";
+import GithubRepoButton from "./GithubRepoButton.astro";
+import TechStackList from "./TechStackList.astro";
+
+interface Props {
+    project: ProjectData;
+    index: number;
+}
+
+const { project, index } = Astro.props;
+---
+
+<div
+    class="max-w-96 rounded-xl overflow-hidden border border-primary/20 bg-primary/5
+        transition-all duration-300 hover:-translate-y-1 hover:border-primary/50"
+>
+    <div class="w-full h-[160px] sm:h-[200px] overflow-hidden">
+        <img
+            src={project.image}
+            loading={index > 1 ? "lazy" : undefined}
+            alt={project.imageAlt}
+            class="size-full"
+        />
+    </div>
+    <div class="p-5">
+        <h4 class="text-xl font-semibold mb-2">{project.name}</h4>
+        <p class="text-sm sm:text-base leading-6 text-muted-foreground mb-3">
+            {project.description}
+        </p>
+        <TechStackList
+            techStack={project.techStack}
+            size="small"
+            containerClasses="mb-4"
+        />
+        <div class="flex flex-wrap gap-3 sm:flex-col lg:flex-row">
+            <GithubRepoButton link={project.repoUrl} size="sm" />
+        </div>
+    </div>
+</div>

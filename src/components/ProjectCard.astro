@@ -1,0 +1,81 @@
+---
+import type { Project } from "../data/projects";
+import ExternalLinkButton from "./ExternalLinkButton.astro";
+import GithubRepoButton from "./GithubRepoButton.astro";
+import ProjectComponentCard from "./ProjectComponentCard.astro";
+import TechStackList from "./TechStackList.astro";
+
+interface Props {
+    project: Project;
+    index: number;
+}
+
+const { project, index } = Astro.props;
+---
+
+<div
+    class="relative overflow-hidden rounded-xl border border-primary/20 bg-background/50 shadow-2xl"
+>
+    <div
+        class={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 lg:p-8 ${project.components ? "border-b border-primary/20" : ""}`}
+    >
+        {
+            project.image && (
+                <div class="relative w-full h-[215px] sm:h-[300px] rounded-xl overflow-hidden">
+                    <img
+                        src={project.image}
+                        alt={project.imageAlt}
+                        class="size-full"
+                        loading={index > 1 ? "lazy" : undefined}
+                    />
+                </div>
+            )
+        }
+        <div class="flex flex-col gap-4">
+            <h2 class="text-xl md:text-2xl font-extrabold">
+                {project.name}
+            </h2>
+            <p class="md:text-lg text-base flex-1 text-muted-foreground">
+                {project.description}
+            </p>
+            {
+                project.techStack && (
+                    <TechStackList techStack={project.techStack} />
+                )
+            }
+            <div class="flex flex-wrap gap-4">
+                {
+                    project.liveUrl && (
+                        <ExternalLinkButton
+                            link={project.liveUrl}
+                            text="View Production"
+                        />
+                    )
+                }
+                {
+                    project.docsUrl && (
+                        <ExternalLinkButton
+                            link={project.docsUrl}
+                            text="View Documentation"
+                        />
+                    )
+                }
+                {project.repoUrl && <GithubRepoButton link={project.repoUrl} />}
+            </div>
+        </div>
+    </div>
+    {
+        project.components && (
+            <div>
+                <h3 class="font-semibold text-[22px] text-center mt-5">
+                    Project's Components
+                </h3>
+                <div class="p-6 flex flex-wrap gap-6 justify-center">
+                    {project.components.map((project) => (
+                        <ProjectComponentCard project={project} index={index} />
+                    ))}
+                </div>
+            </div>
+        )
+    }
+</div>

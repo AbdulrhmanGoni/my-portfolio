@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: oklch(0.53 0.21 253.38);
+  --color-background: oklch(0.2 0.05 261.69);
+  --color-soft: oklch(0.53 0.21 253.38 / 0.3);
+  --color-foreground: oklch(1 0 0);
+  --color-muted-foreground: oklch(1 0 0 / 0.8);
+}
+
+:root {
+  scroll-behavior: smooth;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: .7px;
+  color: var(--color-foreground);
+}
+
+section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0px;
+  background-image: radial-gradient(circle, #002151, #031b44, #041437, #050c2a, #00001f);
+
+  .section-title {
+    font-size: 38px;
+    font-weight: bold;
+  }
+}
+
+.tooltip {
+  position: fixed;
+  transition: .3s;
+  padding: 5px 10px;
+  animation: tooltip-appearing .3s ease-in;
+  background-color: black;
+  text-wrap: nowrap;
+  z-index: 10000;
+  border-radius: 8px;
+  box-shadow: 0 0 7px -4px var(--color-primary)
+}
+
+@keyframes tooltip-appearing {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
