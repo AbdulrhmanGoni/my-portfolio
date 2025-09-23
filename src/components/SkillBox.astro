@@ -1,0 +1,23 @@
+---
+import type { Skill } from "../data/skills";
+
+interface Props {
+    skill: Skill;
+}
+
+const { skill } = Astro.props;
+---
+
+<div
+    class="skill tooltip-target relative bg-background w-[60px] rounded-[6px] p-2.5 shadow-[0_0_5px_-2px_var(--color-primary)] hover:shadow-[0_0_9px_-2px_var(--color-primary)] transition-shadow duration-300 flex"
+    data-tooltip={skill.description}
+    style={skill.style}
+>
+    <img
+        loading="lazy"
+        src={skill.imgSrc}
+        alt={skill.description}
+        style={skill.imgStyle}
+        class="w-full"
+    />
+</div>

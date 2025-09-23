@@ -1,0 +1,81 @@
+---
+import profileImage from "../assets/profile-image.png";
+import githubIcon from "../assets/icons/github.svg";
+import linkedinIcon from "../assets/icons/linkedin.svg";
+import gmailIcon from "../assets/icons/gmail.svg";
+
+const links = [
+    {
+        href: "https://github.com/abdulrhmangoni",
+        iconSrc: githubIcon.src,
+        alt: "Github icon",
+        class: "bg-white p-[2px] rounded-full",
+    },
+    {
+        href: "https://www.linkedin.com/in/abdulrhman-goni-857a36275",
+        iconSrc: linkedinIcon.src,
+        alt: "Linked in icon",
+    },
+    {
+        href: "mailto:abdulrhmangoni@gmail.com",
+        iconSrc: gmailIcon.src,
+        alt: "Gmail icon",
+    },
+];
+---
+
+<section id="home-page-section" class="!justify-evenly gap-6">
+    <div
+        class="lg:flex-row container w-full mx-auto px-2 flex flex-col-reverse items-center gap-6 py-2 justify-evenly h-full"
+    >
+        <div
+            class="max-w-full space-y-1.5 sm:max-w-[430px] lg:max-w-[530px] sm:text-left text-center"
+        >
+            <h2 class="font-medium text-xl">Hello, I'm</h2>
+            <h1 class="text-4xl sm:text-5xl font-bold leading-[53px]">
+                Abdulrhman Goni
+            </h1>
+            <h2 class="font-semibold text-primary text-2xl">
+                Software Developer
+            </h2>
+            <p class="py-2 text-lg">
+                I build <strong class="text-primary">web servers</strong> and applications
+                using modern web technologies, with a focus on developing
+                <strong class="text-primary">back-end</strong> systems
+            </p>
+
+            <div
+                class="flex flex-row items-center py-1 gap-3 justify-center sm:justify-start"
+            >
+                {
+                    links.map((link) => (
+                        <a
+                            href={link.href}
+                            target="_blank"
+                            class="flex w-11 h-11 p-2 rounded-[5px] transition-transform shadow-[-2px_2px_4px_0px_var(--color-primary)] hover:scale-110"
+                        >
+                            <img
+                                src={link.iconSrc}
+                                alt={link.alt}
+                                class={`w-full ${link.class || ""}`}
+                            />
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+        <img
+            class="w-full max-w-52 sm:max-w-70 lg:max-w-84 rounded-full border-4 border-foreground"
+            src={profileImage.src}
+            alt="Abdulrhman's image"
+            loading="eager"
+        />
+    </div>
+
+    <a
+        class="px-3.5 py-2 sm:px-5 sm:py-3 bg-primary rounded-xl animate-bounce font-bold text-lg sm:text-xl cursor-pointer"
+        href="#projects-section"
+    >
+        See some of what I can do 👇
+    </a>
+</section>

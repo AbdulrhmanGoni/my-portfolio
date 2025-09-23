@@ -1,44 +1,53 @@
-name: Deploy Portfolio Website
+name: Deploy Portfolio Site
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+    paths-ignore:
+      - "**.md"
+      - "tsconfig.json"
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "deploy-portfolio-site"
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Install dependencies and build the portfolio site
+        run: |
+          npm install -g pnpm@latest-10
+          pnpm install
+          pnpm build
 
-      - name: Setup Node.js v18.17.1
-        uses: actions/setup-node@v4
+      - name: Upload portfolio site files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v4
         with:
-          node-version: "18.17.1"
+          path: dist/
 
-      - name: Install dependencies
-        run: npm install
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy portfolio site to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
-      - name: Build the project
-        run: npm run build
-
-      - name: Deploy the project to "deployment" branch
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
-          folder: dist
-          branch: deployment
-          commit-message: "Deploy Portfolio Website"
-
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
       - uses: actions/checkout@master
       - name: Pushbullet Notification
         uses: yassinebridi/pushbullet-action@v1.0.2

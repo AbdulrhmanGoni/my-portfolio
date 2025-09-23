@@ -1,0 +1,90 @@
+---
+import SkillBox from "../components/SkillBox.astro";
+import { skillsData } from "../data/skills";
+---
+
+<section id="skills-section" class="flex">
+    <div class="section-title">
+        <h1>My <span class="text-primary">Skills</span></h1>
+    </div>
+    <div
+        id="skills-section-container"
+        class="container w-full mx-auto px-2 flex flex-col gap-10 flex-1 mt-[30px]"
+    >
+        {
+            Object.entries(skillsData).map(([title, skills]) => (
+                <div class="skills-container w-full flex-1 flex flex-col items-center gap-3">
+                    <h2 class="font-semibold text-2xl max-[500px]:text-[21px] max-[500px]:text-center">
+                        {title}
+                    </h2>
+                    <div class="skills flex flex-wrap justify-center gap-3">
+                        {skills.map((skill) => (
+                            <SkillBox skill={skill} />
+                        ))}
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<script>
+    const targets = document.querySelectorAll(".tooltip-target");
+
+    if (targets) {
+        const tooltip = document.createElement("p");
+        tooltip.className = "tooltip";
+
+        targets.forEach((t) => {
+            const target = t as HTMLElement;
+            target.addEventListener("mouseenter", () => {
+                if (!target.querySelector(".tooltip")) {
+                    const targetPosition = target.getBoundingClientRect();
+                    let targetPositionX =
+                        targetPosition.x + targetPosition.width / 2;
+                    let targetPositionY =
+                        targetPosition.y + targetPosition.height / 2;
+
+                    if (target.dataset.tooltip) {
+                        tooltip.textContent = target.dataset.tooltip;
+                        tooltip.style.textWrap = "nowrap";
+                        target.appendChild(tooltip);
+                        const tooltipPosition = tooltip.getBoundingClientRect();
+                        const tooltipWidth = tooltipPosition.width;
+                        const tooltipHeight = tooltipPosition.height;
+                        const tooltipTopPosition =
+                            targetPositionY - tooltipHeight / 2;
+                        let tooltipLeftPosition =
+                            targetPositionX - tooltipWidth / 2;
+
+                        if (
+                            tooltipLeftPosition + tooltipWidth >
+                            window.innerWidth
+                        ) {
+                            const overflowGap =
+                                tooltipLeftPosition +
+                                tooltipWidth -
+                                window.innerWidth;
+                            tooltipLeftPosition -= overflowGap + 5;
+                        }
+
+                        tooltip.style.left = `${tooltipLeftPosition < 0 ? 5 : tooltipLeftPosition}px`;
+                        tooltip.style.top = `${(tooltipTopPosition < 0 ? 0 : tooltipTopPosition) - 55}px`;
+
+                        if (tooltipWidth > window.innerWidth) {
+                            tooltip.style.textWrap = "wrap";
+                        }
+                    }
+                }
+            });
+            target.addEventListener("mouseleave", () => {
+                const tooltip = target.querySelector(".tooltip");
+                tooltip && target.removeChild(tooltip);
+            });
+            document.addEventListener("scroll", () => {
+                const tooltip = target.querySelector(".tooltip");
+                tooltip && target.removeChild(tooltip);
+            });
+        });
+    }
+</script>
