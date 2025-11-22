@@ -70,7 +70,7 @@ export const projectsData: Project[] = [
     {
         name: "LLMs Training Dataset Manager",
         description: "A web application designed for creating, managing, exporting training datasets in various formats optimized for Large Language Models and RAG systems.",
-        liveUrl: "https://llms-tdm.abdulrhman.icu",
+        // liveUrl: "https://llms-tdm.abdulrhman.icu",
         components: [
             {
                 name: "LLMs TDM Server",
