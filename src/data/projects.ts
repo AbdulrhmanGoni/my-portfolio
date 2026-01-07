@@ -2,6 +2,7 @@ import denoKvGuiClientImage from "../assets/projects-images/kv-entries-table-dar
 import mechaAgentServerImage from "../assets/projects-images/mecha-agent.jpg";
 import mechaAgentClientImage from "../assets/projects-images/mecha-agent-client.png";
 import mechaAgentDocsImage from "../assets/projects-images/mecha-agent-docs.png";
+import mechaAgentInferenceClientImage from "../assets/projects-images/mecha-agent-inference-client.png";
 import llmsTdmServerImage from "../assets/projects-images/llms-tdm-server.jpg";
 import llmsTdmAppImage from "../assets/projects-images/llms-tdm-app.png";
 import amStoreClientImage from "../assets/projects-images/am-store-client.png";
@@ -64,13 +65,20 @@ export const projectsData: Project[] = [
                 imageAlt: "Mecha Agent Documentation",
                 techStack: ["Docusaurus", "React", "Markdown", "MDX"],
                 repoUrl: "https://github.com/AbdulrhmanGoni/mecha_agent_docs",
+            },
+            {
+                name: "Inference Client",
+                description: "A package that provides a chat UI client you can put into your own web apps so people on the internet can interact and chat with your agents through it.",
+                image: mechaAgentInferenceClientImage.src,
+                imageAlt: "Inference Client",
+                techStack: ["TypeScript", "Next.js", "Sveltekit", "CSS", "Turborepo"],
+                repoUrl: "https://github.com/AbdulrhmanGoni/mecha_agent_inference_client",
             }
         ]
     },
     {
         name: "LLMs Training Dataset Manager",
         description: "A web application designed for creating, managing, exporting training datasets in various formats optimized for Large Language Models and RAG systems.",
-        // liveUrl: "https://llms-tdm.abdulrhman.icu",
         components: [
             {
                 name: "LLMs TDM Server",
