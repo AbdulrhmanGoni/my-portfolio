@@ -101,7 +101,7 @@ export const projectsData: Project[] = [
     {
         name: "AM Store E-commerce Platform",
         description: "A complete e-commerce solution for Japanese Anime & Manga products, featuring a customer-facing store, comprehensive admin panel, and shared component library.",
-        liveUrl: "https://am-store-client.vercel.app",
+        // liveUrl: "https://am-store-client.vercel.app",
         components: [
             {
                 name: "AM Store Server image",
