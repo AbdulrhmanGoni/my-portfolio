@@ -89,7 +89,7 @@ export const projectsData: Project[] = [
                 repoUrl: "https://github.com/abdulrhmangoni/LLMs-TDM-Server",
             },
             {
-                name: "LLMs TDM Application image",
+                name: "LLMs TDM Application",
                 description: "Web interface for managing datasets",
                 image: llmsTdmAppImage.src,
                 imageAlt: "LLMs TDM Application",
@@ -104,7 +104,7 @@ export const projectsData: Project[] = [
         // liveUrl: "https://am-store-client.vercel.app",
         components: [
             {
-                name: "AM Store Server image",
+                name: "AM Store Server",
                 description: "Backend API handling authentication and business logic",
                 image: amStoreServerImage.src,
                 imageAlt: "AM Store Server",
