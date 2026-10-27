@@ -1,84 +1,89 @@
 ---
 import profileImage from "../assets/profile-image.png";
-import githubIcon from "../assets/icons/github.svg";
-import linkedinIcon from "../assets/icons/linkedin.svg";
-import gmailIcon from "../assets/icons/gmail.svg";
-
-const links = [
-    {
-        href: "https://github.com/abdulrhmangoni",
-        iconSrc: githubIcon.src,
-        alt: "Github icon",
-        class: "bg-white p-[2px] rounded-full",
-    },
-    {
-        href: "https://www.linkedin.com/in/abdulrhman-goni-857a36275",
-        iconSrc: linkedinIcon.src,
-        alt: "Linked in icon",
-    },
-    {
-        href: "mailto:abdulrhmangoni@gmail.com",
-        iconSrc: gmailIcon.src,
-        alt: "Gmail icon",
-    },
-];
+import CommandHeading from "../components/CommandHeading.astro";
+import { LINKS } from "../data/links";
 ---
 
-<section id="home-page-section" class="!justify-evenly gap-6">
-    <div
-        class="lg:flex-row container w-full mx-auto px-2 flex flex-col-reverse items-center gap-6 py-2 justify-evenly h-full"
-    >
-        <div
-            class="max-w-full space-y-1.5 sm:max-w-[430px] lg:max-w-[530px] sm:text-left text-center"
-        >
-            <h2 class="font-medium text-2xl">Hello, I'm</h2>
-            <h1 class="text-4xl sm:text-5xl font-bold leading-[53px]">
-                Abdulrhman Goni
-            </h1>
-            <h2 class="font-semibold text-primary text-2xl">
-                Software Developer
-            </h2>
-            <p class="py-2 text-lg">
-                Using <strong class="text-primary">JavaScript/TypeScript</strong
-                >, I build web servers, applications and developer tools using
-                modern web technologies, with a focus on developing
-                <strong class="text-primary">back-end</strong> systems
-            </p>
+<section id="home" class="term-section">
+  <div class="term-section-inner">
+    <CommandHeading command="whoami" comment="summary" />
 
-            <div
-                class="flex flex-row items-center py-1 gap-3 justify-center sm:justify-start"
-            >
-                {
-                    links.map((link) => (
-                        <a
-                            href={link.href}
-                            target="_blank"
-                            class="flex w-11 h-11 p-2 rounded-[5px] transition-transform shadow-[-2px_2px_4px_0px_var(--color-primary)] hover:scale-110"
-                        >
-                            <img
-                                src={link.iconSrc}
-                                alt={link.alt}
-                                class={`w-full ${link.class || ""}`}
-                            />
-                        </a>
-                    ))
-                }
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-name">Abdulrhman Goni</h1>
+        <p class="hero-role">Software Developer</p>
+        <p class="hero-bio">
+          Using <strong>JavaScript/TypeScript</strong>, I build web servers,
+          applications and developer tools using modern web technologies, with a
+          focus on developing <strong>back-end</strong> systems.
+        </p>
+
+        <div class="tui-panel hero-info">
+          <span class="tui-panel-title">info</span>
+          <div class="neofetch">
+            <div class="neofetch-row">
+              <span class="neofetch-key">user</span>
+              <span>abdulrhman</span>
             </div>
+            <div class="neofetch-row">
+              <span class="neofetch-key">languages</span>
+              <span>JavaScript/TypeScript, Go, Python</span>
+            </div>
+            <div class="neofetch-row">
+              <span class="neofetch-key">email</span>
+              <span>
+                <a href={LINKS.email}>{LINKS.emailAddress}</a>
+              </span>
+            </div>
+            <div class="neofetch-row">
+              <span class="neofetch-key">github</span>
+              <span>
+                <a
+                  href={LINKS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  github.com/abdulrhmangoni
+                </a>
+              </span>
+            </div>
+            <div class="neofetch-row">
+              <span class="neofetch-key">linkedin</span>
+              <span>
+                <a
+                  href={LINKS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  linkedin.com/in/abdulrhman-goni
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-frame">
+        <div class="profile-frame-bar">
+          <span>~/assets/profile.png</span>
+          <span class="rec">live</span>
         </div>
         <img
-            class="w-full max-w-52 sm:max-w-70 lg:max-w-84 rounded-full border-4 border-foreground"
-            src={profileImage.src}
-            alt="Abdulrhman's image"
-            loading="eager"
+          src={profileImage.src}
+          alt="Portrait of Abdulrhman Goni"
+          loading="eager"
+          width="420"
+          height="420"
         />
+        <div class="profile-scan" aria-hidden="true"></div>
+      </div>
     </div>
 
-    <a
-        class="text-center animate-bounce font-bold text-lg sm:text-xl cursor-pointer"
-        href="#projects-section"
-    >
-        See some of what I can do
-        <span class="block text-2xl sm:text-3xl relative translate-y-3">👇</span
-        >
-    </a>
+    <p class="continue-row">
+      <span class="dollar">$</span>
+      <a href="#projects">cd ./projects</a>
+      <span class="cursor" aria-hidden="true"></span>
+      <span class="comment"># see some of what I can do</span>
+    </p>
+  </div>
 </section>

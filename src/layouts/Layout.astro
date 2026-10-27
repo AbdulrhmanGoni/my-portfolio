@@ -4,23 +4,158 @@ import favicon from "../assets/favicon.png";
 
 <!doctype html>
 <html lang="en">
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="generator" content={Astro.generator} />
-	<link rel="icon" type="image/png" href={favicon.src} />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#08080a" />
+    <meta
+      name="description"
+      content="Abdulrhman Goni — Software Developer. I build web servers, applications and developer tools with JavaScript and TypeScript, with a focus on back-end systems."
+    />
+    <link rel="icon" type="image/png" href={favicon.src} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Abdulrhman Goni — portfolio</title>
+    <script is:inline>
+      try {
+        if (
+          sessionStorage.getItem("portfolio-booted") === "1" ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          document.documentElement.classList.add("booted");
+        }
+      } catch {
+        document.documentElement.classList.add("booted");
+      }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FNVVT8MWBS"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-FNVVT8MWBS");
+    </script>
+  </head>
 
-	<title>Abdulrhman Goni's Portfolio</title>
+  <body>
+    <noscript>
+      <style>
+        #boot-screen {
+          display: none !important;
+        }
+      </style>
+    </noscript>
+    <a class="skip-link" href="#content-pane">skip to content</a>
 
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-FNVVT8MWBS"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
+    <div id="boot-screen" class="boot-screen" aria-live="polite">
+      <pre id="boot-log" class="boot-log"></pre>
+      <p class="boot-skip">press any key to skip</p>
+    </div>
 
-		gtag('config', 'G-FNVVT8MWBS');
-	</script>
+    <div class="crt-overlay" aria-hidden="true"></div>
+    <div class="crt-vignette" aria-hidden="true"></div>
 
-	<body>
-		<slot />
-	</body>
+    <div class="desktop">
+      <div id="terminal-window" class="terminal-window">
+        <header class="titlebar">
+          <div class="traffic" role="group" aria-label="window controls">
+            <span class="traffic-btn close" aria-hidden="true"></span>
+            <button
+              id="traffic-min"
+              class="traffic-btn min"
+              title="minimize"
+              aria-label="Minimize"></button>
+            <button
+              id="traffic-max"
+              class="traffic-btn max"
+              title="fullscreen"
+              aria-label="Fullscreen"></button>
+          </div>
+          <p class="titlebar-title">
+            <b>abdulrhman</b><span>@portfolio:</span> ~
+          </p>
+          <span class="titlebar-meta" aria-hidden="true">/bin/bash · utf-8</span>
+        </header>
+
+        <div class="terminal-body">
+          <main id="content-pane" class="content-pane" tabindex="-1">
+            <slot />
+          </main>
+        </div>
+
+        <div class="command-bar">
+          <form id="command-form" class="command-row" autocomplete="off">
+            <label class="prompt-prefix" for="command-input">
+              <span>abdulrhman</span><span class="at">@</span><span class="host"
+                >portfolio</span
+              ><span class="colon">:</span><span class="path">~</span><span>
+                $</span
+              >
+            </label>
+            <input
+              id="command-input"
+              class="command-input"
+              name="command"
+              type="text"
+              spellcheck="false"
+              autocapitalize="off"
+              placeholder="type a command — try help"
+              aria-label="Terminal command"
+            />
+          </form>
+          <div id="command-output" class="command-output" aria-live="polite">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="help-dialog" class="help-dialog">
+      <div class="help-dialog-bar">
+        <span>man portfolio</span>
+        <button
+          type="button"
+          onclick="document.getElementById('help-dialog').close()"
+          >[esc] close</button
+        >
+      </div>
+      <pre>
+<span class="man-name">NAME</span>
+    portfolio — interactive terminal resume for Abdulrhman Goni
+
+<span class="man-name">SYNOPSIS</span>
+    command [args]
+
+<span class="man-name">COMMANDS</span>
+    whoami, about, neofetch   identity / home
+    ls, ls projects           list files or projects
+    cd [home|projects|skills]
+    cat [file]                read a section
+    skills                    tech stack
+    contact, email            contact info / mailto
+    github, linkedin          open profiles
+    clear                     scroll to top
+    pwd, date, echo           shell toys
+    help, man, ?              this page
+
+<span class="man-name">KEYS</span>
+    / or :     focus the prompt
+    1 2 3      jump sections
+    Esc        close dialogs / leave insert
+    ?          open this manual
+			</pre>
+    </dialog>
+
+    <script>
+      import "../scripts/terminal.ts";
+    </script>
+  </body>
 </html>

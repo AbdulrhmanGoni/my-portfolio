@@ -1,0 +1,19 @@
+---
+interface Props {
+  command: string;
+  comment?: string;
+}
+
+const { command, comment } = Astro.props;
+---
+
+<p class="cmd-line">
+  <span class="user">abdulrhman</span>
+  <span class="sep">@</span>
+  <span class="host">portfolio</span>
+  <span class="sep">:</span>
+  <span class="path">~</span>
+  <span class="dollar">$</span>
+  <span class="cmd ms-2">{command}</span>
+  {comment && <span class="comment ms-2"># {comment}</span>}
+</p>

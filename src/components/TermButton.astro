@@ -1,0 +1,20 @@
+---
+interface Props {
+	link: string;
+	text: string;
+	ghost?: boolean;
+	size?: "sm" | "base";
+}
+
+const { link, text, ghost = false, size = "base" } = Astro.props;
+---
+
+<a
+	href={link}
+	target="_blank"
+	rel="noopener noreferrer"
+	class={`term-btn${ghost ? " term-btn-ghost" : ""}${size == "sm" ? " term-btn--sm" : ""}`}
+>
+	<span>$</span>
+	{text}
+</a>

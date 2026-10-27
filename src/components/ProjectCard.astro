@@ -1,81 +1,66 @@
 ---
 import type { Project } from "../data/projects";
-import ExternalLinkButton from "./ExternalLinkButton.astro";
-import GithubRepoButton from "./GithubRepoButton.astro";
+import TermButton from "./TermButton.astro";
 import ProjectComponentCard from "./ProjectComponentCard.astro";
 import TechStackList from "./TechStackList.astro";
 
 interface Props {
-    project: Project;
-    index: number;
+	project: Project;
+	index: number;
 }
 
 const { project, index } = Astro.props;
+const slug = project.name.toLowerCase().replace(/\s+/g, "-");
 ---
 
-<div
-    class="relative overflow-hidden rounded-xl border border-primary/20 bg-background/50 shadow-2xl"
->
-    <div
-        class={`grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 lg:p-8 ${project.components ? "border-b border-primary/20" : ""}`}
-    >
-        {
-            project.image && (
-                <div class="relative w-full h-[215px] sm:h-[300px] rounded-xl overflow-hidden">
-                    <img
-                        src={project.image}
-                        alt={project.imageAlt}
-                        class="size-full"
-                        loading={index > 1 ? "lazy" : undefined}
-                    />
-                </div>
-            )
-        }
-        <div class="flex flex-col gap-4">
-            <h2 class="text-xl md:text-2xl font-extrabold">
-                {project.name}
-            </h2>
-            <p class="md:text-lg text-base flex-1 text-muted-foreground">
-                {project.description}
-            </p>
-            {
-                project.techStack && (
-                    <TechStackList techStack={project.techStack} />
-                )
-            }
-            <div class="flex flex-wrap gap-4">
-                {
-                    project.liveUrl && (
-                        <ExternalLinkButton
-                            link={project.liveUrl}
-                            text="View Production"
-                        />
-                    )
-                }
-                {
-                    project.docsUrl && (
-                        <ExternalLinkButton
-                            link={project.docsUrl}
-                            text="View Documentation"
-                        />
-                    )
-                }
-                {project.repoUrl && <GithubRepoButton link={project.repoUrl} />}
-            </div>
-        </div>
-    </div>
-    {
-        project.components && (
-            <div>
-                <h3 class="font-semibold text-[22px] text-center mt-5">
-                    Project's Components
-                </h3>
-                <div class="p-6 flex flex-wrap gap-6 justify-center">
-                    {project.components.map((project) => (
-                        <ProjectComponentCard project={project} index={index} />
-                    ))}
-                </div>
-            </div>
-        )
-    }
-</div>
+<article class="project-card">
+	<div class={`project-main ${project.image ? "" : "no-preview"}`}>
+		{
+			project.image && (
+				<div class="project-preview">
+					<div class="project-preview-bar">
+						<span class="dot">●</span>
+						<span>preview://{slug}</span>
+					</div>
+					<img
+						src={project.image}
+						alt={project.imageAlt}
+						loading={index > 0 ? "lazy" : undefined}
+					/>
+				</div>
+			)
+		}
+		<div class="project-body">
+			<h2 class="project-name">{project.name}</h2>
+			<p class="project-desc">{project.description}</p>
+			{project.techStack && <TechStackList techStack={project.techStack} />}
+			<div class="project-actions">
+				{
+					project.liveUrl && (
+						<TermButton link={project.liveUrl} text="open --live" />
+					)
+				}
+				{
+					project.docsUrl && (
+						<TermButton link={project.docsUrl} text="open --docs" />
+					)
+				}
+				{project.repoUrl && <TermButton link={project.repoUrl} text="git clone" ghost />}
+			</div>
+		</div>
+	</div>
+	{
+		project.components && (
+			<div class="components-wrap">
+				<h3 class="components-title">
+					./components  ({project.components.length})
+				</h3>
+				<div class="components-grid">
+					{project.components.map((component) => (
+						<ProjectComponentCard project={component} index={index} />
+					))}
+				</div>
+			</div>
+		)
+	}
+</article>
