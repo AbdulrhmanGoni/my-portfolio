@@ -6,7 +6,12 @@
 
   --color-primary: #ff3b4e;
   --color-primary-dim: #c81e33;
+  --color-primary-soft: #ff8a96;
+  --color-primary-contrast: #140004;
+  --color-primary-surface: #14080a;
   --color-background: #08080a;
+  --color-surface: #0a0a0c;
+  --color-surface-raised: #101014;
   --color-foreground: #f4e8ea;
   --color-muted-foreground: #9b7e84;
   --color-border: #3d151c;
@@ -19,7 +24,7 @@
   line-height: 1.6;
   letter-spacing: 0;
   color: var(--color-foreground);
-  background: #050506;
+  background: var(--color-background);
   --titlebar-h: 42px;
   --cmdbar-h: 48px;
 }
@@ -33,7 +38,7 @@ body {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  background: #050506;
+  background: var(--color-background);
 }
 
 html.booted #boot-screen {
@@ -42,7 +47,7 @@ html.booted #boot-screen {
 
 ::selection {
   background: var(--color-primary);
-  color: #0a0002;
+  color: var(--color-primary-contrast);
 }
 
 :focus-visible {
@@ -68,32 +73,9 @@ img {
   display: flex;
   position: relative;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 59, 78, 0.16), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 50% 110%, rgba(255, 59, 78, 0.07), transparent 50%),
-    #050506;
-}
-
-.crt-overlay {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  background:
-    repeating-linear-gradient(0deg,
-      rgba(0, 0, 0, 0.07) 0px,
-      rgba(0, 0, 0, 0.07) 1px,
-      transparent 1px,
-      transparent 3px);
-  mix-blend-mode: multiply;
-  opacity: 0.45;
-}
-
-.crt-vignette {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 81;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.45) 100%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in srgb, var(--color-primary) 16%, transparent), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 110%, color-mix(in srgb, var(--color-primary) 7%, transparent), transparent 50%),
+    var(--color-background);
 }
 
 /* ── Terminal window ── */
@@ -109,8 +91,8 @@ img {
   overflow: hidden;
   position: relative;
   box-shadow:
-    0 0 0 1px rgba(255, 59, 78, 0.12),
-    0 0 60px rgba(255, 59, 78, 0.1),
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 12%, transparent),
+    0 0 60px color-mix(in srgb, var(--color-primary) 10%, transparent),
     0 24px 80px rgba(0, 0, 0, 0.75);
 }
 
@@ -135,7 +117,7 @@ img {
   align-items: center;
   gap: 12px;
   padding: 0 12px;
-  background: linear-gradient(180deg, #16161a 0%, #101014 100%);
+  background: linear-gradient(180deg, var(--color-surface-raised) 0%, var(--color-surface) 100%);
   border-bottom: 1px solid var(--color-border);
   user-select: none;
 }
@@ -177,7 +159,7 @@ img {
   flex: 1;
   text-align: center;
   font-size: 12px;
-  color: var(--color-muted-foreground);
+  color: var(--color-primary-soft);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -210,7 +192,7 @@ img {
   overflow-x: hidden;
   scroll-behavior: smooth;
   background:
-    linear-gradient(180deg, rgba(255, 59, 78, 0.03), transparent 180px),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 3%, transparent), transparent 180px),
     var(--color-background);
 }
 
@@ -219,12 +201,12 @@ img {
 }
 
 .content-pane::-webkit-scrollbar-track {
-  background: #0a0a0c;
+  background: var(--color-surface);
 }
 
 .content-pane::-webkit-scrollbar-thumb {
-  background: #4a151c;
-  border: 2px solid #0a0a0c;
+  background: var(--color-border);
+  border: 2px solid var(--color-surface);
 }
 
 .content-pane::-webkit-scrollbar-thumb:hover {
@@ -237,7 +219,7 @@ img {
   flex-shrink: 0;
   min-height: var(--cmdbar-h);
   border-top: 1px solid var(--color-border);
-  background: #0c0c0e;
+  background: var(--color-surface);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -277,7 +259,7 @@ img {
 }
 
 .prompt-prefix .path {
-  color: #ff8a96;
+  color: var(--color-primary-soft);
 }
 
 .command-input {
@@ -293,7 +275,7 @@ img {
 }
 
 .command-input::placeholder {
-  color: #5c4046;
+  color: color-mix(in srgb, var(--color-muted-foreground) 70%, transparent);
 }
 
 /* ── TUI panels ── */
@@ -360,7 +342,7 @@ img {
 }
 
 .cmd-line .host {
-  color: #ff8a96;
+  color: var(--color-primary-soft);
 }
 
 .cmd-line .sep {
@@ -368,7 +350,7 @@ img {
 }
 
 .cmd-line .path {
-  color: #ffb3bb;
+  color: var(--color-primary-soft);
 }
 
 .cmd-line .dollar {
@@ -439,8 +421,8 @@ img {
 .term-btn:hover,
 .term-btn:focus-visible {
   background: var(--color-primary);
-  color: #140004;
-  box-shadow: 0 0 18px rgba(255, 59, 78, 0.35);
+  color: var(--color-primary-contrast);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--color-primary) 35%, transparent);
 }
 
 .term-btn-ghost {
@@ -452,7 +434,7 @@ img {
 .term-btn-ghost:focus-visible {
   border-color: var(--color-primary);
   background: var(--color-primary);
-  color: #140004;
+  color: var(--color-primary-contrast);
 }
 
 .term-btn--sm {
@@ -466,15 +448,15 @@ img {
   font-weight: 500;
   padding: 0.2rem 0.5rem;
   border: 1px solid var(--color-border);
-  color: #ffb3bb;
-  background: rgba(255, 59, 78, 0.06);
+  color: var(--color-primary-soft);
+  background: color-mix(in srgb, var(--color-primary) 6%, transparent);
   transition: transform 0.15s, border-color 0.15s, background 0.15s;
 }
 
 .chip:hover {
   transform: translateY(-1px);
   border-color: var(--color-primary);
-  background: rgba(255, 59, 78, 0.14);
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
 }
 
 /* ── Hero ── */
@@ -554,7 +536,7 @@ img {
 .profile-frame {
   position: relative;
   border: 1px solid var(--color-border);
-  background: #0a0a0c;
+  background: var(--color-surface);
   padding: 8px;
 }
 
@@ -598,8 +580,8 @@ img {
   position: absolute;
   inset: 32px 8px 8px;
   background: repeating-linear-gradient(0deg,
-      rgba(255, 59, 78, 0.05) 0,
-      rgba(255, 59, 78, 0.05) 1px,
+      color-mix(in srgb, var(--color-primary) 5%, transparent) 0,
+      color-mix(in srgb, var(--color-primary) 5%, transparent) 1px,
       transparent 1px,
       transparent 4px);
 }
@@ -610,7 +592,7 @@ img {
   top: -40px;
   z-index: 100;
   background: var(--color-primary);
-  color: #140004;
+  color: var(--color-primary-contrast);
   padding: 6px 10px;
   font-size: 12px;
   font-weight: 700;
@@ -670,7 +652,7 @@ img {
 .project-preview {
   position: relative;
   border-right: 1px solid var(--color-border);
-  background: #0a0a0c;
+  background: var(--color-surface);
   min-height: 220px;
 }
 
@@ -682,7 +664,7 @@ img {
   font-size: 11px;
   color: var(--color-muted-foreground);
   border-bottom: 1px solid var(--color-border);
-  background: #101014;
+  background: var(--color-surface-raised);
 }
 
 .project-preview-bar .dot {
@@ -748,7 +730,7 @@ img {
 
 .component-card {
   border: 1px solid var(--color-border);
-  background: #0c0c0f;
+  background: var(--color-surface);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -757,7 +739,7 @@ img {
 
 .component-card:hover {
   border-color: var(--color-primary-dim);
-  box-shadow: 0 0 20px rgba(255, 59, 78, 0.08);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary) 8%, transparent);
 }
 
 .component-card img {
@@ -781,7 +763,7 @@ img {
   font-weight: 700;
 }
 
-.component-body > p {
+.component-body>p {
   font-size: 12px;
   color: var(--color-muted-foreground);
   flex: 1;
@@ -818,7 +800,7 @@ img {
   position: relative;
   width: 92px;
   border: 1px solid var(--color-border);
-  background: #0c0c0f;
+  background: var(--color-surface);
   padding: 0.7rem 0.5rem 0.55rem;
   display: flex;
   flex-direction: column;
@@ -830,7 +812,7 @@ img {
 .skill-box:hover,
 .skill-box:focus-visible {
   border-color: var(--color-primary);
-  box-shadow: 0 0 16px rgba(255, 59, 78, 0.18);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--color-primary) 18%, transparent);
   transform: translateY(-2px);
 }
 
@@ -859,14 +841,14 @@ img {
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: #14080a;
+  background: var(--color-primary-surface);
   color: var(--color-foreground);
   border: 1px solid var(--color-primary);
   padding: 5px 8px;
   font-size: 11px;
   white-space: nowrap;
   z-index: 20;
-  box-shadow: 0 0 16px rgba(255, 59, 78, 0.25);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--color-primary) 25%, transparent);
   pointer-events: none;
 }
 
@@ -887,7 +869,7 @@ img {
   font-size: 13px;
   line-height: 1.7;
   white-space: pre-wrap;
-  text-shadow: 0 0 8px rgba(255, 59, 78, 0.45);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--color-primary) 45%, transparent);
 }
 
 .boot-skip {
@@ -895,7 +877,7 @@ img {
   bottom: 24px;
   right: 24px;
   font-size: 11px;
-  color: #5c4046;
+  color: color-mix(in srgb, var(--color-muted-foreground) 70%, transparent);
 }
 
 /* Tailwind's preflight zeroes out margins, which kills the browser's
@@ -909,14 +891,14 @@ dialog {
 }
 
 .help-dialog {
-  background: #0a0a0c;
+  background: var(--color-surface);
   color: var(--color-foreground);
   border: 1px solid var(--color-primary);
   max-width: min(640px, 92vw);
   max-height: 92dvh;
   width: 640px;
   padding: 0;
-  box-shadow: 0 0 40px rgba(255, 59, 78, 0.2);
+  box-shadow: 0 0 40px color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
 .help-dialog::backdrop {
@@ -931,7 +913,7 @@ dialog {
   border-bottom: 1px solid var(--color-border);
   font-size: 12px;
   color: var(--color-primary);
-  background: #12080a;
+  background: var(--color-primary-surface);
 }
 
 .help-dialog-bar button {
@@ -1037,11 +1019,6 @@ dialog {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
-  }
-
-  .crt-overlay,
-  .crt-vignette {
-    display: none;
   }
 
   .boot-screen {
