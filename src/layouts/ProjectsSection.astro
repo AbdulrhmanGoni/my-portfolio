@@ -6,10 +6,7 @@ import { projectsData } from "../data/projects.ts";
 
 <section id="projects" class="term-section">
   <div class="term-section-inner">
-    <CommandHeading
-      command="ls -la ./projects"
-      comment={`${projectsData.length} entries`}
-    />
+    <CommandHeading command="ls ./projects" />
 
     {
       projectsData.map((project, i) => (

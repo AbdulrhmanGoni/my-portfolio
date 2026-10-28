@@ -570,6 +570,7 @@ img {
 .profile-frame img {
   display: block;
   width: 100%;
+  max-width: 335px;
   aspect-ratio: 1;
   object-fit: cover;
   filter: contrast(1.05) saturate(0.92);
@@ -949,6 +950,10 @@ dialog {
   .hero-grid,
   .project-main {
     grid-template-columns: 1fr;
+  }
+
+  .profile-frame img {
+    max-width: 250px;
   }
 
   .project-preview {
