@@ -575,22 +575,6 @@ img {
       transparent 4px);
 }
 
-.skip-link {
-  position: absolute;
-  left: 12px;
-  top: -40px;
-  z-index: 100;
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
-  padding: 6px 10px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.skip-link:focus {
-  top: 12px;
-}
-
 .continue-row {
   margin-top: 2rem;
   display: flex;
@@ -837,14 +821,6 @@ img {
   line-height: 1.7;
   white-space: pre-wrap;
   text-shadow: 0 0 8px color-mix(in srgb, var(--color-primary) 45%, transparent);
-}
-
-.boot-skip {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  font-size: 11px;
-  color: color-mix(in srgb, var(--color-muted-foreground) 70%, transparent);
 }
 
 /* Tailwind's preflight zeroes out margins, which kills the browser's
