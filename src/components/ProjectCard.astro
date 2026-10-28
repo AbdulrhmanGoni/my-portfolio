@@ -10,7 +10,6 @@ interface Props {
 }
 
 const { project, index } = Astro.props;
-const slug = project.name.toLowerCase().replace(/\s+/g, "-");
 ---
 
 <article class="project-card">
@@ -18,10 +17,6 @@ const slug = project.name.toLowerCase().replace(/\s+/g, "-");
 		{
 			project.image && (
 				<div class="project-preview">
-					<div class="project-preview-bar">
-						<span class="dot">●</span>
-						<span>preview://{slug}</span>
-					</div>
 					<img
 						src={project.image}
 						alt={project.imageAlt}

@@ -629,21 +629,6 @@ img {
   min-height: 220px;
 }
 
-.project-preview-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  font-size: 11px;
-  color: var(--color-muted-foreground);
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-surface-raised);
-}
-
-.project-preview-bar .dot {
-  color: var(--color-primary);
-}
-
 .project-preview img {
   display: block;
   width: 100%;
