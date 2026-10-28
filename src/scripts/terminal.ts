@@ -259,6 +259,23 @@ function wireHashLinks() {
   }
 }
 
+function wireHelpDialog() {
+  if (!helpDialog) return;
+
+  // Native <dialog> only closes on Esc by default — treat clicks on the
+  // backdrop (outside the dialog box) as a close request too.
+  helpDialog.addEventListener("click", (e) => {
+    if (e.target !== helpDialog) return;
+    const rect = helpDialog.getBoundingClientRect();
+    const inside =
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom;
+    if (!inside) helpDialog.close();
+  });
+}
+
 function wireTraffic() {
   const minBtn = document.getElementById("traffic-min");
 
@@ -298,5 +315,6 @@ function wireTraffic() {
 playBoot();
 wireCommandBar();
 wireKeyboard();
+wireHelpDialog();
 wireTraffic();
 wireHashLinks();
