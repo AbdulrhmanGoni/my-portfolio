@@ -4,17 +4,17 @@
   --font-sans: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
-  --color-primary: #ff3b4e;
-  --color-primary-dim: #c81e33;
-  --color-primary-soft: #ff8a96;
-  --color-primary-contrast: #140004;
-  --color-primary-surface: #14080a;
-  --color-background: #08080a;
-  --color-surface: #0a0a0c;
-  --color-surface-raised: #101014;
-  --color-foreground: #f4e8ea;
-  --color-muted-foreground: #ccb0b6;
-  --color-border: #3d151c;
+  --color-primary: #38bdf8;
+  --color-primary-dim: #0284c7;
+  --color-primary-soft: #7dd3fc;
+  --color-primary-contrast: #03131c;
+  --color-primary-surface: #071620;
+  --color-background: #08090b;
+  --color-surface: #0a0c10;
+  --color-surface-raised: #0f1319;
+  --color-foreground: #e6f2f8;
+  --color-muted-foreground: #7f96a3;
+  --color-border: #123243;
 }
 
 :root {
