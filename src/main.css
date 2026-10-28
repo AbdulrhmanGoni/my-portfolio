@@ -1,6 +1,9 @@
-@import "tailwindcss";
+@import "./reset.css";
 
-@theme {
+:root {
+  color-scheme: dark;
+
+  /* ── Design tokens ── */
   --font-sans: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
@@ -15,22 +18,16 @@
   --color-foreground: #e6f2f8;
   --color-muted-foreground: #7f96a3;
   --color-border: #123243;
-}
 
-:root {
-  color-scheme: dark;
+  --titlebar-h: 42px;
+  --cmdbar-h: 48px;
+
   font-family: var(--font-mono);
   font-weight: 400;
   line-height: 1.6;
   letter-spacing: 0;
   color: var(--color-foreground);
   background: var(--color-background);
-  --titlebar-h: 42px;
-  --cmdbar-h: 48px;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 html,
@@ -365,10 +362,12 @@ img {
 
 .cmd-line .cmd {
   color: var(--color-foreground);
+  margin-left: 0.5rem;
 }
 
 .cmd-line .comment {
   color: var(--color-muted-foreground);
+  margin-left: 0.5rem;
 }
 
 /* ── Page sections ── */
@@ -462,6 +461,35 @@ img {
   transform: translateY(-1px);
   border-color: var(--color-primary);
   background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+}
+
+/* ── Tech stack ── */
+
+.tech-stack-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.tech-stack-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-stack--sm {
+  margin-bottom: 0.25rem;
+}
+
+.tech-stack--sm .tech-stack-label {
+  font-size: 11px;
+}
+
+.tech-stack--sm .tech-stack-chips {
+  gap: 0.375rem;
 }
 
 /* ── Hero ── */
@@ -586,6 +614,7 @@ img {
 
 .continue-row a {
   color: var(--color-primary);
+  white-space: nowrap;
 }
 
 .continue-row .comment {
@@ -806,16 +835,6 @@ img {
   line-height: 1.7;
   white-space: pre-wrap;
   text-shadow: 0 0 8px color-mix(in srgb, var(--color-primary) 45%, transparent);
-}
-
-/* Tailwind's preflight zeroes out margins, which kills the browser's
-   default `margin: auto` that centers modal dialogs. Restore it so
-   every dialog opens in the middle of the viewport. */
-dialog {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  height: fit-content;
 }
 
 .help-dialog {

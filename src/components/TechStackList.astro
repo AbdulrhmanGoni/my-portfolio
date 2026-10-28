@@ -9,11 +9,9 @@ interface Props {
 const { techStack, size = "base" } = Astro.props;
 ---
 
-<div class={size == "small" ? "mb-1" : undefined}>
-	<p class={`font-semibold mb-2 ${size == "small" ? "text-[11px]" : "text-xs"} text-primary tracking-wider uppercase`}>
-		# stack
-	</p>
-	<div class={`flex flex-wrap ${size == "small" ? "gap-1.5" : "gap-2"}`}>
+<div class={size == "small" ? "tech-stack tech-stack--sm" : "tech-stack"}>
+	<p class="tech-stack-label"># stack</p>
+	<div class="tech-stack-chips">
 		{
 			techStack.map((tech) => (
 				<span class="chip">{tech}</span>
