@@ -32,7 +32,7 @@ export const projectsData: Project[] = [
         description: "Open Source cross-platform desktop application client for browsing, managing, and performing CRUD operations on Deno KV databases with a modern user interface.",
         image: denoKvGuiClientImage.src,
         imageAlt: "Deno KV GUI Client Interface",
-        techStack: ["Deno", "Node", "TypeScript", "Electron", "Svelte", "SQLite"],
+        techStack: ["Deno", "Node", "TypeScript", "Electron", "Svelte", "SQLite", "Playwright test", "Vitest"],
         repoUrl: "https://github.com/AbdulrhmanGoni/denokv-gui-client",
         liveUrl: "https://abdulrhmangoni.github.io/denokv-gui-client/",
     },
@@ -63,7 +63,7 @@ export const projectsData: Project[] = [
                 description: "Documentation site with onboarding guide and inference client integration instructions for developers",
                 image: mechaAgentDocsImage.src,
                 imageAlt: "Mecha Agent Documentation screenshot",
-                techStack: ["Docusaurus", "React", "Markdown", "MDX"],
+                techStack: ["Docusaurus", "React", "MDX"],
                 repoUrl: "https://github.com/AbdulrhmanGoni/mecha_agent_docs",
             },
             {
@@ -71,7 +71,7 @@ export const projectsData: Project[] = [
                 description: "A package that provides a chat UI client you can put into your own web apps so people on the internet can interact and chat with your agents through it.",
                 image: mechaAgentInferenceClientImage.src,
                 imageAlt: "Mecha Agent Inference Client screenshot",
-                techStack: ["TypeScript", "Next.js", "Sveltekit", "CSS", "Turborepo"],
+                techStack: ["TypeScript", "Next.js", "Sveltekit"],
                 repoUrl: "https://github.com/AbdulrhmanGoni/mecha_agent_inference_client",
             }
         ]
