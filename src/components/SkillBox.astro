@@ -8,15 +8,11 @@ interface Props {
 const { skill } = Astro.props;
 ---
 
-<div
-	class="skill-box tooltip-target"
-	data-tooltip={skill.description}
-	tabindex="0"
->
+<div class="skill-box">
 	<img
 		loading="lazy"
 		src={skill.imgSrc}
-		alt={skill.description}
+		alt={skill.name}
 		style={skill.imgStyle}
 	/>
 	<span class="skill-name">{skill.name}</span>
