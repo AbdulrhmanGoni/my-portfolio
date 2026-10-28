@@ -1,14 +1,14 @@
-import denoKvGuiClientImage from "../assets/projects-images/kv-entries-table-dark.png";
-import mechaAgentServerImage from "../assets/projects-images/mecha-agent.jpg";
-import mechaAgentClientImage from "../assets/projects-images/mecha-agent-client.png";
-import mechaAgentDocsImage from "../assets/projects-images/mecha-agent-docs.png";
-import mechaAgentInferenceClientImage from "../assets/projects-images/mecha-agent-inference-client.png";
-import llmsTdmServerImage from "../assets/projects-images/llms-tdm-server.jpg";
-import llmsTdmAppImage from "../assets/projects-images/llms-tdm-app.png";
-import amStoreClientImage from "../assets/projects-images/am-store-client.png";
-import amStoreAdminImage from "../assets/projects-images/am-store-admin.png";
-import amStoreServerImage from "../assets/projects-images/am-store-server.png";
-import amStoreLibraryImage from "../assets/projects-images/am-store-library.png";
+import denoKvGuiClientImage from "../assets/projects-images/kv-entries-table-dark.webp";
+import mechaAgentServerImage from "../assets/projects-images/mecha-agent.webp";
+import mechaAgentClientImage from "../assets/projects-images/mecha-agent-client.webp";
+import mechaAgentDocsImage from "../assets/projects-images/mecha-agent-docs.webp";
+import mechaAgentInferenceClientImage from "../assets/projects-images/mecha-agent-inference-client.webp";
+import llmsTdmServerImage from "../assets/projects-images/llms-tdm-server.webp";
+import llmsTdmAppImage from "../assets/projects-images/llms-tdm-app.webp";
+import amStoreClientImage from "../assets/projects-images/am-store-client.webp";
+import amStoreAdminImage from "../assets/projects-images/am-store-admin.webp";
+import amStoreServerImage from "../assets/projects-images/am-store-server.webp";
+import amStoreLibraryImage from "../assets/projects-images/am-store-library.webp";
 
 export type ProjectData = {
     name: string;
