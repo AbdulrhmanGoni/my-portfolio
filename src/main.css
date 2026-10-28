@@ -197,20 +197,24 @@ img {
     var(--color-background);
 }
 
-.content-pane::-webkit-scrollbar {
+.content-pane::-webkit-scrollbar,
+.help-dialog pre::-webkit-scrollbar {
   width: 10px;
 }
 
-.content-pane::-webkit-scrollbar-track {
+.content-pane::-webkit-scrollbar-track,
+.help-dialog pre::-webkit-scrollbar-track {
   background: var(--color-surface);
 }
 
-.content-pane::-webkit-scrollbar-thumb {
+.content-pane::-webkit-scrollbar-thumb,
+.help-dialog pre::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border: 2px solid var(--color-surface);
 }
 
-.content-pane::-webkit-scrollbar-thumb:hover {
+.content-pane::-webkit-scrollbar-thumb:hover,
+.help-dialog pre::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
 
