@@ -9,6 +9,7 @@ const commandOutput = document.getElementById("command-output");
 const helpDialog = document.getElementById("help-dialog") as HTMLDialogElement | null;
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const compactQuery = window.matchMedia("(min-width: 769px) and (min-height: 620px)");
 
 function alreadyBooted() {
   return sessionStorage.getItem("portfolio-booted") === "1";
@@ -259,9 +260,30 @@ function wireHashLinks() {
 }
 
 function wireTraffic() {
-  document.getElementById("traffic-min")?.addEventListener("click", () => {
-    terminal?.classList.toggle("is-minimized");
+  const minBtn = document.getElementById("traffic-min");
+
+  const syncMinAvailability = () => {
+    const available = compactQuery.matches;
+    minBtn?.classList.toggle("is-unavailable", !available);
+    minBtn?.setAttribute("aria-disabled", String(!available));
+    if (minBtn) {
+      minBtn.title = available ? "minimize" : "minimize (unavailable on small screens)";
+    }
+    if (!available) {
+      terminal?.classList.remove("is-minimized");
+      minBtn?.setAttribute("aria-pressed", "false");
+    }
+  };
+
+  minBtn?.addEventListener("click", () => {
+    if (!compactQuery.matches) return;
+    const minimized = terminal?.classList.toggle("is-minimized") ?? false;
+    minBtn.setAttribute("aria-pressed", String(minimized));
   });
+
+  compactQuery.addEventListener("change", syncMinAvailability);
+  syncMinAvailability();
+
   document.getElementById("traffic-max")?.addEventListener("click", async () => {
     try {
       if (!document.fullscreenElement) {
