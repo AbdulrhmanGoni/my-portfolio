@@ -545,28 +545,10 @@ img {
 .profile-frame-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   font-size: 11px;
   color: var(--color-muted-foreground);
   margin-bottom: 8px;
   padding: 0 2px;
-}
-
-.profile-frame-bar .rec {
-  color: var(--color-primary);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.profile-frame-bar .rec::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  box-shadow: 0 0 8px var(--color-primary);
-  animation: blink 1.4s step-end infinite;
 }
 
 .profile-frame img {
