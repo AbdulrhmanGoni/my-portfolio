@@ -92,7 +92,7 @@ function runCommand(raw: string): string {
     case "help":
     case "man":
     case "?":
-      helpDialog?.showModal();
+      openHelpDialog();
       return "opening manual — press Esc to close";
     case "whoami":
     case "about":
@@ -228,7 +228,7 @@ function wireKeyboard() {
 
     if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
       e.preventDefault();
-      helpDialog?.showModal();
+      openHelpDialog();
       return;
     }
 
@@ -257,6 +257,15 @@ function wireHashLinks() {
   if (initial) {
     requestAnimationFrame(() => scrollToId(initial));
   }
+}
+
+function openHelpDialog() {
+  if (!helpDialog || helpDialog.open) return;
+  helpDialog.showModal();
+  // showModal() moves focus to the first focusable element (the close
+  // button). Focus the dialog itself instead so nothing looks selected
+  // when it opens; Tab still reaches the button.
+  helpDialog.focus();
 }
 
 function wireHelpDialog() {
