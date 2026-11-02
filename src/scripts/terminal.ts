@@ -12,15 +12,61 @@ const helpDialog = document.getElementById("help-dialog") as HTMLDialogElement |
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const compactQuery = window.matchMedia("(min-width: 769px) and (min-height: 620px)");
 
+const MIN_WINDOW_WIDTH = 360;
+const MIN_WINDOW_HEIGHT = 280;
+
+type TerminalGeometry = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
+type SavedGeometry = {
+  left: number;
+  top: number;
+  width?: number;
+  height?: number;
+};
+
 let positionPinnedByUser = false;
+let preMinimizeGeometry: SavedGeometry | null = null;
+
+function getTerminalGeometry(): TerminalGeometry | null {
+  if (!terminal || !desktop) return null;
+  const rect = terminal.getBoundingClientRect();
+  const bounds = desktop.getBoundingClientRect();
+  return {
+    left: rect.left - bounds.left,
+    top: rect.top - bounds.top,
+    width: rect.width,
+    height: rect.height,
+  };
+}
+
+function applyTerminalGeometry(left: number, top: number, width: number, height: number) {
+  if (!terminal || !desktop) return;
+  const bounds = desktop.getBoundingClientRect();
+  const minWidth = Math.min(MIN_WINDOW_WIDTH, bounds.width);
+  const minHeight = Math.min(MIN_WINDOW_HEIGHT, bounds.height);
+  const nextWidth = Math.min(Math.max(width, minWidth), bounds.width);
+  const nextHeight = Math.min(Math.max(height, minHeight), bounds.height);
+  const nextLeft = Math.min(Math.max(left, 0), Math.max(0, bounds.width - nextWidth));
+  const nextTop = Math.min(Math.max(top, 0), Math.max(0, bounds.height - nextHeight));
+
+  terminal.style.left = `${Math.round(nextLeft)}px`;
+  terminal.style.top = `${Math.round(nextTop)}px`;
+  terminal.style.width = `${Math.round(nextWidth)}px`;
+  terminal.style.height = `${Math.round(nextHeight)}px`;
+}
 
 function setTerminalPosition(left: number, top: number) {
   if (!terminal || !desktop) return;
   const bounds = desktop.getBoundingClientRect();
   const maxLeft = Math.max(0, bounds.width - terminal.offsetWidth);
   const maxTop = Math.max(0, bounds.height - terminal.offsetHeight);
-  terminal.style.left = `${Math.min(Math.max(left, 0), maxLeft)}px`;
-  terminal.style.top = `${Math.min(Math.max(top, 0), maxTop)}px`;
+  terminal.style.left = `${Math.round(Math.min(Math.max(left, 0), maxLeft))}px`;
+  terminal.style.top = `${Math.round(Math.min(Math.max(top, 0), maxTop))}px`;
 }
 
 function centerTerminal() {
@@ -33,23 +79,69 @@ function centerTerminal() {
   positionPinnedByUser = false;
 }
 
-function resetTerminalPosition() {
+function resetTerminalGeometry() {
   terminal?.style.removeProperty("left");
   terminal?.style.removeProperty("top");
+  terminal?.style.removeProperty("width");
+  terminal?.style.removeProperty("height");
   positionPinnedByUser = false;
 }
 
 function clampTerminalPosition() {
   if (!terminal || !desktop) return;
-  if (!terminal.style.left && !terminal.style.top) return;
   if (terminal.classList.contains("is-minimized") && !positionPinnedByUser) {
     centerTerminal();
     return;
   }
+  if (terminal.style.width || terminal.style.height) {
+    const geometry = getTerminalGeometry();
+    if (!geometry) return;
+    applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
+    return;
+  }
+  if (!terminal.style.left && !terminal.style.top) return;
   setTerminalPosition(
     Number.parseFloat(terminal.style.left) || 0,
     Number.parseFloat(terminal.style.top) || 0,
   );
+}
+
+function minimizeTerminal() {
+  if (!terminal) return;
+  const geometry = getTerminalGeometry();
+  const hasCustomSize = Boolean(terminal.style.width || terminal.style.height);
+  const hasCustomPosition = Boolean(terminal.style.left || terminal.style.top);
+
+  preMinimizeGeometry =
+    hasCustomSize && geometry
+      ? geometry
+      : hasCustomPosition && geometry
+        ? { left: geometry.left, top: geometry.top }
+        : null;
+
+  resetTerminalGeometry();
+  terminal.classList.add("is-minimized");
+  centerTerminal();
+}
+
+function restoreTerminal() {
+  if (!terminal) return;
+  terminal.classList.remove("is-minimized");
+
+  const geometry = preMinimizeGeometry;
+  preMinimizeGeometry = null;
+
+  if (!geometry) {
+    resetTerminalGeometry();
+    return;
+  }
+
+  if (geometry.width !== undefined && geometry.height !== undefined) {
+    applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
+  } else {
+    setTerminalPosition(geometry.left, geometry.top);
+  }
+  positionPinnedByUser = true;
 }
 
 function alreadyBooted() {
@@ -342,7 +434,7 @@ function wireWindowDrag() {
   titlebar.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     const target = e.target;
-    if (target instanceof Element && target.closest("button, a, input, textarea, select, .traffic")) {
+    if (target instanceof Element && target.closest("button, a, input, textarea, select, .traffic, .resize-handle")) {
       return;
     }
 
@@ -396,6 +488,115 @@ function wireWindowDrag() {
   });
 }
 
+function wireWindowResize() {
+  if (!terminal || !desktop) return;
+
+  const handles = terminal.querySelectorAll<HTMLElement>(".resize-handle");
+  if (!handles.length) return;
+
+  type ResizeState = {
+    pointerId: number;
+    direction: string;
+    startX: number;
+    startY: number;
+    startLeft: number;
+    startTop: number;
+    startWidth: number;
+    startHeight: number;
+  };
+
+  let resize: ResizeState | null = null;
+
+  const beginResize = (e: PointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (window.matchMedia("(max-width: 768px)").matches) return;
+
+    const handle = e.currentTarget as HTMLElement;
+    const direction = handle.dataset.resize;
+    const geometry = getTerminalGeometry();
+    if (!direction || !geometry) return;
+
+    if (terminal.classList.contains("is-minimized")) {
+      terminal.classList.remove("is-minimized");
+      document.getElementById("traffic-min")?.setAttribute("aria-pressed", "false");
+      preMinimizeGeometry = null;
+    }
+
+    // Take ownership of the current size/position so the CSS defaults (and
+    // the compact minimized size) can no longer affect the window.
+    applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
+    positionPinnedByUser = true;
+
+    resize = {
+      pointerId: e.pointerId,
+      direction,
+      startX: e.clientX,
+      startY: e.clientY,
+      startLeft: geometry.left,
+      startTop: geometry.top,
+      startWidth: geometry.width,
+      startHeight: geometry.height,
+    };
+
+    terminal.classList.add("is-resizing");
+    handle.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  };
+
+  const updateResize = (e: PointerEvent) => {
+    if (!resize || e.pointerId !== resize.pointerId) return;
+
+    const bounds = desktop.getBoundingClientRect();
+    const dx = e.clientX - resize.startX;
+    const dy = e.clientY - resize.startY;
+    const minWidth = Math.min(MIN_WINDOW_WIDTH, bounds.width);
+    const minHeight = Math.min(MIN_WINDOW_HEIGHT, bounds.height);
+    const { direction } = resize;
+
+    let left = resize.startLeft;
+    let top = resize.startTop;
+    let width = resize.startWidth;
+    let height = resize.startHeight;
+
+    if (direction.includes("w")) {
+      left = Math.min(Math.max(left + dx, 0), resize.startLeft + resize.startWidth - minWidth);
+      width = resize.startLeft + resize.startWidth - left;
+    } else if (direction.includes("e")) {
+      width = Math.min(Math.max(width + dx, minWidth), bounds.width - left);
+    }
+
+    if (direction.includes("n")) {
+      top = Math.min(Math.max(top + dy, 0), resize.startTop + resize.startHeight - minHeight);
+      height = resize.startTop + resize.startHeight - top;
+    } else if (direction.includes("s")) {
+      height = Math.min(Math.max(height + dy, minHeight), bounds.height - top);
+    }
+
+    applyTerminalGeometry(left, top, width, height);
+  };
+
+  const endResize = (e: PointerEvent) => {
+    if (!resize || e.pointerId !== resize.pointerId) return;
+    const handle = e.currentTarget as HTMLElement | null;
+    resize = null;
+    terminal.classList.remove("is-resizing");
+    if (handle?.hasPointerCapture(e.pointerId)) {
+      handle.releasePointerCapture(e.pointerId);
+    }
+  };
+
+  handles.forEach((handle) => {
+    handle.addEventListener("pointerdown", beginResize);
+    handle.addEventListener("pointermove", updateResize);
+    handle.addEventListener("pointerup", endResize);
+    handle.addEventListener("pointercancel", endResize);
+    handle.addEventListener("lostpointercapture", () => {
+      resize = null;
+      terminal.classList.remove("is-resizing");
+    });
+  });
+}
+
 function wireTraffic() {
   const minBtn = document.getElementById("traffic-min");
 
@@ -408,20 +609,21 @@ function wireTraffic() {
     }
     if (!available) {
       terminal?.classList.remove("is-minimized");
-      resetTerminalPosition();
+      resetTerminalGeometry();
+      preMinimizeGeometry = null;
       minBtn?.setAttribute("aria-pressed", "false");
     }
   };
 
   minBtn?.addEventListener("click", () => {
-    if (!compactQuery.matches) return;
-    const minimized = terminal?.classList.toggle("is-minimized") ?? false;
-    minBtn.setAttribute("aria-pressed", String(minimized));
-    if (minimized) {
-      centerTerminal();
+    if (!compactQuery.matches || !terminal) return;
+    const shouldMinimize = !terminal.classList.contains("is-minimized");
+    if (shouldMinimize) {
+      minimizeTerminal();
     } else {
-      resetTerminalPosition();
+      restoreTerminal();
     }
+    minBtn.setAttribute("aria-pressed", String(shouldMinimize));
   });
 
   compactQuery.addEventListener("change", syncMinAvailability);
@@ -443,5 +645,6 @@ wireCommandBar();
 wireKeyboard();
 wireHelpDialog();
 wireWindowDrag();
+wireWindowResize();
 wireTraffic();
 wireHashLinks();
