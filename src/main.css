@@ -65,10 +65,10 @@ img {
 /* ── Desktop / CRT stage ── */
 
 .desktop {
+  --window-gap: 14px;
   height: 100dvh;
-  padding: 14px;
-  display: flex;
   position: relative;
+  overflow: hidden;
   background:
     radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in srgb, var(--color-primary) 16%, transparent), transparent 55%),
     radial-gradient(ellipse 60% 40% at 50% 110%, color-mix(in srgb, var(--color-primary) 7%, transparent), transparent 50%),
@@ -78,7 +78,11 @@ img {
 /* ── Terminal window ── */
 
 .terminal-window {
-  flex: 1;
+  position: absolute;
+  left: var(--window-gap);
+  top: var(--window-gap);
+  width: calc(100% - var(--window-gap) * 2);
+  height: calc(100% - var(--window-gap) * 2);
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -86,18 +90,12 @@ img {
   border: 1px solid var(--color-border);
   border-radius: 10px;
   overflow: hidden;
-  position: relative;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-primary) 12%, transparent),
-    0 0 60px color-mix(in srgb, var(--color-primary) 10%, transparent),
-    0 24px 80px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 10px -2px #000000;
 }
 
 .terminal-window.is-minimized {
-  flex: 0 0 auto;
-  width: min(700px, calc(100vw - 28px));
-  height: min(550px, calc(100dvh - 28px));
-  margin: auto;
+  width: min(700px, calc(100% - var(--window-gap) * 2));
+  height: min(550px, calc(100% - var(--window-gap) * 2));
 }
 
 /* ── Titlebar ── */
@@ -112,12 +110,19 @@ img {
   background: linear-gradient(180deg, var(--color-surface-raised) 0%, var(--color-surface) 100%);
   border-bottom: 1px solid var(--color-border);
   user-select: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+.terminal-window.is-dragging .titlebar {
+  cursor: grabbing;
 }
 
 .traffic {
   display: flex;
   gap: 7px;
   flex-shrink: 0;
+  cursor: default;
 }
 
 .traffic-btn {
@@ -929,7 +934,7 @@ img {
 /* Viewport-level chrome: the window is always full-bleed on small screens. */
 @media (max-width: 768px) {
   .desktop {
-    padding: 0;
+    --window-gap: 0px;
   }
 
   .terminal-window {

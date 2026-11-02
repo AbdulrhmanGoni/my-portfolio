@@ -3,6 +3,7 @@ import { LINKS } from "../data/links";
 const bootScreen = document.getElementById("boot-screen");
 const bootLog = document.getElementById("boot-log");
 const terminal = document.getElementById("terminal-window");
+const desktop = terminal?.parentElement as HTMLElement | null;
 const contentPane = document.getElementById("content-pane");
 const commandInput = document.getElementById("command-input") as HTMLInputElement | null;
 const commandOutput = document.getElementById("command-output");
@@ -10,6 +11,46 @@ const helpDialog = document.getElementById("help-dialog") as HTMLDialogElement |
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const compactQuery = window.matchMedia("(min-width: 769px) and (min-height: 620px)");
+
+let positionPinnedByUser = false;
+
+function setTerminalPosition(left: number, top: number) {
+  if (!terminal || !desktop) return;
+  const bounds = desktop.getBoundingClientRect();
+  const maxLeft = Math.max(0, bounds.width - terminal.offsetWidth);
+  const maxTop = Math.max(0, bounds.height - terminal.offsetHeight);
+  terminal.style.left = `${Math.min(Math.max(left, 0), maxLeft)}px`;
+  terminal.style.top = `${Math.min(Math.max(top, 0), maxTop)}px`;
+}
+
+function centerTerminal() {
+  if (!terminal || !desktop) return;
+  const bounds = desktop.getBoundingClientRect();
+  setTerminalPosition(
+    (bounds.width - terminal.offsetWidth) / 2,
+    (bounds.height - terminal.offsetHeight) / 2,
+  );
+  positionPinnedByUser = false;
+}
+
+function resetTerminalPosition() {
+  terminal?.style.removeProperty("left");
+  terminal?.style.removeProperty("top");
+  positionPinnedByUser = false;
+}
+
+function clampTerminalPosition() {
+  if (!terminal || !desktop) return;
+  if (!terminal.style.left && !terminal.style.top) return;
+  if (terminal.classList.contains("is-minimized") && !positionPinnedByUser) {
+    centerTerminal();
+    return;
+  }
+  setTerminalPosition(
+    Number.parseFloat(terminal.style.left) || 0,
+    Number.parseFloat(terminal.style.top) || 0,
+  );
+}
 
 function alreadyBooted() {
   return sessionStorage.getItem("portfolio-booted") === "1";
@@ -285,6 +326,76 @@ function wireHelpDialog() {
   });
 }
 
+function wireWindowDrag() {
+  if (!terminal || !desktop) return;
+  const titlebar = terminal.querySelector<HTMLElement>(".titlebar");
+  if (!titlebar) return;
+
+  let drag: {
+    pointerId: number;
+    startX: number;
+    startY: number;
+    startLeft: number;
+    startTop: number;
+  } | null = null;
+
+  titlebar.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    const target = e.target;
+    if (target instanceof Element && target.closest("button, a, input, textarea, select, .traffic")) {
+      return;
+    }
+
+    const termRect = terminal.getBoundingClientRect();
+    const desktopRect = desktop.getBoundingClientRect();
+    drag = {
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      startY: e.clientY,
+      startLeft: termRect.left - desktopRect.left,
+      startTop: termRect.top - desktopRect.top,
+    };
+
+    terminal.classList.add("is-dragging");
+    titlebar.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+
+  titlebar.addEventListener("pointermove", (e) => {
+    if (!drag || e.pointerId !== drag.pointerId) return;
+    positionPinnedByUser = true;
+    setTerminalPosition(
+      drag.startLeft + (e.clientX - drag.startX),
+      drag.startTop + (e.clientY - drag.startY),
+    );
+  });
+
+  const endDrag = (e: PointerEvent) => {
+    if (!drag || e.pointerId !== drag.pointerId) return;
+    drag = null;
+    terminal.classList.remove("is-dragging");
+    if (titlebar.hasPointerCapture(e.pointerId)) {
+      titlebar.releasePointerCapture(e.pointerId);
+    }
+  };
+
+  titlebar.addEventListener("pointerup", endDrag);
+  titlebar.addEventListener("pointercancel", endDrag);
+  titlebar.addEventListener("lostpointercapture", () => {
+    drag = null;
+    terminal.classList.remove("is-dragging");
+  });
+
+  let resizeFrame = 0;
+  window.addEventListener("resize", () => {
+    if (resizeFrame) return;
+    resizeFrame = window.requestAnimationFrame(() => {
+      resizeFrame = 0;
+      clampTerminalPosition();
+    });
+  });
+}
+
 function wireTraffic() {
   const minBtn = document.getElementById("traffic-min");
 
@@ -297,6 +408,7 @@ function wireTraffic() {
     }
     if (!available) {
       terminal?.classList.remove("is-minimized");
+      resetTerminalPosition();
       minBtn?.setAttribute("aria-pressed", "false");
     }
   };
@@ -305,6 +417,11 @@ function wireTraffic() {
     if (!compactQuery.matches) return;
     const minimized = terminal?.classList.toggle("is-minimized") ?? false;
     minBtn.setAttribute("aria-pressed", String(minimized));
+    if (minimized) {
+      centerTerminal();
+    } else {
+      resetTerminalPosition();
+    }
   });
 
   compactQuery.addEventListener("change", syncMinAvailability);
@@ -325,5 +442,6 @@ playBoot();
 wireCommandBar();
 wireKeyboard();
 wireHelpDialog();
+wireWindowDrag();
 wireTraffic();
 wireHashLinks();
