@@ -79,7 +79,9 @@ import favicon from "../assets/favicon.png";
           <p class="titlebar-title">
             <b>abdulrhman</b><span>@portfolio:</span> ~
           </p>
-          <span class="titlebar-meta" aria-hidden="true">/bin/bash · utf-8</span>
+          <span class="titlebar-meta" aria-hidden="true">
+            /bin/bash · utf-8
+          </span>
         </header>
 
         <div class="terminal-body">
@@ -119,8 +121,11 @@ import favicon from "../assets/favicon.png";
               aria-label="Terminal command"
             />
           </form>
-          <div id="command-output" class="command-output" aria-live="polite">
-          </div>
+          <pre
+            id="command-output"
+            class="command-output command-output-empty"
+            aria-live="polite">
+          </pre>
         </div>
       </div>
     </div>

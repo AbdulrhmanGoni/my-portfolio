@@ -65,17 +65,17 @@ export const skillsData: SkillsData = {
             imgSrc: nodejsIcon.src,
         },
         {
-            name: "Deno",
-            imgSrc: denoIcon.src,
-            imgStyle: "border-radius: 50%",
-        },
-        {
             name: "Bun",
             imgSrc: bunIcon.src,
         },
         {
             name: "Hono",
             imgSrc: honoIcon.src,
+        },
+        {
+            name: "Deno",
+            imgSrc: denoIcon.src,
+            imgStyle: "border-radius: 50%",
         },
         {
             name: "Express",

@@ -195,8 +195,10 @@ async function playBoot() {
 }
 
 function setOutput(message: string) {
-  if (!commandOutput) return;
-  commandOutput.textContent = message;
+  if (commandOutput) {
+    commandOutput.textContent = message;
+    commandOutput.classList.toggle("command-output-empty", !message)
+  }
 }
 
 function scrollToId(id: string) {
@@ -229,18 +231,17 @@ function runCommand(raw: string): string {
       return "opening manual — press Esc to close";
     case "whoami":
     case "about":
-    case "neofetch":
     case "home":
       scrollToId("home");
-      return "abdulrhman";
+      return "";
     case "projects":
     case "project":
       scrollToId("projects");
-      return "listing ~/projects";
+      return "";
     case "skills":
     case "skill":
       scrollToId("skills");
-      return "reading skills.json";
+      return "";
     case "contact":
     case "mail":
       scrollToId("home");
@@ -258,26 +259,26 @@ function runCommand(raw: string): string {
     case "ls":
       if (/project/.test(argStr) || argStr === "." || argStr === "./") {
         scrollToId("projects");
-        return "denokv-gui-client  mecha-agent  llms-tdm  am-store";
+        return "denokv-gui-client\nmecha-agent\nllms-tdm\nam-store";
       }
       if (/skill/.test(argStr)) {
         scrollToId("skills");
-        return "languages  backend  databases  frontend";
+        return "";
       }
-      return "home.sh  projects/  skills.json";
+      return "home.sh\nprojects/\nskills.json";
     case "cd": {
       const target = argStr.replace(/^~\//, "").replace(/^\.\//, "").replace(/\/$/, "");
       if (!target || target === "~" || target === "home") {
         scrollToId("home");
-        return "~/home.sh";
+        return "";
       }
       if (target.includes("project")) {
         scrollToId("projects");
-        return "~/projects/";
+        return "";
       }
       if (target.includes("skill")) {
         scrollToId("skills");
-        return "~/skills.json";
+        return "";
       }
       return `cd: no such file or directory: ${args[0] ?? ""}`;
     }
@@ -312,12 +313,6 @@ function runCommand(raw: string): string {
       return "abdulrhman is not in the sudoers file. This incident will be reported.";
     case "rm":
       return "permission denied: the portfolio is write-protected.";
-    case "vim":
-    case "nvim":
-    case "vi":
-    case "nano":
-    case "emacs":
-      return "you are already inside the editor. press ? for help.";
     case "exit":
     case "quit":
     case "q":
