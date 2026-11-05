@@ -1,15 +1,27 @@
-// The traffic-light buttons: minimize/restore and fullscreen toggle.
+// The traffic-light buttons: minimize/restore and maximize/restore.
 
 import { compactQuery, terminal, trafficMax, trafficMin } from "./dom";
 import {
   clearPreMinimizeGeometry,
+  isTerminalMaximized,
   minimizeTerminal,
   resetTerminalGeometry,
   restoreTerminal,
+  toggleTerminalMaximized,
 } from "./geometry";
 
 export function wireTraffic() {
   const minBtn = trafficMin;
+  const maxBtn = trafficMax;
+
+  const syncMaxState = () => {
+    const maximized = isTerminalMaximized();
+    maxBtn?.setAttribute("aria-pressed", String(maximized));
+    if (maxBtn) {
+      maxBtn.title = maximized ? "restore" : "maximize";
+      maxBtn.setAttribute("aria-label", maximized ? "Restore" : "Maximize");
+    }
+  };
 
   const syncMinAvailability = () => {
     const available = compactQuery.matches;
@@ -23,6 +35,7 @@ export function wireTraffic() {
       resetTerminalGeometry();
       clearPreMinimizeGeometry();
       minBtn?.setAttribute("aria-pressed", "false");
+      syncMaxState();
     }
   };
 
@@ -35,18 +48,15 @@ export function wireTraffic() {
       restoreTerminal();
     }
     minBtn.setAttribute("aria-pressed", String(shouldMinimize));
+    syncMaxState();
   });
 
   compactQuery.addEventListener("change", syncMinAvailability);
   syncMinAvailability();
 
-  trafficMax?.addEventListener("click", async () => {
-    try {
-      if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen();
-      } else {
-        await document.exitFullscreen();
-      }
-    } catch { }
+  maxBtn?.addEventListener("click", () => {
+    toggleTerminalMaximized();
+    minBtn?.setAttribute("aria-pressed", "false");
+    syncMaxState();
   });
 }

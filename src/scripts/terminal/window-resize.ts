@@ -9,6 +9,7 @@ import {
 } from "./dom";
 import {
   applyTerminalGeometry,
+  clearMaximizeState,
   clearPreMinimizeGeometry,
   getTerminalGeometry,
   pinPosition,
@@ -53,6 +54,7 @@ export function wireWindowResize() {
     // Take ownership of the current size/position so the CSS defaults (and
     // the compact minimized size) can no longer affect the window.
     applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
+    clearMaximizeState();
     pinPosition();
 
     resize = {

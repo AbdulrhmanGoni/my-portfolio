@@ -19,8 +19,10 @@ import TerminalPrompt from "./TerminalPrompt.astro";
       <button
         id="traffic-max"
         class="traffic-btn max"
-        title="fullscreen"
-        aria-label="Fullscreen"></button>
+        title="maximize"
+        aria-label="Maximize"
+        aria-controls="terminal-window"
+        aria-pressed="false"></button>
     </div>
     <p class="titlebar-title">
       <TerminalPrompt />

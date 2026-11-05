@@ -1,6 +1,6 @@
 // Window sizing and positioning: measuring, placing, clamping, and the
-// minimize/restore transitions. Owns the shared placement state
-// (positionPinnedByUser / preMinimizeGeometry) privately.
+// minimize/restore and maximize/restore transitions. Owns the shared
+// placement state privately.
 
 import { MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH, desktop, terminal } from "./dom";
 
@@ -20,6 +20,8 @@ export type SavedGeometry = {
 
 let positionPinnedByUser = false;
 let preMinimizeGeometry: SavedGeometry | null = null;
+let preMaximizeGeometry: TerminalGeometry | null = null;
+let maximized = false;
 
 /** Mark the window position as user-controlled (dragged or resized). */
 export function pinPosition() {
@@ -29,6 +31,66 @@ export function pinPosition() {
 /** Discard the geometry snapshot taken when the window was minimized. */
 export function clearPreMinimizeGeometry() {
   preMinimizeGeometry = null;
+}
+
+/** Whether the window is currently filling its desktop parent. */
+export function isTerminalMaximized() {
+  return maximized;
+}
+
+/** Leave maximize mode without restoring the saved geometry. */
+export function clearMaximizeState() {
+  maximized = false;
+  preMaximizeGeometry = null;
+  terminal?.classList.remove("is-maximized");
+}
+
+/** Fill the whole desktop parent, remembering the current geometry. */
+export function maximizeTerminal() {
+  if (!terminal || !desktop || maximized) return;
+
+  if (terminal.classList.contains("is-minimized")) {
+    terminal.classList.remove("is-minimized");
+    clearPreMinimizeGeometry();
+  }
+
+  preMaximizeGeometry = getTerminalGeometry();
+
+  // Drop the inline size/position so the maximize CSS rule can take over
+  // (and keep filling the desktop as the viewport changes).
+  terminal.style.removeProperty("left");
+  terminal.style.removeProperty("top");
+  terminal.style.removeProperty("width");
+  terminal.style.removeProperty("height");
+
+  maximized = true;
+  terminal.classList.add("is-maximized");
+}
+
+/** Restore the geometry saved before the window was maximized. */
+export function restoreMaximizedTerminal() {
+  if (!terminal || !maximized) return;
+
+  const geometry = preMaximizeGeometry;
+  clearMaximizeState();
+
+  if (!geometry) {
+    resetTerminalGeometry();
+    return;
+  }
+
+  applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
+  positionPinnedByUser = true;
+}
+
+/** Toggle between maximized and restored geometry; returns the new state. */
+export function toggleTerminalMaximized() {
+  if (maximized) {
+    restoreMaximizedTerminal();
+  } else {
+    maximizeTerminal();
+  }
+  return maximized;
 }
 
 export function getTerminalGeometry(): TerminalGeometry | null {
@@ -83,11 +145,15 @@ export function resetTerminalGeometry() {
   terminal?.style.removeProperty("top");
   terminal?.style.removeProperty("width");
   terminal?.style.removeProperty("height");
+  clearMaximizeState();
   positionPinnedByUser = false;
 }
 
 export function clampTerminalPosition() {
   if (!terminal || !desktop) return;
+  // The maximize rule keeps the window at 100% of the desktop, so there is
+  // nothing to clamp while it is active.
+  if (maximized) return;
   if (terminal.classList.contains("is-minimized") && !positionPinnedByUser) {
     centerTerminal();
     return;
