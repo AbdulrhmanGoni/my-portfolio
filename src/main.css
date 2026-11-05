@@ -328,11 +328,6 @@ img {
   text-overflow: ellipsis;
 }
 
-.titlebar-title b {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
 .titlebar-meta {
   font-size: 11px;
   color: var(--color-muted-foreground);
@@ -413,19 +408,7 @@ img {
 }
 
 .prompt-prefix {
-  color: var(--color-primary);
   flex-shrink: 0;
-  font-weight: 600;
-}
-
-.prompt-prefix .at,
-.prompt-prefix .colon {
-  color: var(--color-muted-foreground);
-  font-weight: 400;
-}
-
-.prompt-prefix .path {
-  color: var(--color-primary-soft);
 }
 
 .command-input {
@@ -500,28 +483,6 @@ img {
   gap: 0;
   font-size: 13px;
   margin-bottom: 0.85rem;
-}
-
-.cmd-line .user {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.cmd-line .host {
-  color: var(--color-primary-soft);
-}
-
-.cmd-line .sep {
-  color: var(--color-muted-foreground);
-}
-
-.cmd-line .path {
-  color: var(--color-primary-soft);
-}
-
-.cmd-line .dollar {
-  color: var(--color-primary);
-  font-weight: 700;
 }
 
 .cmd-line .cmd {
@@ -1110,11 +1071,6 @@ img {
 @media (max-width: 520px) {
   .command-row {
     font-size: 12px;
-  }
-
-  .prompt-prefix .host,
-  .prompt-prefix .at {
-    display: none;
   }
 }
 

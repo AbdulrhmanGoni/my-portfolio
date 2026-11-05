@@ -2,6 +2,7 @@
 import HeroSection from "../layouts/HeroSection.astro";
 import ProjectsSection from "../layouts/ProjectsSection.astro";
 import SkillsSection from "../layouts/SkillsSection.astro";
+import TerminalPrompt from "./TerminalPrompt.astro";
 ---
 
 <div id="terminal-window" class="terminal-window">
@@ -22,7 +23,7 @@ import SkillsSection from "../layouts/SkillsSection.astro";
         aria-label="Fullscreen"></button>
     </div>
     <p class="titlebar-title">
-      <b>abdulrhman</b><span>@portfolio:</span> ~
+      <TerminalPrompt />
     </p>
     <span class="titlebar-meta" aria-hidden="true"> /bin/bash · utf-8 </span>
   </header>
@@ -49,9 +50,7 @@ import SkillsSection from "../layouts/SkillsSection.astro";
   <div class="command-bar">
     <form id="command-form" class="command-row" autocomplete="off">
       <label class="prompt-prefix" for="command-input">
-        <span>abdulrhman</span><span class="at">@</span><span class="host"
-          >portfolio</span
-        ><span class="colon">:</span><span class="path">~</span><span> $</span>
+        <TerminalPrompt />
       </label>
       <input
         id="command-input"
