@@ -1,13 +1,60 @@
 ---
 import "../main.css";
-import Layout from "../layouts/Layout.astro";
-import HeroSection from "../layouts/HeroSection.astro";
-import ProjectsSection from "../layouts/ProjectsSection.astro";
-import SkillsSection from "../layouts/SkillsSection.astro";
+import favicon from "../assets/favicon.png";
+import Sidebar from "../components/Sidebar.astro";
+import Terminal from "../components/Terminal.astro";
+import Help from "../components/Help.astro";
 ---
 
-<Layout>
-	<HeroSection />
-	<ProjectsSection />
-	<SkillsSection />
-</Layout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#08080a" />
+    <meta
+      name="description"
+      content="Abdulrhman Goni — Software Developer. I build web servers, applications and developer tools with JavaScript and TypeScript, with a focus on back-end systems."
+    />
+    <link rel="icon" type="image/png" href={favicon.src} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Abdulrhman Goni's portfolio</title>
+    <script is:inline>
+      try {
+        if (sessionStorage.getItem("portfolio-booted") === "1")
+          document.documentElement.classList.add("booted");
+      } catch {
+        document.documentElement.classList.add("booted");
+      }
+    </script>
+  </head>
+
+  <body>
+    <noscript>
+      <style>
+        #boot-screen {
+          display: none !important;
+        }
+      </style>
+    </noscript>
+    <div id="boot-screen" class="boot-screen" aria-live="polite">
+      <pre id="boot-log" class="boot-log"></pre>
+    </div>
+
+    <div id="env">
+      <Sidebar />
+      <div class="desktop">
+        <Terminal />
+      </div>
+    </div>
+    <Help />
+    <script src="../scripts/terminal/index.ts"></script>
+  </body>
+</html>

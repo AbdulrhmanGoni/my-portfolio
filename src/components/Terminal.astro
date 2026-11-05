@@ -1,0 +1,73 @@
+---
+import HeroSection from "../layouts/HeroSection.astro";
+import ProjectsSection from "../layouts/ProjectsSection.astro";
+import SkillsSection from "../layouts/SkillsSection.astro";
+---
+
+<div id="terminal-window" class="terminal-window">
+  <header class="titlebar">
+    <div class="traffic" role="group" aria-label="window controls">
+      <span class="traffic-btn close" aria-hidden="true"></span>
+      <button
+        id="traffic-min"
+        class="traffic-btn min"
+        title="minimize"
+        aria-label="Minimize"
+        aria-controls="terminal-window"
+        aria-pressed="false"></button>
+      <button
+        id="traffic-max"
+        class="traffic-btn max"
+        title="fullscreen"
+        aria-label="Fullscreen"></button>
+    </div>
+    <p class="titlebar-title">
+      <b>abdulrhman</b><span>@portfolio:</span> ~
+    </p>
+    <span class="titlebar-meta" aria-hidden="true"> /bin/bash · utf-8 </span>
+  </header>
+
+  <div class="terminal-body">
+    <main id="content-pane" class="content-pane" tabindex="-1">
+      <HeroSection />
+      <ProjectsSection />
+      <SkillsSection />
+    </main>
+  </div>
+
+  <div class="resize-handles" aria-hidden="true">
+    <div class="resize-handle" data-resize="n"></div>
+    <div class="resize-handle" data-resize="s"></div>
+    <div class="resize-handle" data-resize="e"></div>
+    <div class="resize-handle" data-resize="w"></div>
+    <div class="resize-handle" data-resize="ne"></div>
+    <div class="resize-handle" data-resize="nw"></div>
+    <div class="resize-handle" data-resize="se"></div>
+    <div class="resize-handle" data-resize="sw"></div>
+  </div>
+
+  <div class="command-bar">
+    <form id="command-form" class="command-row" autocomplete="off">
+      <label class="prompt-prefix" for="command-input">
+        <span>abdulrhman</span><span class="at">@</span><span class="host"
+          >portfolio</span
+        ><span class="colon">:</span><span class="path">~</span><span> $</span>
+      </label>
+      <input
+        id="command-input"
+        class="command-input"
+        name="command"
+        type="text"
+        spellcheck="false"
+        autocapitalize="off"
+        placeholder="type a command — try help"
+        aria-label="Terminal command"
+      />
+    </form>
+    <pre
+      id="command-output"
+      class="command-output command-output-empty"
+      aria-live="polite">
+    </pre>
+  </div>
+</div>
