@@ -14,8 +14,6 @@ export const trafficMax = document.getElementById("traffic-max");
 
 /** True when the user prefers reduced motion. */
 export const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-/** Viewport is large enough for the compact (minimized) window mode. */
-export const compactQuery = window.matchMedia("(min-width: 769px) and (min-height: 620px)");
 
 export const MIN_WINDOW_WIDTH = 360;
 export const MIN_WINDOW_HEIGHT = 280;

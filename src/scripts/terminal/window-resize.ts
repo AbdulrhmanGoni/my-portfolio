@@ -5,12 +5,10 @@ import {
   MIN_WINDOW_WIDTH,
   desktop,
   terminal,
-  trafficMin,
 } from "./dom";
 import {
   applyTerminalGeometry,
   clearMaximizeState,
-  clearPreMinimizeGeometry,
   getTerminalGeometry,
   pinPosition,
 } from "./geometry";
@@ -45,14 +43,8 @@ export function wireWindowResize() {
     const geometry = getTerminalGeometry();
     if (!direction || !geometry) return;
 
-    if (win.classList.contains("is-minimized")) {
-      win.classList.remove("is-minimized");
-      trafficMin?.setAttribute("aria-pressed", "false");
-      clearPreMinimizeGeometry();
-    }
-
-    // Take ownership of the current size/position so the CSS defaults (and
-    // the compact minimized size) can no longer affect the window.
+    // Take ownership of the current size/position so the CSS defaults can no
+    // longer affect the window.
     applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
     clearMaximizeState();
     pinPosition();

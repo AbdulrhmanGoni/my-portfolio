@@ -1,6 +1,5 @@
 // Window sizing and positioning: measuring, placing, clamping, and the
-// minimize/restore and maximize/restore transitions. Owns the shared
-// placement state privately.
+// maximize/restore transition. Owns the shared placement state privately.
 
 import { MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH, desktop, terminal } from "./dom";
 
@@ -11,26 +10,13 @@ export type TerminalGeometry = {
   height: number;
 };
 
-export type SavedGeometry = {
-  left: number;
-  top: number;
-  width?: number;
-  height?: number;
-};
-
 let positionPinnedByUser = false;
-let preMinimizeGeometry: SavedGeometry | null = null;
 let preMaximizeGeometry: TerminalGeometry | null = null;
 let maximized = false;
 
 /** Mark the window position as user-controlled (dragged or resized). */
 export function pinPosition() {
   positionPinnedByUser = true;
-}
-
-/** Discard the geometry snapshot taken when the window was minimized. */
-export function clearPreMinimizeGeometry() {
-  preMinimizeGeometry = null;
 }
 
 /** Whether the window is currently filling its desktop parent. */
@@ -48,11 +34,6 @@ export function clearMaximizeState() {
 /** Fill the whole desktop parent, remembering the current geometry. */
 export function maximizeTerminal() {
   if (!terminal || !desktop || maximized) return;
-
-  if (terminal.classList.contains("is-minimized")) {
-    terminal.classList.remove("is-minimized");
-    clearPreMinimizeGeometry();
-  }
 
   preMaximizeGeometry = getTerminalGeometry();
 
@@ -130,16 +111,6 @@ export function setTerminalPosition(left: number, top: number) {
   terminal.style.top = `${Math.round(Math.min(Math.max(top, 0), maxTop))}px`;
 }
 
-export function centerTerminal() {
-  if (!terminal || !desktop) return;
-  const bounds = desktop.getBoundingClientRect();
-  setTerminalPosition(
-    (bounds.width - terminal.offsetWidth) / 2,
-    (bounds.height - terminal.offsetHeight) / 2,
-  );
-  positionPinnedByUser = false;
-}
-
 export function resetTerminalGeometry() {
   terminal?.style.removeProperty("left");
   terminal?.style.removeProperty("top");
@@ -154,10 +125,6 @@ export function clampTerminalPosition() {
   // The maximize rule keeps the window at 100% of the desktop, so there is
   // nothing to clamp while it is active.
   if (maximized) return;
-  if (terminal.classList.contains("is-minimized") && !positionPinnedByUser) {
-    centerTerminal();
-    return;
-  }
   if (terminal.style.width || terminal.style.height) {
     const geometry = getTerminalGeometry();
     if (!geometry) return;
@@ -169,44 +136,6 @@ export function clampTerminalPosition() {
     Number.parseFloat(terminal.style.left) || 0,
     Number.parseFloat(terminal.style.top) || 0,
   );
-}
-
-export function minimizeTerminal() {
-  if (!terminal) return;
-  const geometry = getTerminalGeometry();
-  const hasCustomSize = Boolean(terminal.style.width || terminal.style.height);
-  const hasCustomPosition = Boolean(terminal.style.left || terminal.style.top);
-
-  preMinimizeGeometry =
-    hasCustomSize && geometry
-      ? geometry
-      : hasCustomPosition && geometry
-        ? { left: geometry.left, top: geometry.top }
-        : null;
-
-  resetTerminalGeometry();
-  terminal.classList.add("is-minimized");
-  centerTerminal();
-}
-
-export function restoreTerminal() {
-  if (!terminal) return;
-  terminal.classList.remove("is-minimized");
-
-  const geometry = preMinimizeGeometry;
-  preMinimizeGeometry = null;
-
-  if (!geometry) {
-    resetTerminalGeometry();
-    return;
-  }
-
-  if (geometry.width !== undefined && geometry.height !== undefined) {
-    applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
-  } else {
-    setTerminalPosition(geometry.left, geometry.top);
-  }
-  positionPinnedByUser = true;
 }
 
 /** Keep the window inside the desktop whenever the viewport is resized. */
