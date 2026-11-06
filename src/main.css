@@ -82,7 +82,10 @@ img {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background: url(./assets/desktop/wallpaper.jpg);
+  background-image: url(./assets/desktop/wallpaper-forest.jpg);
+  background-image: image-set(url(./assets/desktop/wallpaper-forest.avif) type("image/avif"),
+      url(./assets/desktop/wallpaper-forest.jpg) type("image/jpeg"));
+  background-size: cover;
 }
 
 #sidebar {
