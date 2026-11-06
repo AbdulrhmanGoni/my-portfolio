@@ -5,57 +5,62 @@ import ProjectComponentCard from "./ProjectComponentCard.astro";
 import TechStackList from "./TechStackList.astro";
 
 interface Props {
-	project: Project;
-	index: number;
+  project: Project;
+  index: number;
 }
 
 const { project, index } = Astro.props;
 ---
 
 <article class="project-card">
-	<div class={`project-main ${project.image ? "" : "no-preview"}`}>
-		{
-			project.image && (
-				<div class="project-preview">
-					<img
-						src={project.image}
-						alt={project.imageAlt}
-						loading={index > 0 ? "lazy" : undefined}
-					/>
-				</div>
-			)
-		}
-		<div class="project-body">
-			<h2 class="project-name">{project.name}</h2>
-			<p class="project-desc">{project.description}</p>
-			{project.techStack && <TechStackList techStack={project.techStack} />}
-			<div class="project-actions">
-				{
-					project.liveUrl && (
-						<TermButton link={project.liveUrl} text="open --live" />
-					)
-				}
-				{
-					project.docsUrl && (
-						<TermButton link={project.docsUrl} text="open --docs" />
-					)
-				}
-				{project.repoUrl && <TermButton link={project.repoUrl} text="git clone" ghost />}
-			</div>
-		</div>
-	</div>
-	{
-		project.components && (
-			<div class="components-wrap">
-				<h3 class="components-title">
-					./components  ({project.components.length})
-				</h3>
-				<div class="components-grid">
-					{project.components.map((component) => (
-						<ProjectComponentCard project={component} index={index} />
-					))}
-				</div>
-			</div>
-		)
-	}
+  <div class={`project-main ${project.image ? "" : "no-preview"}`}>
+    {
+      project.image && (
+        <div class="project-preview">
+          <img
+            src={project.image}
+            alt={project.imageAlt}
+            loading={index > 0 ? "lazy" : undefined}
+            style="height: auto;"
+          />
+        </div>
+      )
+    }
+    <div class="project-body">
+      <h2 class="project-name">{project.name}</h2>
+      <p class="project-desc">{project.description}</p>
+      {project.techStack && <TechStackList techStack={project.techStack} />}
+      <div class="project-actions">
+        {
+          project.liveUrl && (
+            <TermButton link={project.liveUrl} text="open --live" />
+          )
+        }
+        {
+          project.docsUrl && (
+            <TermButton link={project.docsUrl} text="open --docs" />
+          )
+        }
+        {
+          project.repoUrl && (
+            <TermButton link={project.repoUrl} text="git clone" ghost />
+          )
+        }
+      </div>
+    </div>
+  </div>
+  {
+    project.components && (
+      <div class="components-wrap">
+        <h3 class="components-title">
+          ./components ({project.components.length})
+        </h3>
+        <div class="components-grid">
+          {project.components.map((component) => (
+            <ProjectComponentCard project={component} index={index} />
+          ))}
+        </div>
+      </div>
+    )
+  }
 </article>
