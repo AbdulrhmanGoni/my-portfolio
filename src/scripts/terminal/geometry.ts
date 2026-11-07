@@ -1,7 +1,15 @@
 // Window sizing and positioning: measuring, placing, clamping, and the
 // maximize/restore transition. Owns the shared placement state privately.
 
-import { MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH, desktop, terminal } from "./dom";
+import {
+  MIN_WINDOW_HEIGHT,
+  MIN_WINDOW_WIDTH,
+  contentPane,
+  desktop,
+  sidebarTerminalApp,
+  terminal,
+  trafficMin,
+} from "./dom";
 
 export type TerminalGeometry = {
   left: number;
@@ -30,9 +38,30 @@ export function isTerminalMinimized() {
   return minimized;
 }
 
-/** Record the minimized state; the caller applies the visual scale. */
+/**
+ * Record the minimized state. The caller applies the visual scale; this keeps
+ * the window and its controls in sync for keyboard and assistive technology.
+ */
 export function setTerminalMinimized(value: boolean) {
+  if (minimized === value) return;
+
   minimized = value;
+
+  if (terminal) {
+    if (value) {
+      // Move focus out before hiding the window from assistive technology.
+      sidebarTerminalApp?.focus();
+      terminal.setAttribute("inert", "");
+      terminal.setAttribute("aria-hidden", "true");
+    } else {
+      terminal.removeAttribute("aria-hidden");
+      terminal.removeAttribute("inert");
+      contentPane?.focus();
+    }
+  }
+
+  trafficMin?.setAttribute("aria-pressed", String(value));
+  sidebarTerminalApp?.setAttribute("aria-expanded", String(!value));
 }
 
 /**

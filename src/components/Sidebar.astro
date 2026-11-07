@@ -15,7 +15,11 @@ import trashIcon from "../assets/desktop/sidebar_applications/trash.webp";
     <li><img src={braveIcon.src} /></li>
     <li><img src={filesIcon.src} /></li>
     <li class="active">
-      <button id="terminal-app">
+      <button
+        id="terminal-app"
+        aria-label="Terminal"
+        aria-controls="terminal-window"
+        aria-expanded="true">
         <img src={terminalIcon.src} />
       </button>
     </li>
