@@ -165,7 +165,7 @@ img {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px -2px #000000;
-  transition-property: scale;
+  transition-property: transform;
   transition-duration: .15s;
 }
 

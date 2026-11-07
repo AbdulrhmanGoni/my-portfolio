@@ -35,7 +35,7 @@ export function wireTraffic() {
     if (!origin) return;
 
     terminal.style.transformOrigin = `${origin.x.toFixed(2)}px ${origin.y.toFixed(2)}px`;
-    terminal.style.scale = "0";
+    terminal.style.transform = "scale(0)";
     setTerminalMinimized(true);
   });
 

@@ -21,6 +21,6 @@ export function wireSidebar() {
       terminal.style.transformOrigin = `${origin.x.toFixed(2)}px ${origin.y.toFixed(2)}px`;
     }
 
-    terminal.style.scale = "1";
+    terminal.style.transform = "scale(1)";
   })
 }
