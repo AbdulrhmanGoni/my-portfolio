@@ -13,6 +13,7 @@ export type TerminalGeometry = {
 let positionPinnedByUser = false;
 let preMaximizeGeometry: TerminalGeometry | null = null;
 let maximized = false;
+let minimized = false;
 
 /** Mark the window position as user-controlled (dragged or resized). */
 export function pinPosition() {
@@ -24,6 +25,45 @@ export function isTerminalMaximized() {
   return maximized;
 }
 
+/** Whether the window is scaled away into the sidebar dock. */
+export function isTerminalMinimized() {
+  return minimized;
+}
+
+/** Record the minimized state; the caller applies the visual scale. */
+export function setTerminalMinimized(value: boolean) {
+  minimized = value;
+}
+
+/**
+ * Layout geometry that ignores CSS transforms, so it stays accurate while the
+ * window is scaled to zero. `offsetParent` is the desktop, matching the
+ * coordinate space used by `getTerminalGeometry`.
+ */
+export function getLayoutGeometry(): TerminalGeometry | null {
+  if (!terminal || !desktop) return null;
+  return {
+    left: terminal.offsetLeft,
+    top: terminal.offsetTop,
+    width: terminal.offsetWidth,
+    height: terminal.offsetHeight,
+  };
+}
+
+/**
+ * Center of a dock icon expressed in the window's own border-box coordinates.
+ * Uses layout offsets so it also works while the window is scaled down.
+ */
+export function getDockOrigin(icon: Element): { x: number; y: number } | null {
+  if (!terminal || !desktop) return null;
+  const bounds = desktop.getBoundingClientRect();
+  const iconRect = icon.getBoundingClientRect();
+  return {
+    x: iconRect.left + iconRect.width / 2 - (bounds.left + terminal.offsetLeft),
+    y: iconRect.top + iconRect.height / 2 - (bounds.top + terminal.offsetTop),
+  };
+}
+
 /** Leave maximize mode without restoring the saved geometry. */
 export function clearMaximizeState() {
   maximized = false;
@@ -33,7 +73,7 @@ export function clearMaximizeState() {
 
 /** Fill the whole desktop parent, remembering the current geometry. */
 export function maximizeTerminal() {
-  if (!terminal || !desktop || maximized) return;
+  if (!terminal || !desktop || maximized || minimized) return;
 
   preMaximizeGeometry = getTerminalGeometry();
 
@@ -126,7 +166,9 @@ export function clampTerminalPosition() {
   // nothing to clamp while it is active.
   if (maximized) return;
   if (terminal.style.width || terminal.style.height) {
-    const geometry = getTerminalGeometry();
+    // Measure the layout box, not the transformed rect: a minimized window is
+    // scaled to zero, and clamping that would overwrite the real geometry.
+    const geometry = getLayoutGeometry();
     if (!geometry) return;
     applyTerminalGeometry(geometry.left, geometry.top, geometry.width, geometry.height);
     return;

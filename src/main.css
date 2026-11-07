@@ -112,6 +112,7 @@ img {
 
     li.active {
       position: relative;
+      background-color: color-mix(var(--color-muted-foreground) 25%, transparent) !important;
 
       &::before {
         content: " ";
@@ -137,7 +138,7 @@ img {
     cursor: pointer;
 
     &:hover {
-      background-color: color-mix(var(--color-muted-foreground) 20%, transparent);
+      background-color: color-mix(var(--color-muted-foreground) 15%, transparent);
     }
   }
 
@@ -164,6 +165,8 @@ img {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px -2px #000000;
+  transition-property: scale;
+  transition-duration: .15s;
 }
 
 .terminal-window.is-maximized {

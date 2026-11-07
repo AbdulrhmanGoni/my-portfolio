@@ -1,10 +1,16 @@
-// The traffic-light buttons: maximize/restore.
+// The traffic-light buttons: close, minimize, and maximize.
 
-import { trafficMax } from "./dom";
-import { isTerminalMaximized, toggleTerminalMaximized } from "./geometry";
+import { sidebarTerminalApp, terminal, trafficMax, trafficMin } from "./dom";
+import {
+  getDockOrigin,
+  isTerminalMaximized,
+  setTerminalMinimized,
+  toggleTerminalMaximized,
+} from "./geometry";
 
 export function wireTraffic() {
   const maxBtn = trafficMax;
+  const minBtn = trafficMin;
 
   const syncMaxState = () => {
     const maximized = isTerminalMaximized();
@@ -18,6 +24,19 @@ export function wireTraffic() {
   maxBtn?.addEventListener("click", () => {
     toggleTerminalMaximized();
     syncMaxState();
+  });
+
+  minBtn?.addEventListener("click", () => {
+    if (!terminal || !sidebarTerminalApp) return;
+
+    // transform-origin is relative to the window's own border box; anchor it
+    // to the dock icon's center so the window collapses into the dock.
+    const origin = getDockOrigin(sidebarTerminalApp);
+    if (!origin) return;
+
+    terminal.style.transformOrigin = `${origin.x.toFixed(2)}px ${origin.y.toFixed(2)}px`;
+    terminal.style.scale = "0";
+    setTerminalMinimized(true);
   });
 
   syncMaxState();

@@ -1,17 +1,29 @@
 ---
-import { applicationIcons } from "../data/sidebar-applications";
+import braveIcon from "../assets/desktop/sidebar_applications/brave.webp";
+import filesIcon from "../assets/desktop/sidebar_applications/files.webp";
+import terminalIcon from "../assets/desktop/sidebar_applications/terminal.webp";
+import vscodeIcon from "../assets/desktop/sidebar_applications/vscode.webp";
+import dockerIcon from "../assets/desktop/sidebar_applications/docker-desktop.webp";
+import denokvGuiClientIcon from "../assets/desktop/sidebar_applications/denokv-gui-client.webp";
+import opencodeIcon from "../assets/desktop/sidebar_applications/opencode.webp";
+import settingsIcon from "../assets/desktop/sidebar_applications/settings.webp";
 import trashIcon from "../assets/desktop/sidebar_applications/trash.webp";
 ---
 
 <div id="sidebar">
   <ul>
-    {
-      applicationIcons.map((app) => (
-        <li class={app.icon.includes("terminal") ? "active" : ""}>
-          <img src={app.icon} />
-        </li>
-      ))
-    }
+    <li><img src={braveIcon.src} /></li>
+    <li><img src={filesIcon.src} /></li>
+    <li class="active">
+      <button id="terminal-app">
+        <img src={terminalIcon.src} />
+      </button>
+    </li>
+    <li><img src={vscodeIcon.src} /></li>
+    <li><img src={dockerIcon.src} /></li>
+    <li><img src={denokvGuiClientIcon.src} /></li>
+    <li><img src={opencodeIcon.src} /></li>
+    <li><img src={settingsIcon.src} /></li>
     <span class="separator-x"></span>
     <li>
       <img src={trashIcon.src} />

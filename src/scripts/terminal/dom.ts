@@ -17,3 +17,5 @@ export const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 
 export const MIN_WINDOW_WIDTH = 360;
 export const MIN_WINDOW_HEIGHT = 280;
+
+export const sidebarTerminalApp = document.getElementById("terminal-app");
