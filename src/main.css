@@ -112,7 +112,6 @@ img {
 
     li.active {
       position: relative;
-      background-color: color-mix(var(--color-muted-foreground) 25%, transparent) !important;
 
       &::before {
         content: " ";
@@ -125,6 +124,10 @@ img {
         top: 50%;
         transform: translateY(-50%);
       }
+    }
+
+    li.is-focused {
+      background-color: color-mix(var(--color-muted-foreground) 25%, transparent) !important;
     }
   }
 

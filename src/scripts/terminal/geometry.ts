@@ -62,6 +62,7 @@ export function setTerminalMinimized(value: boolean) {
 
   trafficMin?.setAttribute("aria-pressed", String(value));
   sidebarTerminalApp?.setAttribute("aria-expanded", String(!value));
+  sidebarTerminalApp?.closest("li")?.classList.toggle("is-focused", !value);
 }
 
 /**
