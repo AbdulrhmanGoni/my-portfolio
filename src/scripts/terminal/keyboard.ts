@@ -49,7 +49,7 @@ export function wireKeyboard() {
     // controls should respond; don't trigger shortcuts behind the overlay.
     if (helpDialog?.open) return;
 
-    if (e.key === "/" || e.key === ":") {
+    if (e.key === "/") {
       e.preventDefault();
       commandInput?.focus();
       return;
