@@ -18,6 +18,10 @@ export function wireKeyboard() {
 
     if (typing) return;
 
+    // While the manual is open only Esc (handled above) and the dialog's own
+    // controls should respond; don't trigger shortcuts behind the overlay.
+    if (helpDialog?.open) return;
+
     if (e.key === "/" || e.key === ":") {
       e.preventDefault();
       commandInput?.focus();

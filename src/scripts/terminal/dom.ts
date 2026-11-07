@@ -6,6 +6,7 @@ export const bootLog = document.getElementById("boot-log");
 export const terminal = document.getElementById("terminal-window");
 export const desktop = terminal?.parentElement as HTMLElement | null;
 export const contentPane = document.getElementById("content-pane");
+export const commandBar = document.querySelector<HTMLElement>(".command-bar");
 export const commandInput = document.getElementById("command-input") as HTMLInputElement | null;
 export const commandOutput = document.getElementById("command-output");
 export const helpDialog = document.getElementById("help-dialog") as HTMLDialogElement | null;
