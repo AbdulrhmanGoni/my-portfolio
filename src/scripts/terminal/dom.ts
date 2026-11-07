@@ -16,6 +16,12 @@ export const trafficMax = document.getElementById("traffic-max");
 /** True when the user prefers reduced motion. */
 export const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/**
+ * Matches the breakpoint where the sidebar is hidden and the window goes
+ * full-bleed. Keep in sync with the viewport rules in main.css.
+ */
+export const smallScreenQuery = window.matchMedia("(max-width: 768px)");
+
 export const MIN_WINDOW_WIDTH = 360;
 export const MIN_WINDOW_HEIGHT = 280;
 

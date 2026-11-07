@@ -1,6 +1,6 @@
 // The traffic-light buttons: close, minimize, and maximize.
 
-import { sidebarTerminalApp, terminal, trafficMax, trafficMin } from "./dom";
+import { sidebarTerminalApp, smallScreenQuery, terminal, trafficMax, trafficMin } from "./dom";
 import {
   getDockOrigin,
   isTerminalMaximized,
@@ -28,6 +28,10 @@ export function wireTraffic() {
 
   minBtn?.addEventListener("click", () => {
     if (!terminal || !sidebarTerminalApp) return;
+
+    // The sidebar (and its dock icon) is hidden on small screens, so
+    // minimizing there would leave no way to restore the window.
+    if (smallScreenQuery.matches) return;
 
     // transform-origin is relative to the window's own border box; anchor it
     // to the dock icon's center so the window collapses into the dock.

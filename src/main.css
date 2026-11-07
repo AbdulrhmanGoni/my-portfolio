@@ -1071,6 +1071,10 @@ img {
 
 /* Viewport-level chrome: the window is always full-bleed on small screens. */
 @media (max-width: 768px) {
+  #sidebar {
+    display: none;
+  }
+
   .desktop {
     --window-gap: 0px;
   }

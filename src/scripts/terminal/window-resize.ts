@@ -4,6 +4,7 @@ import {
   MIN_WINDOW_HEIGHT,
   MIN_WINDOW_WIDTH,
   desktop,
+  smallScreenQuery,
   terminal,
 } from "./dom";
 import {
@@ -36,7 +37,7 @@ export function wireWindowResize() {
 
   const beginResize = (e: PointerEvent) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    if (window.matchMedia("(max-width: 768px)").matches) return;
+    if (smallScreenQuery.matches) return;
 
     const handle = e.currentTarget as HTMLElement;
     const direction = handle.dataset.resize;
