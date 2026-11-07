@@ -1,4 +1,4 @@
-import { commandInput, commandOutput } from "./dom";
+import { commandInput, commandOutput, contentPane, helpDialog } from "./dom";
 import { runCommand } from "./commands";
 
 function setOutput(message: string) {
@@ -16,6 +16,8 @@ export function wireCommandBar() {
     const result = runCommand(commandInput.value);
     setOutput(result);
     commandInput.value = "";
-    commandInput.blur();
+    // Keep focus inside the window so keyboard shortcuts stay active; the
+    // manual keeps its own focus if it was opened by this command.
+    if (!helpDialog?.open) contentPane?.focus({ preventScroll: true });
   });
 }

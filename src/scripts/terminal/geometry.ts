@@ -6,6 +6,7 @@ import {
   MIN_WINDOW_WIDTH,
   contentPane,
   desktop,
+  helpDialog,
   sidebarTerminalApp,
   terminal,
   trafficMin,
@@ -56,7 +57,13 @@ export function setTerminalMinimized(value: boolean) {
     } else {
       terminal.removeAttribute("aria-hidden");
       terminal.removeAttribute("inert");
-      contentPane?.focus();
+      // The content pane is inert while the manual is open, so focus the
+      // manual instead if it is still showing.
+      if (helpDialog?.open) {
+        helpDialog.focus();
+      } else {
+        contentPane?.focus();
+      }
     }
   }
 
