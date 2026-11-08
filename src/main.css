@@ -518,24 +518,6 @@ img {
   margin: 0 auto;
 }
 
-/* ── Cursor ── */
-
-.cursor {
-  display: inline-block;
-  width: 0.40em;
-  height: 1.05em;
-  background: var(--color-primary);
-  box-shadow: 0 0 10px var(--color-primary);
-  vertical-align: text-bottom;
-  animation: blink 1.05s step-end infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
 /* ── Buttons / chips ── */
 
 .term-btn {
@@ -722,32 +704,6 @@ img {
   aspect-ratio: 1;
   object-fit: cover;
   filter: contrast(1.05) saturate(0.92);
-}
-
-.continue-row {
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: var(--color-muted-foreground);
-  font-size: 13px;
-}
-
-.continue-row a {
-  color: var(--color-primary);
-  white-space: nowrap;
-}
-
-.continue-row .comment {
-  color: var(--color-muted-foreground);
-}
-
-.continue-row .dollar {
-  color: var(--color-primary);
-}
-
-.continue-row .cursor {
-  margin-left: -8px;
 }
 
 /* ── Projects ── */
