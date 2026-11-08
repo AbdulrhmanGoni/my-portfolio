@@ -62,7 +62,7 @@ export function runCommand(raw: string): CommandResult {
       openExternal(LINKS.linkedin);
       return atPrompt("opening linkedin profile");
     case "ls":
-      if (/project/.test(argStr) || argStr === "." || argStr === "./") {
+      if (/project/.test(argStr)) {
         scrollToId("projects");
         return focusPane("denokv-gui-client\nmecha-agent\nllms-tdm\nam-store");
       }
@@ -70,7 +70,10 @@ export function runCommand(raw: string): CommandResult {
         scrollToId("skills");
         return focusPane();
       }
-      return atPrompt("home.sh\nprojects/\nskills.json");
+      if (!argStr || argStr === "." || argStr === "./" || argStr === "/") {
+        return atPrompt("home.sh\nprojects/\nskills.json");
+      }
+      return atPrompt(`ls: cannot access '${argStr}': No such file or directory`);
     case "cd": {
       const target = argStr.replace(/^~\//, "").replace(/^\.\//, "").replace(/\/$/, "");
       if (!target || target === "~" || target === "home") {
@@ -86,22 +89,6 @@ export function runCommand(raw: string): CommandResult {
         return focusPane();
       }
       return atPrompt(`cd: no such file or directory: ${args[0] ?? ""}`);
-    }
-    case "cat": {
-      const file = argStr;
-      if (!file || file.includes("home") || file.includes("about") || file.includes("readme")) {
-        scrollToId("home");
-        return focusPane("cat home.sh");
-      }
-      if (file.includes("skill")) {
-        scrollToId("skills");
-        return focusPane("cat skills.json");
-      }
-      if (file.includes("project")) {
-        scrollToId("projects");
-        return focusPane("cat projects/README");
-      }
-      return atPrompt(`cat: ${args[0]}: No such file or directory`);
     }
     case "clear":
     case "cls":
