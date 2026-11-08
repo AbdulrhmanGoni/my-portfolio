@@ -24,13 +24,19 @@ import { LINKS } from "../data/links";
             <div class="neofetch-row">
               <span class="neofetch-key">email</span>
               <span>
-                <a href={LINKS.email}>{LINKS.emailAddress}</a>
+                <span class="prompt-path">~</span>
+                <span class="prompt-dollar">$</span>
+                {" "}
+                xdg-open <a href={LINKS.email}>mailto:{LINKS.emailAddress}</a>
               </span>
             </div>
             <div class="neofetch-row">
               <span class="neofetch-key">github</span>
               <span>
-                <a
+                <span class="prompt-path">~</span>
+                <span class="prompt-dollar">$</span>
+                {" "}
+                xdg-open <a
                   href={LINKS.github}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -42,13 +48,34 @@ import { LINKS } from "../data/links";
             <div class="neofetch-row">
               <span class="neofetch-key">linkedin</span>
               <span>
-                <a
+                <span class="prompt-path">~</span>
+                <span class="prompt-dollar">$</span>
+                {" "}
+                xdg-open <a
                   href={LINKS.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   linkedin.com/in/abdulrhman-goni
                 </a>
+              </span>
+            </div>
+            <div class="neofetch-row">
+              <span class="neofetch-key">projects</span>
+              <span>
+                <span class="prompt-path">~</span>
+                <span class="prompt-dollar">$</span>
+                {" "}
+                cd <a href="#projects">./projects/</a>
+              </span>
+            </div>
+            <div class="neofetch-row">
+              <span class="neofetch-key">skills</span>
+              <span>
+                <span class="prompt-path">~</span>
+                <span class="prompt-dollar">$</span>
+                {" "}
+                cat <a href="#skills">./skills.json</a>
               </span>
             </div>
           </div>

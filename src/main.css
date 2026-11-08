@@ -440,7 +440,7 @@ img {
   position: relative;
   border: 1px solid var(--color-border);
   background: rgba(18, 18, 22, 0.72);
-  padding: 1.4rem 1.25rem 1.15rem;
+  padding: 1rem;
 }
 
 .tui-panel-title {
@@ -500,6 +500,32 @@ img {
 .cmd-line .comment {
   color: var(--color-muted-foreground);
   margin-left: 0.5rem;
+}
+
+.term-prompt {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.prompt-user {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.prompt-at,
+.prompt-colon {
+  color: var(--color-muted-foreground);
+  font-weight: 400;
+}
+
+.prompt-host,
+.prompt-path {
+  color: var(--color-primary-soft);
+}
+
+.prompt-dollar {
+  color: var(--color-primary);
+  font-weight: 700;
 }
 
 /* ── Page sections ── */
@@ -612,7 +638,7 @@ img {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.7fr);
   gap: 1.75rem;
-  align-items: center;
+  align-items: end;
 }
 
 .hero-name {
@@ -648,20 +674,23 @@ img {
 
 .neofetch {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.6rem;
   font-size: 13px;
-  margin-top: 1.1rem;
+  margin-top: 1rem;
 }
 
 .neofetch-row {
-  display: grid;
-  grid-template-columns: 9.5rem 1fr;
-  gap: 0.5rem;
+  display: flex;
+
+  &>span:last-child {
+    margin-inline-start: 12px;
+  }
 }
 
 .neofetch-key {
   color: var(--color-primary);
   font-weight: 600;
+  width: 95px;
 }
 
 .neofetch-key::after {
@@ -1018,11 +1047,6 @@ img {
   .project-preview img {
     height: 200px;
   }
-
-  .neofetch-row {
-    grid-template-columns: 1fr;
-    gap: 0.1rem;
-  }
 }
 
 /* Viewport-level chrome: the window is always full-bleed on small screens. */
@@ -1060,6 +1084,10 @@ img {
 @media (max-width: 520px) {
   .command-row {
     font-size: 12px;
+  }
+
+  .neofetch-row {
+    flex-direction: column;
   }
 }
 

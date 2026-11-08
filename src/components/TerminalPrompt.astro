@@ -15,31 +15,3 @@ const { path = "~", class: className } = Astro.props;
   <span class="prompt-path">{path}</span>
   <span class="prompt-dollar">$</span>
 </span>
-
-<style>
-  .term-prompt {
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-  .prompt-user {
-    color: var(--color-primary);
-    font-weight: 600;
-  }
-
-  .prompt-at,
-  .prompt-colon {
-    color: var(--color-muted-foreground);
-    font-weight: 400;
-  }
-
-  .prompt-host,
-  .prompt-path {
-    color: var(--color-primary-soft);
-  }
-
-  .prompt-dollar {
-    color: var(--color-primary);
-    font-weight: 700;
-  }
-</style>
