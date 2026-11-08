@@ -1,4 +1,4 @@
-import { commandInput, commandOutput, contentPane, helpDialog } from "./dom";
+import { commandInput, commandOutput, contentPane } from "./dom";
 import { runCommand } from "./commands";
 
 function setOutput(message: string) {
@@ -14,10 +14,21 @@ export function wireCommandBar() {
     e.preventDefault();
     if (!commandInput) return;
     const result = runCommand(commandInput.value);
-    setOutput(result);
+    setOutput(result.output);
     commandInput.value = "";
-    // Keep focus inside the window so keyboard shortcuts stay active; the
-    // manual keeps its own focus if it was opened by this command.
-    if (!helpDialog?.open) contentPane?.focus({ preventScroll: true });
+
+    // Each command declares where focus belongs: shell-like commands keep the
+    // caret in the prompt, navigation commands move to the content pane, and
+    // the manual focuses itself when it opens.
+    switch (result.focus) {
+      case "pane":
+        contentPane?.focus({ preventScroll: true });
+        break;
+      case "dialog":
+        break;
+      default:
+        commandInput.focus({ preventScroll: true });
+        break;
+    }
   });
 }
