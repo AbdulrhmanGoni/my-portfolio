@@ -168,8 +168,7 @@ img {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px -2px #000000;
-  transition-property: transform;
-  transition-duration: .15s;
+  transition: transform .15s, width .1s, height .1s, top .1s, left .1s;
 
   &.is-maximized {
     left: 0;
