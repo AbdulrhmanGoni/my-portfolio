@@ -1,10 +1,10 @@
 ---
-import cpuIcon from "../assets/desktop/topbar_icons/cpu.svg";
-import memoryIcon from "../assets/desktop/topbar_icons/memory.svg";
-import storageIcon from "../assets/desktop/topbar_icons/storage.svg";
-import networkIcon from "../assets/desktop/topbar_icons/network.svg";
-import volumeIcon from "../assets/desktop/topbar_icons/volume.svg";
-import powerIcon from "../assets/desktop/topbar_icons/power.svg";
+import cpuIcon from "../assets/desktop/topbar_icons/cpu.svg?raw";
+import memoryIcon from "../assets/desktop/topbar_icons/memory.svg?raw";
+import storageIcon from "../assets/desktop/topbar_icons/storage.svg?raw";
+import networkIcon from "../assets/desktop/topbar_icons/network.svg?raw";
+import volumeIcon from "../assets/desktop/topbar_icons/volume.svg?raw";
+import powerIcon from "../assets/desktop/topbar_icons/power.svg?raw";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   weekday: "short",
@@ -26,15 +26,15 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   <div>
     <div class="vitals topbar-item">
       <div class="vital-item">
-        <img src={cpuIcon.src} />
+        <span class="topbar-icon" aria-hidden="true" set:html={cpuIcon} />
         <span>3%</span>
       </div>
       <div class="vital-item">
-        <img src={memoryIcon.src} />
+        <span class="topbar-icon" aria-hidden="true" set:html={memoryIcon} />
         <span>31%</span>
       </div>
       <div class="vital-item">
-        <img src={storageIcon.src} />
+        <span class="topbar-icon" aria-hidden="true" set:html={storageIcon} />
         <span style="display: flex;gap: 2px">
           <span>204</span>
           <span>GB</span>
@@ -42,9 +42,9 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
       </div>
     </div>
     <div class="system-status topbar-item">
-      <img src={networkIcon.src} />
-      <img src={volumeIcon.src} />
-      <img src={powerIcon.src} />
+      <span class="topbar-icon" aria-hidden="true" set:html={networkIcon} />
+      <span class="topbar-icon" aria-hidden="true" set:html={volumeIcon} />
+      <span class="topbar-icon" aria-hidden="true" set:html={powerIcon} />
     </div>
   </div>
 </div>

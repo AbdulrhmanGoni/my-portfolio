@@ -94,7 +94,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
   }
 
   & .topbar-item {
@@ -119,6 +119,14 @@ img {
     display: flex;
     gap: 4px;
     align-items: center;
+  }
+
+  .topbar-icon {
+    display: flex;
+
+    svg {
+      display: block;
+    }
   }
 
   .system-status {
