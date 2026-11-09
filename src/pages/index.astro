@@ -1,6 +1,7 @@
 ---
 import "../main.css";
 import favicon from "../assets/favicon.png";
+import Topbar from "../components/Topbar.astro";
 import Sidebar from "../components/Sidebar.astro";
 import Terminal from "../components/Terminal.astro";
 ---
@@ -48,9 +49,12 @@ import Terminal from "../components/Terminal.astro";
     </div>
 
     <div id="env">
-      <Sidebar />
-      <div class="desktop">
-        <Terminal />
+      <Topbar />
+      <div>
+        <Sidebar />
+        <div class="desktop">
+          <Terminal />
+        </div>
       </div>
     </div>
     <script src="../scripts/index.ts"></script>

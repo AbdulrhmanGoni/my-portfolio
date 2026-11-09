@@ -72,8 +72,60 @@ img {
 
 #env {
   height: 100dvh;
-  width: 100%;
   display: flex;
+  flex-direction: column;
+
+  &>div:last-child {
+    display: flex;
+    height: 100%;
+  }
+}
+
+#topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 33px;
+  font-size: 13px;
+  padding: 3px 12px;
+  user-select: none;
+
+  &>div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  & .topbar-item {
+    transition: .25s;
+    padding: 3px 10px;
+    border-radius: 20px;
+    height: 27px;
+
+    &:hover {
+      background-color:
+        color-mix(var(--color-muted-foreground) 20%, transparent);
+    }
+  }
+
+  .vitals {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .vital-item {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .system-status {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
 }
 
 .desktop {
@@ -1055,6 +1107,10 @@ img {
 
 /* Viewport-level chrome: the window is always full-bleed on small screens. */
 @media (max-width: 768px) {
+
+  .titlebar-meta,
+  .resize-handles,
+  #topbar,
   #sidebar {
     display: none;
   }
@@ -1067,14 +1123,6 @@ img {
     border-radius: 0;
     border-left: 0;
     border-right: 0;
-  }
-
-  .resize-handles {
-    display: none;
-  }
-
-  .titlebar-meta {
-    display: none;
   }
 }
 
