@@ -87,7 +87,7 @@ img {
   justify-content: space-between;
   height: 33px;
   font-size: 13px;
-  padding: 3px 12px;
+  padding: 3px 5px;
   user-select: none;
 
   &>div {
@@ -133,6 +133,26 @@ img {
     display: flex;
     gap: 12px;
     align-items: center;
+  }
+
+  .activities-indicator {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+
+    &>div:first-child {
+      height: 8px;
+      background-color: var(--color-foreground);
+      width: 30px;
+      border-radius: 10px;
+    }
+
+    &>div:last-child {
+      height: 6px;
+      background-color: var(--color-muted-foreground);
+      width: 6px;
+      border-radius: 100%;
+    }
   }
 }
 
