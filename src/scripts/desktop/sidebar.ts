@@ -1,26 +1,19 @@
-import { sidebarTerminalApp, terminal } from "../terminal/dom";
-import {
-  clampTerminalPosition,
-  getDockOrigin,
-  isTerminalMinimized,
-  setTerminalMinimized,
-} from "../terminal/geometry";
+import { getAppWindow } from "../windows";
 
 export function wireSidebar() {
-  sidebarTerminalApp?.addEventListener("click", () => {
-    if (!terminal || !isTerminalMinimized()) return;
+  document.querySelectorAll<HTMLElement>("[data-dock-app]").forEach((button) => {
+    const appId = button.dataset.dockApp;
+    if (!appId) return;
 
-    setTerminalMinimized(false);
-    // Bring the window back inside the current viewport before revealing it.
-    clampTerminalPosition();
+    button.addEventListener("click", () => {
+      const win = getAppWindow(appId);
+      if (!win) return;
 
-    // Clamping may have moved the window while it was invisible, so re-anchor
-    // the grow animation to the dock icon.
-    const origin = getDockOrigin(sidebarTerminalApp!);
-    if (origin) {
-      terminal.style.transformOrigin = `${origin.x.toFixed(2)}px ${origin.y.toFixed(2)}px`;
-    }
-
-    terminal.style.transform = "scale(1)";
-  })
+      if (win.isMinimized) {
+        win.restore();
+      } else {
+        win.activate();
+      }
+    });
+  });
 }

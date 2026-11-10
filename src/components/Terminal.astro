@@ -2,34 +2,19 @@
 import HeroSection from "../layouts/HeroSection.astro";
 import ProjectsSection from "../layouts/ProjectsSection.astro";
 import SkillsSection from "../layouts/SkillsSection.astro";
+import AppWindow from "./AppWindow.astro";
 import TerminalPrompt from "./TerminalPrompt.astro";
 import Help from "./Help.astro";
 ---
 
-<div id="terminal-window" class="terminal-window">
-  <header class="titlebar">
-    <div class="traffic" role="group" aria-label="window controls">
-      <span class="traffic-btn close" aria-hidden="true"></span>
-      <button
-        id="traffic-min"
-        class="traffic-btn min"
-        title="minimize"
-        aria-label="Minimize"
-        aria-controls="terminal-window"
-        aria-pressed="false"></button>
-      <button
-        id="traffic-max"
-        class="traffic-btn max"
-        title="maximize"
-        aria-label="Maximize"
-        aria-controls="terminal-window"
-        aria-pressed="false"></button>
-    </div>
-    <p class="titlebar-title">
-      <TerminalPrompt />
-    </p>
-    <span class="titlebar-meta" aria-hidden="true"> /bin/bash · utf-8 </span>
-  </header>
+<AppWindow
+  id="terminal-window"
+  appId="terminal"
+  dock="terminal"
+  class="terminal-window"
+  meta=" /bin/bash · utf-8 "
+>
+  <TerminalPrompt slot="title" />
 
   <div class="terminal-body">
     <main id="content-pane" class="content-pane" tabindex="-1">
@@ -38,17 +23,6 @@ import Help from "./Help.astro";
       <SkillsSection />
     </main>
     <Help />
-  </div>
-
-  <div class="resize-handles" aria-hidden="true">
-    <div class="resize-handle" data-resize="n"></div>
-    <div class="resize-handle" data-resize="s"></div>
-    <div class="resize-handle" data-resize="e"></div>
-    <div class="resize-handle" data-resize="w"></div>
-    <div class="resize-handle" data-resize="ne"></div>
-    <div class="resize-handle" data-resize="nw"></div>
-    <div class="resize-handle" data-resize="se"></div>
-    <div class="resize-handle" data-resize="sw"></div>
   </div>
 
   <div class="command-bar">
@@ -73,4 +47,4 @@ import Help from "./Help.astro";
       aria-live="polite">
     </pre>
   </div>
-</div>
+</AppWindow>

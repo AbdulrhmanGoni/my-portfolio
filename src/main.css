@@ -232,9 +232,9 @@ img {
   }
 }
 
-/* ── Terminal window ── */
+/* ── App windows (shared chrome) ── */
 
-.terminal-window {
+.app-window {
   position: absolute;
   left: var(--window-gap);
   top: var(--window-gap);
@@ -248,7 +248,15 @@ img {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px -2px #000000;
-  transition: transform .15s, width .1s, height .1s, top .1s, left .1s;
+  transition: transform .15s, width .1s, height .1s, top .1s, left .1s, border-color .15s;
+  /* Keep each window in its own stacking context so its resize handles
+     (z-index: 20) cannot paint over a neighbouring window. */
+  isolation: isolate;
+
+  /* The focused window is tinted so it is identifiable among several. */
+  &.is-active {
+    border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+  }
 
   &.is-maximized {
     left: 0;
@@ -1147,7 +1155,7 @@ img {
     --window-gap: 0px;
   }
 
-  .terminal-window {
+  .app-window {
     border-radius: 0;
     border-left: 0;
     border-right: 0;

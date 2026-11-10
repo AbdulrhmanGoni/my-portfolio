@@ -1,0 +1,101 @@
+---
+// Shared desktop window chrome. Application-specific content goes in the
+// default slot; the title is supplied through the "title" slot.
+//
+// Feature flags are written to the element as data attributes and read back by
+// the window registry, so they must stay in sync with the values the registry
+// expects (see src/scripts/windows/registry.ts).
+interface Props {
+  /** DOM id of the window element. */
+  id: string;
+  /** Stable identifier used to look the window up via `getAppWindow()`. */
+  appId: string;
+  /**
+   * Identifier of the dock icon that opens and restores this window. A window
+   * without a dock cannot be minimized — there would be no way to bring it
+   * back — so its minimize button is hidden.
+   */
+  dock?: string;
+  /** Extra classes applied to the window element. */
+  class?: string;
+  /** Dim text shown at the right end of the titlebar. */
+  meta?: string;
+  /** Smallest width the window may be resized to, in pixels. */
+  minWidth?: number;
+  /** Smallest height the window may be resized to, in pixels. */
+  minHeight?: number;
+  /** Whether the titlebar can be dragged to move the window. */
+  draggable?: boolean;
+  /** Whether the window can be resized from its edges and corners. */
+  resizable?: boolean;
+  /** Whether the window can be minimized into its dock icon. */
+  minimizable?: boolean;
+  /** Whether the window can be maximized to fill the desktop. */
+  maximizable?: boolean;
+}
+
+const {
+  id,
+  appId,
+  dock,
+  class: className,
+  meta,
+  minWidth,
+  minHeight,
+  draggable,
+  resizable,
+  minimizable,
+  maximizable,
+} = Astro.props;
+---
+
+<div
+  id={id}
+  class:list={["app-window", className]}
+  data-app-window
+  data-app-id={appId}
+  data-dock={dock}
+  data-min-width={minWidth}
+  data-min-height={minHeight}
+  data-draggable={String(draggable !== false)}
+  data-resizable={String(resizable !== false)}
+  data-minimizable={String(minimizable !== false)}
+  data-maximizable={String(maximizable !== false)}
+>
+  <header class="titlebar">
+    <div class="traffic" role="group" aria-label="window controls">
+      <span class="traffic-btn close" aria-hidden="true"></span>
+      <button
+        class="traffic-btn min"
+        data-window-action="minimize"
+        title="minimize"
+        aria-label="Minimize"
+        aria-controls={id}
+        aria-pressed="false"></button>
+      <button
+        class="traffic-btn max"
+        data-window-action="maximize"
+        title="maximize"
+        aria-label="Maximize"
+        aria-controls={id}
+        aria-pressed="false"></button>
+    </div>
+    <div class="titlebar-title">
+      <slot name="title" />
+    </div>
+    {meta && <span class="titlebar-meta" aria-hidden="true">{meta}</span>}
+  </header>
+
+  <slot />
+
+  <div class="resize-handles" aria-hidden="true">
+    <div class="resize-handle" data-resize="n"></div>
+    <div class="resize-handle" data-resize="s"></div>
+    <div class="resize-handle" data-resize="e"></div>
+    <div class="resize-handle" data-resize="w"></div>
+    <div class="resize-handle" data-resize="ne"></div>
+    <div class="resize-handle" data-resize="nw"></div>
+    <div class="resize-handle" data-resize="se"></div>
+    <div class="resize-handle" data-resize="sw"></div>
+  </div>
+</div>

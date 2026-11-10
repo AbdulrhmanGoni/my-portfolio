@@ -2,31 +2,15 @@
 // element, so shortcuts only fire while that window is focused — never from
 // the sidebar, the desktop, or a minimized window.
 
-import { commandInput, contentPane, helpDialog, terminal } from "./dom";
-import { isTerminalMinimized } from "./geometry";
+import type { AppWindow } from "../windows";
+import { commandInput, contentPane, helpDialog } from "./dom";
 import { openHelpDialog } from "./help";
 import { scrollToId } from "./navigation";
 
-export function wireKeyboard() {
-  if (!terminal) return;
+export function wireKeyboard(win: AppWindow | undefined) {
+  if (!win) return;
 
-  // Clicking anywhere in the window activates it, so shortcuts work without
-  // having to click the prompt first. Interactive controls keep their own
-  // focus; the help dialog manages its own focus while it is open.
-  terminal.addEventListener("pointerdown", (e) => {
-    if (isTerminalMinimized() || helpDialog?.open) return;
-    const target = e.target as HTMLElement | null;
-    if (target?.closest("input, textarea, select, button, a, [tabindex], .resize-handle")) {
-      return;
-    }
-    contentPane?.focus();
-  });
-
-  terminal.addEventListener("keydown", (e) => {
-    // A minimized window is inert and scaled away; ignore anything that still
-    // bubbles out of it.
-    if (isTerminalMinimized()) return;
-
+  win.onKeydown((e) => {
     const target = e.target as HTMLElement | null;
     const typing =
       target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);

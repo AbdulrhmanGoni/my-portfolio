@@ -1,28 +1,14 @@
-// References to every element the terminal interacts with, plus the
-// environment flags and size constants shared by the other modules.
+// References to every terminal-content element the terminal interacts with,
+// plus environment flags shared by its modules. Window mechanics live in
+// ../windows and are looked up per app.
 
 export const bootScreen = document.getElementById("boot-screen");
 export const bootLog = document.getElementById("boot-log");
-export const terminal = document.getElementById("terminal-window");
-export const desktop = terminal?.parentElement as HTMLElement | null;
 export const contentPane = document.getElementById("content-pane");
 export const commandBar = document.querySelector<HTMLElement>(".command-bar");
 export const commandInput = document.getElementById("command-input") as HTMLInputElement | null;
 export const commandOutput = document.getElementById("command-output");
 export const helpDialog = document.getElementById("help-dialog") as HTMLDialogElement | null;
-export const trafficMin = document.getElementById("traffic-min");
-export const trafficMax = document.getElementById("traffic-max");
 
 /** True when the user prefers reduced motion. */
 export const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-/**
- * Matches the breakpoint where the sidebar is hidden and the window goes
- * full-bleed. Keep in sync with the viewport rules in main.css.
- */
-export const smallScreenQuery = window.matchMedia("(max-width: 768px)");
-
-export const MIN_WINDOW_WIDTH = 360;
-export const MIN_WINDOW_HEIGHT = 280;
-
-export const sidebarTerminalApp = document.getElementById("terminal-app");
