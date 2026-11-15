@@ -1,0 +1,23 @@
+---
+import AppWindow from "./AppWindow.astro";
+---
+
+<!--
+  The window is created the first time its dock icon is clicked, so its markup
+  lives in a template until then.
+-->
+<template data-app-template="denokv-gui-client">
+  <AppWindow
+    id="denokv-gui-client-window"
+    appId="denokv-gui-client"
+    dock="denokv-gui-client"
+    class="denokv-gui-client-window"
+    meta="v0.1.0"
+  >
+    <span slot="title">denokv-gui-client</span>
+
+    <div class="denokv-gui-client-body" data-app-body tabindex="-1">
+      <p class="denokv-gui-client-hello">Hello World</p>
+    </div>
+  </AppWindow>
+</template>

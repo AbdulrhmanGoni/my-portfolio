@@ -15,4 +15,8 @@ export {
   getActiveAppWindow,
   getAppWindow,
   initAppWindows,
+  openAppWindow,
+  registerAppWindowFactory,
 } from "./registry";
+
+export { createAppWindowFromTemplate } from "./template";

@@ -27,7 +27,18 @@ import trashIcon from "../assets/desktop/sidebar_applications/trash.webp";
     </li>
     <li><img src={vscodeIcon.src} /></li>
     <li><img src={dockerIcon.src} /></li>
-    <li><img src={denokvGuiClientIcon.src} /></li>
+    <li>
+      <button
+        id="denokv-gui-client-app"
+        type="button"
+        data-dock-app="denokv-gui-client"
+        aria-label="Denokv GUI Client"
+        aria-controls="denokv-gui-client-window"
+        aria-expanded="false"
+      >
+        <img src={denokvGuiClientIcon.src} />
+      </button>
+    </li>
     <li><img src={opencodeIcon.src} /></li>
     <li><img src={settingsIcon.src} /></li>
     <span class="separator-x"></span>

@@ -248,7 +248,7 @@ img {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 10px -2px #000000;
-  transition: transform .15s, width .1s, height .1s, top .1s, left .1s, border-color .15s;
+  transition: transform .15s, width .05s, height .05s, top .05s, left .05s, border-color .15s;
   /* Keep each window in its own stacking context so its resize handles
      (z-index: 20) cannot paint over a neighbouring window. */
   isolation: isolate;
@@ -276,6 +276,32 @@ img {
       user-select: none !important;
     }
   }
+}
+
+/* ── denokv-gui-client window ── */
+
+/* The shared window chrome fills the desktop, so an app window gives itself
+   its own geometry instead. */
+.denokv-gui-client-window {
+  left: 18%;
+  top: 18%;
+  width: 64%;
+  height: 58%;
+}
+
+.denokv-gui-client-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background);
+}
+
+.denokv-gui-client-hello {
+  margin: 0;
+  font-size: 20px;
+  color: var(--color-foreground);
 }
 
 /* ── Window resize handles ── */

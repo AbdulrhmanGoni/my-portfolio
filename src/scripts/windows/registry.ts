@@ -3,32 +3,37 @@
 
 import {
   AppWindow,
-  DEFAULT_MIN_WINDOW_HEIGHT,
-  DEFAULT_MIN_WINDOW_WIDTH,
   type AppWindowOptions,
 } from "./app-window";
+import { optionsFromElement } from "./options";
 
 const windows = new Map<string, AppWindow>();
+
+/**
+ * How to create a window that does not exist yet. Applications register a
+ * factory for the windows they open on demand.
+ */
+const factories = new Map<string, () => AppWindow | null>();
 
 let activeWindow: AppWindow | null = null;
 let frontmostWindow: AppWindow | null = null;
 let zIndex = 0;
 let viewportClampWired = false;
 
-function numberFromData(value: string | undefined, fallback: number): number {
-  const parsed = value === undefined ? Number.NaN : Number.parseFloat(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-}
-
-function booleanFromData(value: string | undefined, fallback: boolean): boolean {
-  if (value === undefined) return fallback;
-  return value !== "false";
-}
-
-function syncDockFocus(): void {
+/**
+ * Keep the dock in sync with the windows that exist.
+ *
+ * `active` marks that the app has a window open — it stays on while the
+ * window is minimized, and only goes away when the window is disposed.
+ * `is-focused` marks the window that currently has focus.
+ */
+function syncDockState(): void {
   for (const win of windows.values()) {
     const item = win.dock?.closest("li");
-    item?.classList.toggle("is-focused", win === activeWindow && !win.isMinimized);
+    if (!item) continue;
+
+    item.classList.add("active");
+    item.classList.toggle("is-focused", win === activeWindow && !win.isMinimized);
   }
 }
 
@@ -52,7 +57,7 @@ export function activateWindow(win: AppWindow): void {
   // Always raise, even when the window was already active: another window may
   // have been raised above it in the meantime.
   raiseWindow(win);
-  syncDockFocus();
+  syncDockState();
 }
 
 export function createAppWindow(options: AppWindowOptions): AppWindow {
@@ -69,17 +74,23 @@ export function createAppWindow(options: AppWindowOptions): AppWindow {
       if (minimized && frontmostWindow === changed) {
         frontmostWindow = null;
       }
-      syncDockFocus();
+      syncDockState();
     },
     onDispose: (disposed) => {
       windows.delete(disposed.id);
       if (activeWindow === disposed) activeWindow = null;
       if (frontmostWindow === disposed) frontmostWindow = null;
-      syncDockFocus();
+      // The app no longer has a window open, so the dock stops showing it.
+      disposed.dock?.closest("li")?.classList.remove("active", "is-focused");
+      syncDockState();
     },
   });
 
   windows.set(win.id, win);
+
+  // The app now has a window open, so its dock icon shows the running
+  // indicator. It stays until the window is disposed.
+  win.dock?.closest("li")?.classList.add("active");
 
   // Give every window an explicit stacking level. Without one it would sit at
   // `z-index: auto` and be buried by any window that was activated, leaving
@@ -91,6 +102,49 @@ export function createAppWindow(options: AppWindowOptions): AppWindow {
 
 export function getAppWindow(id: string): AppWindow | undefined {
   return windows.get(id);
+}
+
+/**
+ * Register how a window is created the first time it is opened. Windows that
+ * ship their markup in the page do not need a factory — the registry finds
+ * them on its own.
+ */
+export function registerAppWindowFactory(
+  id: string,
+  factory: () => AppWindow | null,
+): void {
+  factories.set(id, factory);
+}
+
+/**
+ * Open an application window.
+ *
+ * A window that already exists is brought to the front and given focus. A
+ * window that has not been created yet is created from its factory first, so
+ * an app can start out closed and only build its window once the user asks for
+ * it.
+ */
+export function openAppWindow(id: string): AppWindow | null {
+  const existing = windows.get(id);
+  if (existing) {
+    if (existing.isMinimized) {
+      existing.restore();
+    } else {
+      existing.activate();
+      existing.focus();
+    }
+    return existing;
+  }
+
+  const factory = factories.get(id);
+  if (!factory) return null;
+
+  const win = factory();
+  if (!win) return null;
+
+  activateWindow(win);
+  win.focus();
+  return win;
 }
 
 export function getActiveAppWindow(): AppWindow | null {
@@ -128,25 +182,7 @@ export function initAppWindows(): void {
     const desktop = element.closest<HTMLElement>("[data-desktop]") ?? element.parentElement;
     if (!desktop) continue;
 
-    const dockId = element.dataset.dock;
-    const dock = dockId
-      ? Array.from(document.querySelectorAll<HTMLElement>("[data-dock-app]")).find(
-          (candidate) => candidate.dataset.dockApp === dockId,
-        ) ?? null
-      : null;
-
-    createAppWindow({
-      id,
-      root: element,
-      desktop,
-      dock,
-      minWidth: numberFromData(element.dataset.minWidth, DEFAULT_MIN_WINDOW_WIDTH),
-      minHeight: numberFromData(element.dataset.minHeight, DEFAULT_MIN_WINDOW_HEIGHT),
-      draggable: booleanFromData(element.dataset.draggable, true),
-      resizable: booleanFromData(element.dataset.resizable, true),
-      minimizable: booleanFromData(element.dataset.minimizable, true),
-      maximizable: booleanFromData(element.dataset.maximizable, true),
-    });
+    createAppWindow(optionsFromElement(element, desktop));
   }
 
   wireViewportClamp();

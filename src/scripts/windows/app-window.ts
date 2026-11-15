@@ -153,6 +153,14 @@ export class AppWindow {
     this.options.onActivate?.(this);
   }
 
+  /**
+   * Move keyboard focus into the window's content. Applications that want
+   * focus to land somewhere specific set a focus target first.
+   */
+  focus(): void {
+    this.focusContent(true);
+  }
+
   minimize(): void {
     if (this.minimized || !this.minimizable || smallScreenQuery.matches) return;
 
@@ -374,6 +382,9 @@ export class AppWindow {
   dispose(): void {
     for (const cleanup of this.cleanups.splice(0)) cleanup();
     this.stateListeners.clear();
+    // Take the window off the desktop — a disposed window is gone, not left
+    // behind as an inert element.
+    this.root.remove();
     this.options.onDispose?.(this);
   }
 
