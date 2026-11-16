@@ -48,5 +48,6 @@ export function optionsFromElement(
     resizable: booleanFromData(element.dataset.resizable, true),
     minimizable: booleanFromData(element.dataset.minimizable, true),
     maximizable: booleanFromData(element.dataset.maximizable, true),
+    closable: booleanFromData(element.dataset.closable, true),
   };
 }

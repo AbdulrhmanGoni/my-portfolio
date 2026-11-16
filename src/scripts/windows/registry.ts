@@ -77,12 +77,30 @@ export function createAppWindow(options: AppWindowOptions): AppWindow {
       syncDockState();
     },
     onDispose: (disposed) => {
+      const wasActive = activeWindow === disposed;
       windows.delete(disposed.id);
       if (activeWindow === disposed) activeWindow = null;
       if (frontmostWindow === disposed) frontmostWindow = null;
       // The app no longer has a window open, so the dock stops showing it.
       disposed.dock?.closest("li")?.classList.remove("active", "is-focused");
       syncDockState();
+
+      // Closing the active window reveals the one below it. Focus stays where
+      // dispose() put it (the launcher), but the remaining window becomes the
+      // active one again.
+      if (wasActive) {
+        let next: AppWindow | null = null;
+        let nextZIndex = Number.NEGATIVE_INFINITY;
+        for (const win of windows.values()) {
+          if (win.isMinimized) continue;
+          const zIndex = Number.parseInt(win.root.style.zIndex, 10) || 0;
+          if (zIndex > nextZIndex) {
+            next = win;
+            nextZIndex = zIndex;
+          }
+        }
+        if (next) activateWindow(next);
+      }
     },
   });
 

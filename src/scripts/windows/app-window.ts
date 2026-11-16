@@ -39,6 +39,7 @@ export type AppWindowOptions = {
   resizable?: boolean;
   minimizable?: boolean;
   maximizable?: boolean;
+  closable?: boolean;
   /** Internal hook used by the registry to update stacking/active state. */
   onActivate?: (window: AppWindow) => void;
   /** Internal hook used by the registry to keep dock focus state in sync. */
@@ -79,9 +80,11 @@ export class AppWindow {
   private readonly resizable: boolean;
   private readonly minimizable: boolean;
   private readonly maximizable: boolean;
+  private readonly closable: boolean;
 
   private readonly titlebar: HTMLElement | null;
   private readonly resizeHandles: HTMLElement[];
+  private readonly closeButton: HTMLButtonElement | null;
   private readonly minButton: HTMLButtonElement | null;
   private readonly maxButton: HTMLButtonElement | null;
 
@@ -93,6 +96,7 @@ export class AppWindow {
   private maximized = false;
   private minimized = false;
   private active = false;
+  private disposed = false;
   private preMaximizeGeometry: WindowGeometry | null = null;
 
   constructor(options: AppWindowOptions) {
@@ -108,10 +112,14 @@ export class AppWindow {
     this.resizable = options.resizable !== false;
     this.minimizable = options.minimizable !== false && Boolean(this.dock);
     this.maximizable = options.maximizable !== false;
+    this.closable = options.closable !== false;
 
     this.titlebar = this.root.querySelector<HTMLElement>(".titlebar");
     this.resizeHandles = Array.from(
       this.root.querySelectorAll<HTMLElement>(".resize-handle"),
+    );
+    this.closeButton = this.root.querySelector<HTMLButtonElement>(
+      '[data-window-action="close"]',
     );
     this.minButton = this.root.querySelector<HTMLButtonElement>(
       '[data-window-action="minimize"]',
@@ -380,11 +388,22 @@ export class AppWindow {
   }
 
   dispose(): void {
+    if (this.disposed) return;
+    this.disposed = true;
+
+    // Return focus to the launcher before the focused element disappears.
+    if (this.active || this.root.contains(document.activeElement)) {
+      this.dock?.focus();
+    }
+    this.dock?.setAttribute("aria-expanded", "false");
+
     for (const cleanup of this.cleanups.splice(0)) cleanup();
     this.stateListeners.clear();
-    // Take the window off the desktop — a disposed window is gone, not left
-    // behind as an inert element.
+
+    // Removing the window also removes any embedded iframes, which destroys
+    // their browsing contexts and releases the application's JS/DOM memory.
     this.root.remove();
+
     this.options.onDispose?.(this);
   }
 
@@ -407,6 +426,14 @@ export class AppWindow {
   }
 
   private wireControls(): void {
+    if (this.closeButton) {
+      if (this.closable) {
+        this.listen(this.closeButton, "click", () => this.dispose());
+      } else {
+        this.closeButton.hidden = true;
+      }
+    }
+
     if (this.minButton) {
       this.minButton.hidden = !this.minimizable;
       if (this.minimizable) {

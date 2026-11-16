@@ -432,7 +432,7 @@ img {
 
     &.close {
       background: #ff5f57;
-      cursor: default;
+      cursor: pointer;
     }
 
     &.min {
@@ -447,6 +447,11 @@ img {
       filter: brightness(1.15);
     }
   }
+}
+
+/* Non-closable windows keep the decorative red light, not a dead button. */
+.traffic span.traffic-btn.close {
+  cursor: default;
 }
 
 /* ── Body split ── */

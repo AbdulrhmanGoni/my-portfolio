@@ -32,6 +32,12 @@ interface Props {
   minimizable?: boolean;
   /** Whether the window can be maximized to fill the desktop. */
   maximizable?: boolean;
+  /**
+   * Whether the window can be closed and disposed. Windows that are recreated
+   * from a template can be closed and reopened; windows without a factory
+   * should opt out.
+   */
+  closable?: boolean;
 }
 
 const {
@@ -46,6 +52,7 @@ const {
   resizable,
   minimizable,
   maximizable,
+  closable,
 } = Astro.props;
 ---
 
@@ -61,10 +68,23 @@ const {
   data-resizable={String(resizable !== false)}
   data-minimizable={String(minimizable !== false)}
   data-maximizable={String(maximizable !== false)}
+  data-closable={String(closable !== false)}
 >
   <header class="titlebar">
     <div class="traffic" role="group" aria-label="window controls">
-      <span class="traffic-btn close" aria-hidden="true"></span>
+      {
+        closable !== false ? (
+          <button
+            class="traffic-btn close"
+            data-window-action="close"
+            title="close"
+            aria-label="Close"
+            aria-controls={id}
+          />
+        ) : (
+          <span class="traffic-btn close" aria-hidden="true" />
+        )
+      }
       <button
         class="traffic-btn min"
         data-window-action="minimize"
