@@ -129,6 +129,7 @@ export class AppWindow {
     );
 
     this.wireActivation();
+    this.wireEmbeddedFrameActivation();
     this.wireDrag();
     this.wireResize();
     this.wireControls();
@@ -495,6 +496,54 @@ export class AppWindow {
     this.listen<FocusEvent>(this.root, "focusin", () => {
       this.activate();
     });
+  }
+
+  /**
+   * Pointer events inside an iframe belong to the frame's own document and
+   * never reach this one, and moving focus into a frame fires no focusin on
+   * the frame element, so clicking embedded app content would not activate the
+   * window. Bridge pointerdown from same-origin frames back to the window.
+   * Cross-origin frames cannot be instrumented and are ignored.
+   */
+  private wireEmbeddedFrameActivation(): void {
+    for (const frame of this.root.querySelectorAll<HTMLIFrameElement>("iframe")) {
+      const bridgedDocuments = new WeakSet<Document>();
+      let detachDocument: (() => void) | null = null;
+
+      const bridge = () => {
+        let frameDocument: Document | null = null;
+
+        try {
+          frameDocument = frame.contentDocument;
+        } catch {
+          return;
+        }
+
+        if (!frameDocument || bridgedDocuments.has(frameDocument)) return;
+        bridgedDocuments.add(frameDocument);
+
+        // Drop the listener on the previous document when the frame navigates.
+        detachDocument?.();
+
+        const onPointerDown = () => this.activate();
+        frameDocument.addEventListener("pointerdown", onPointerDown, {
+          capture: true,
+        });
+        detachDocument = () => {
+          frameDocument.removeEventListener("pointerdown", onPointerDown, {
+            capture: true,
+          });
+          detachDocument = null;
+        };
+      };
+
+      // Navigation creates a fresh document and drops listeners on the old one.
+      this.listen(frame, "load", bridge);
+      // Do not leave a listener on the frame's document when the window is
+      // disposed, even if the frame's browsing context is still alive.
+      this.cleanups.push(() => detachDocument?.());
+      bridge();
+    }
   }
 
   private wireDrag(): void {
