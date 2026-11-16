@@ -17,9 +17,9 @@ if (template && desktop) {
     const win = createAppWindowFromTemplate(template, desktop);
     if (!win) return null;
 
-    // Focus the body of the app so it is ready for keyboard input.
-    const body = win.root.querySelector<HTMLElement>("[data-app-body]");
-    win.setFocusTarget(() => body);
+    // Focus the embedded app so it is ready for keyboard input.
+    const frame = win.root.querySelector<HTMLIFrameElement>("iframe");
+    win.setFocusTarget(() => frame);
 
     return win;
   });

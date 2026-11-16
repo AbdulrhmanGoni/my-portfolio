@@ -1,5 +1,10 @@
 ---
 import AppWindow from "./AppWindow.astro";
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const clientUrl = `${base}denokv-gui-client`;
 ---
 
 <!--
@@ -16,8 +21,12 @@ import AppWindow from "./AppWindow.astro";
   >
     <span slot="title">denokv-gui-client</span>
 
-    <div class="denokv-gui-client-body" data-app-body tabindex="-1">
-      <p class="denokv-gui-client-hello">Hello World</p>
-    </div>
+    <iframe
+      class="denokv-gui-client-frame"
+      src={clientUrl}
+      title="denokv-gui-client"
+      loading="lazy"
+    >
+    </iframe>
   </AppWindow>
 </template>

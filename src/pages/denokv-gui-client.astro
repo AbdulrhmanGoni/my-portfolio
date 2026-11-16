@@ -1,0 +1,26 @@
+---
+import DenokvGuiClientApp from "../components/denokv-gui-client/DenokvGuiClientApp.svelte";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>denokv-gui-client</title>
+  </head>
+  <body>
+    <DenokvGuiClientApp client:only="svelte" />
+  </body>
+</html>
+
+<style is:global>
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #08090b;
+  }
+</style>

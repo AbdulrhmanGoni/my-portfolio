@@ -289,19 +289,12 @@ img {
   height: 58%;
 }
 
-.denokv-gui-client-body {
+.denokv-gui-client-frame {
   flex: 1;
+  width: 100%;
   min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 0;
   background: var(--color-background);
-}
-
-.denokv-gui-client-hello {
-  margin: 0;
-  font-size: 20px;
-  color: var(--color-foreground);
 }
 
 /* ── Window resize handles ── */
