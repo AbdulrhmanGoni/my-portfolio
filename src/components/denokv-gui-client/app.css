@@ -1,23 +1,25 @@
 /*
  * Theme for the denokv-gui-client window.
  *
- * The values mirror the dark theme tokens of the real application
- * (packages/renderer/src/app.css in the Denokv-GUI-Client repository), so the
- * recreated window keeps the same colors, radii and typography.
+ * The values mirror the theme tokens of the real application
+ * (packages/renderer/src/app.css in the Denokv-GUI-Client repository). Light is
+ * the default scheme; the `.dark` class on the root switches to the dark
+ * palette. The selected theme is applied before the app hydrates, so there is
+ * no flash when the window opens.
  */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
   --radius: 0.65rem;
 
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(0.96 0 1);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.55 0.25 262.87);
   --secondary-foreground: oklch(0.98 0.02719 267.552);
   --secondary-1: oklch(67.587% 0.21745 38.79);
@@ -26,11 +28,30 @@
   --secondary-2-foreground: oklch(99.229% 0.01061 190.435);
   --secondary-3: oklch(55.971% 0.29576 301.912);
   --secondary-3-foreground: oklch(96.916% 0.02087 313.63);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.475 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(62.793% 0.25768 29.223);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+:root.dark {
+  color-scheme: dark;
+
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(62.793% 0.25768 29.223);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);

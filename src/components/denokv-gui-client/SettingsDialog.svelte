@@ -8,8 +8,10 @@
   import HardwareAccelerationSetting from "./HardwareAccelerationSetting.svelte";
   import UpdateAppSetting from "./UpdateAppSetting.svelte";
   import {
+    applyTheme,
     loadAppSettings,
     saveAppSettings,
+    SYSTEM_THEME_QUERY,
     type AppSettings,
     type ThemePreference,
   } from "./settings";
@@ -32,6 +34,20 @@
     } else if (dialogElement.open) {
       dialogElement.close();
     }
+  });
+
+  $effect(() => {
+    const theme = settings.theme;
+
+    applyTheme(theme);
+
+    if (theme !== "system") return;
+
+    const systemTheme = window.matchMedia(SYSTEM_THEME_QUERY);
+    const handleSystemThemeChange = () => applyTheme("system");
+
+    systemTheme.addEventListener("change", handleSystemThemeChange);
+    return () => systemTheme.removeEventListener("change", handleSystemThemeChange);
   });
 
   function setAutoCheckForUpdate(value: boolean) {

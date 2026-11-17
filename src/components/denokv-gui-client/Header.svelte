@@ -36,9 +36,9 @@
     width: 40px;
     height: 40px;
     padding: 6px;
-    border: 1px solid var(--input);
+    border: 1px solid var(--border);
     border-radius: calc(var(--radius) - 2px);
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    background: var(--background);
     color: var(--foreground);
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     cursor: pointer;
@@ -49,7 +49,18 @@
   }
 
   .settings-button:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  :global(.dark) .settings-button {
+    border-color: var(--input);
+    background: color-mix(in oklab, var(--input) 30%, transparent);
+  }
+
+  :global(.dark) .settings-button:hover {
     background: color-mix(in oklab, var(--input) 50%, transparent);
+    color: var(--foreground);
   }
 
   .settings-button:focus-visible {

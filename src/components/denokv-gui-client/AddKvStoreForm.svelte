@@ -437,7 +437,7 @@
     height: 36px;
     border: 1px solid var(--input);
     border-radius: calc(var(--radius) - 2px);
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    background: var(--background);
     color: var(--foreground);
     font-size: 14px;
     font-weight: 400;
@@ -445,6 +445,12 @@
     transition:
       border-color 0.15s,
       box-shadow 0.15s;
+  }
+
+  :global(.dark) .text-input,
+  :global(.dark) .select-input,
+  :global(.dark) .input-group {
+    background: color-mix(in oklab, var(--input) 30%, transparent);
   }
 
   .text-input {
@@ -569,7 +575,7 @@
     appearance: none;
     border: 1px solid var(--input);
     border-radius: 4px;
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    background: transparent;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     cursor: pointer;
     outline: none;
@@ -577,6 +583,10 @@
       background-color 0.15s,
       border-color 0.15s,
       box-shadow 0.15s;
+  }
+
+  :global(.dark) .checkbox-input {
+    background: color-mix(in oklab, var(--input) 30%, transparent);
   }
 
   .checkbox-input:checked {
@@ -662,13 +672,24 @@
   }
 
   .button-outline {
-    border: 1px solid var(--input);
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    border: 1px solid var(--border);
+    background: var(--background);
     color: var(--foreground);
   }
 
   .button-outline:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  :global(.dark) .button-outline {
+    border-color: var(--input);
+    background: color-mix(in oklab, var(--input) 30%, transparent);
+  }
+
+  :global(.dark) .button-outline:hover {
     background: color-mix(in oklab, var(--input) 50%, transparent);
+    color: var(--foreground);
   }
 
   .button-connection {

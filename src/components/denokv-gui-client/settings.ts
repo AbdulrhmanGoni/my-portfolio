@@ -1,10 +1,13 @@
 // Settings for the recreated denokv-gui-client window.
 //
 // The real application stores these preferences in its SQLite database. The
-// portfolio has no backend, so the values live in localStorage and every
-// control is intentionally inert: they only remember their selection.
+// portfolio has no backend, so the values live in localStorage. The theme is
+// applied to the window; the update and hardware controls stay inert and only
+// remember their selection.
 
 export type ThemePreference = "dark" | "light" | "system";
+
+export type ResolvedTheme = "dark" | "light";
 
 export type AppSettings = {
   autoCheckForUpdate: boolean;
@@ -13,6 +16,8 @@ export type AppSettings = {
 };
 
 export const APP_SETTINGS_STORAGE_KEY = "denokv-gui-client:settings";
+
+export const SYSTEM_THEME_QUERY = "(prefers-color-scheme: dark)";
 
 const themePreferences: ThemePreference[] = ["dark", "light", "system"];
 
@@ -24,6 +29,23 @@ const defaultSettings: AppSettings = {
 
 function isThemePreference(value: unknown): value is ThemePreference {
   return themePreferences.includes(value as ThemePreference);
+}
+
+export function resolveTheme(theme: ThemePreference): ResolvedTheme {
+  if (theme !== "system") return theme;
+
+  if (typeof window === "undefined" || !window.matchMedia) return "dark";
+
+  return window.matchMedia(SYSTEM_THEME_QUERY).matches ? "dark" : "light";
+}
+
+export function applyTheme(theme: ThemePreference): void {
+  if (typeof document === "undefined") return;
+
+  const resolvedTheme = resolveTheme(theme);
+
+  document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+  document.documentElement.style.colorScheme = resolvedTheme;
 }
 
 export function loadAppSettings(): AppSettings {

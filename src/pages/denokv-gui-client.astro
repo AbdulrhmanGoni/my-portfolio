@@ -4,12 +4,46 @@ import "../components/denokv-gui-client/app.css";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="dark light" />
     <title>denokv-gui-client</title>
+    <script is:inline>
+      // Apply the saved theme before the app renders to avoid a flash of the
+      // wrong color scheme. Keep the storage key in sync with settings.ts.
+      (() => {
+        let theme = "dark";
+
+        try {
+          const storedSettings = localStorage.getItem(
+            "denokv-gui-client:settings",
+          );
+          const parsedSettings = storedSettings
+            ? JSON.parse(storedSettings)
+            : null;
+
+          if (
+            parsedSettings?.theme === "dark" ||
+            parsedSettings?.theme === "light" ||
+            parsedSettings?.theme === "system"
+          ) {
+            theme = parsedSettings.theme;
+          }
+        } catch {
+          // Fall back to the dark theme when storage is unavailable.
+        }
+
+        const isDark =
+          theme === "dark" ||
+          (theme === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+        document.documentElement.classList.toggle("dark", isDark);
+        document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+      })();
+    </script>
   </head>
   <body>
     <DenokvGuiClientApp client:only="svelte" />

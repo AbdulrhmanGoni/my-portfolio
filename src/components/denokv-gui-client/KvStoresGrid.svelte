@@ -246,11 +246,15 @@
     height: 36px;
     border: 1px solid var(--input);
     border-radius: calc(var(--radius) - 2px);
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    background: var(--background);
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     transition:
       border-color 0.15s,
       box-shadow 0.15s;
+  }
+
+  :global(.dark) .name-filter {
+    background: color-mix(in oklab, var(--input) 30%, transparent);
   }
 
   .name-filter:focus-within {
@@ -377,9 +381,9 @@
   .outline-button {
     height: 36px;
     padding: 0 16px;
-    border: 1px solid var(--input);
+    border: 1px solid var(--border);
     border-radius: calc(var(--radius) - 2px);
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    background: var(--background);
     color: var(--foreground);
     font-size: 14px;
     font-weight: 500;
@@ -389,7 +393,18 @@
   }
 
   .outline-button:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  :global(.dark) .outline-button {
+    border-color: var(--input);
+    background: color-mix(in oklab, var(--input) 30%, transparent);
+  }
+
+  :global(.dark) .outline-button:hover {
     background: color-mix(in oklab, var(--input) 50%, transparent);
+    color: var(--foreground);
   }
 
   @media (max-width: 639px) {

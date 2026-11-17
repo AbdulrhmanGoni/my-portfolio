@@ -85,10 +85,14 @@
     padding: 0;
     border: 1px solid transparent;
     border-radius: 9999px;
-    background: color-mix(in oklab, var(--input) 80%, transparent);
+    background: var(--input);
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     cursor: pointer;
     transition: background-color 0.15s;
+  }
+
+  :global(.dark) .switch {
+    background: color-mix(in oklab, var(--input) 80%, transparent);
   }
 
   .switch.checked {

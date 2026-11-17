@@ -91,7 +91,7 @@
     border: 1px solid transparent;
     border-radius: calc(var(--radius) - 2px);
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--foreground);
     font-size: 14px;
     font-weight: 500;
     white-space: nowrap;
@@ -104,10 +104,19 @@
   }
 
   .theme-tab.active {
-    border-color: var(--input);
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    border-color: transparent;
+    background: var(--background);
     color: var(--foreground);
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  :global(.dark) .theme-tab {
+    color: var(--muted-foreground);
+  }
+
+  :global(.dark) .theme-tab.active {
+    border-color: var(--input);
+    background: color-mix(in oklab, var(--input) 30%, transparent);
   }
 
   .theme-tab:focus-visible {

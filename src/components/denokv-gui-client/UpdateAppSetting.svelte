@@ -167,12 +167,16 @@
     height: 16px;
     border: 1px solid var(--input);
     border-radius: 4px;
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    background: transparent;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     transition:
       background-color 0.15s,
       border-color 0.15s,
       box-shadow 0.15s;
+  }
+
+  :global(.dark) .checkbox-box {
+    background: color-mix(in oklab, var(--input) 30%, transparent);
   }
 
   .checkbox-box.checked {
