@@ -1,5 +1,6 @@
 ---
 import DenokvGuiClientApp from "../components/denokv-gui-client/DenokvGuiClientApp.svelte";
+import "../components/denokv-gui-client/app.css";
 ---
 
 <!doctype html>
@@ -14,13 +15,3 @@ import DenokvGuiClientApp from "../components/denokv-gui-client/DenokvGuiClientA
     <DenokvGuiClientApp client:only="svelte" />
   </body>
 </html>
-
-<style is:global>
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
-    background: #08090b;
-  }
-</style>
