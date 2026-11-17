@@ -236,10 +236,21 @@ img {
 
 .app-window {
   position: absolute;
-  left: var(--window-gap);
-  top: var(--window-gap);
-  width: calc(100% - var(--window-gap) * 2);
-  height: calc(100% - var(--window-gap) * 2);
+
+  /* Preferred initial size, declared per app as CSS custom properties. min()
+     clamps it to the desktop, so a window on a smaller screen fills the
+     available area instead of overflowing. Windows that declare no size keep
+     filling the desktop. Inline left/top/width/height written by drag, resize
+     and maximize still override these values. */
+  --window-box-width: min(var(--window-initial-width, 100%),
+      calc(100% - var(--window-gap) * 2));
+  --window-box-height: min(var(--window-initial-height, 100%),
+      calc(100% - var(--window-gap) * 2));
+
+  left: calc((100% - var(--window-box-width)) / 2);
+  top: calc((100% - var(--window-box-height)) / 2);
+  width: var(--window-box-width);
+  height: var(--window-box-height);
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -279,15 +290,6 @@ img {
 }
 
 /* ── denokv-gui-client window ── */
-
-/* The shared window chrome fills the desktop, so an app window gives itself
-   its own geometry instead. */
-.denokv-gui-client-window {
-  left: 18%;
-  top: 18%;
-  width: 64%;
-  height: 58%;
-}
 
 .denokv-gui-client-frame {
   flex: 1;

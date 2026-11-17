@@ -4,7 +4,9 @@
 //
 // Feature flags are written to the element as data attributes and read back by
 // the window registry, so they must stay in sync with the values the registry
-// expects (see src/scripts/windows/registry.ts).
+// expects (see src/scripts/windows/registry.ts). The preferred initial size is
+// written as CSS custom properties instead: the stylesheet needs it before any
+// script runs, so the window never flashes at the wrong size.
 interface Props {
   /** DOM id of the window element. */
   id: string;
@@ -24,6 +26,16 @@ interface Props {
   minWidth?: number;
   /** Smallest height the window may be resized to, in pixels. */
   minHeight?: number;
+  /**
+   * Desired initial width in pixels. The window opens centered and shrinks to
+   * the available desktop width when the desktop is smaller than this.
+   */
+  initialWidth?: number;
+  /**
+   * Desired initial height in pixels. The window opens centered and shrinks to
+   * the available desktop height when the desktop is smaller than this.
+   */
+  initialHeight?: number;
   /** Whether the titlebar can be dragged to move the window. */
   draggable?: boolean;
   /** Whether the window can be resized from its edges and corners. */
@@ -48,17 +60,28 @@ const {
   meta,
   minWidth,
   minHeight,
+  initialWidth,
+  initialHeight,
   draggable,
   resizable,
   minimizable,
   maximizable,
   closable,
 } = Astro.props;
+
+// Inline custom properties, so the preferred size applies from the first paint.
+const initialSizeStyle = [
+  initialWidth !== undefined && `--window-initial-width: ${initialWidth}px;`,
+  initialHeight !== undefined && `--window-initial-height: ${initialHeight}px;`,
+]
+  .filter(Boolean)
+  .join(" ");
 ---
 
 <div
   id={id}
   class:list={["app-window", className]}
+  style={initialSizeStyle || undefined}
   data-app-window
   data-app-id={appId}
   data-dock={dock}
