@@ -2,8 +2,6 @@
   import ArrowLeftIcon from "@lucide/svelte/icons/arrow-left";
   import CheckIcon from "@lucide/svelte/icons/check";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
-  import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
-  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import DatabaseIcon from "@lucide/svelte/icons/database";
   import DatabasePlusIcon from "@lucide/svelte/icons/database-plus";
   import PlugZapIcon from "@lucide/svelte/icons/plug-zap";
@@ -22,11 +20,6 @@
     onSubmit: (input: CreateKvStoreInput) => void;
   } = $props();
 
-  type ConnectionStatus = {
-    kind: "success" | "error";
-    message: string;
-  };
-
   let kvStoreName = $state("");
   let selectedType = $state<CreatableKvStoreType | "">("");
   let kvStoreUrl = $state("");
@@ -35,7 +28,6 @@
   let localKvFileName = $state("kv.sqlite3");
   let localKvDirectory = $state("");
   let replaceExisting = $state(false);
-  let connectionStatus = $state<ConnectionStatus | null>(null);
 
   const isLocalStore = $derived(selectedType === "local");
   const isRemoteStore = $derived(selectedType === "remote");
@@ -43,10 +35,6 @@
   const localKvUrl = $derived(
     joinLocalKvPath(localKvDirectory, localKvFileName),
   );
-
-  function clearConnectionStatus() {
-    connectionStatus = null;
-  }
 
   function handleTypeChange(event: Event) {
     const value = (event.currentTarget as HTMLSelectElement).value;
@@ -57,67 +45,14 @@
     }
 
     selectedType = value;
-    connectionStatus = null;
-  }
-
-  function isValidHttpUrl(value: string): boolean {
-    try {
-      const url = new URL(value);
-      return url.protocol === "http:" || url.protocol === "https:";
-    } catch {
-      return false;
-    }
-  }
-
-  function testConnection() {
-    if (!selectedType) {
-      connectionStatus = {
-        kind: "error",
-        message: "Select the Kv Store type first.",
-      };
-      return;
-    }
-
-    if (selectedType === "local") {
-      if (!localKvDirectory.trim() || !localKvFileName.trim()) {
-        connectionStatus = {
-          kind: "error",
-          message: "Enter the Kv Store file name and directory first.",
-        };
-        return;
-      }
-    } else {
-      if (!kvStoreUrl.trim()) {
-        connectionStatus = {
-          kind: "error",
-          message: "Please enter the URL of the Kv Store first.",
-        };
-        return;
-      }
-
-      if (!isValidHttpUrl(kvStoreUrl.trim())) {
-        connectionStatus = {
-          kind: "error",
-          message: "Please enter a valid HTTP URL to your Kv Store server.",
-        };
-        return;
-      }
-    }
-
-    connectionStatus = {
-      kind: "success",
-      message: "Connection test successful. The Kv Store is reachable.",
-    };
   }
 
   function pickLocalFileName() {
     localKvFileName = "kv.sqlite3";
-    connectionStatus = null;
   }
 
   function pickLocalDirectory() {
     localKvDirectory = "/home/user/denokv";
-    connectionStatus = null;
   }
 
   function handleSubmit(
@@ -137,11 +72,7 @@
   }
 </script>
 
-<form
-  class="add-kv-store-form"
-  onsubmit={handleSubmit}
-  oninput={clearConnectionStatus}
->
+<form class="add-kv-store-form" onsubmit={handleSubmit}>
   <h1 class="form-title">
     <DatabaseIcon size={24} />
     Add KV Store
@@ -325,25 +256,6 @@
   </div>
 
   <div class="form-actions">
-    {#if connectionStatus}
-      <p
-        class="connection-status {connectionStatus.kind}"
-        role="status"
-        aria-live="polite"
-      >
-        {#if connectionStatus.kind === "success"}
-          <span class="status-icon" aria-hidden="true">
-            <CircleCheckIcon size={16} />
-          </span>
-        {:else}
-          <span class="status-icon" aria-hidden="true">
-            <CircleAlertIcon size={16} />
-          </span>
-        {/if}
-        {connectionStatus.message}
-      </p>
-    {/if}
-
     <div class="form-buttons">
       <button class="button button-outline" type="button" onclick={onBack}>
         <ArrowLeftIcon size={16} />
@@ -352,7 +264,7 @@
       <button
         class="button button-connection"
         type="button"
-        onclick={testConnection}
+        title="Not available in this demo"
       >
         Test Connection
         <PlugZapIcon size={16} />
@@ -708,33 +620,6 @@
 
   .button-primary:hover {
     background: color-mix(in oklab, var(--primary) 90%, transparent);
-  }
-
-  .connection-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-    margin: 0;
-    padding: 7px 10px;
-    border: 1px solid color-mix(in oklab, currentColor 30%, transparent);
-    border-radius: calc(var(--radius) - 2px);
-    background: color-mix(in oklab, currentColor 8%, transparent);
-    font-size: 13px;
-    line-height: 1.35;
-  }
-
-  .status-icon {
-    display: inline-flex;
-    flex-shrink: 0;
-  }
-
-  .connection-status.success {
-    color: var(--secondary-2);
-  }
-
-  .connection-status.error {
-    color: var(--destructive);
   }
 
   @media (max-width: 639px) {
