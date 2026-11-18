@@ -2,18 +2,27 @@
   import SettingsIcon from "@lucide/svelte/icons/settings";
   import appLogo from "../../assets/desktop/sidebar_applications/denokv-gui-client.webp";
 
-  let { onOpenSettings }: { onOpenSettings: () => void } = $props();
+  let {
+    hasUpdate = false,
+    onOpenSettings,
+  }: {
+    hasUpdate?: boolean;
+    onOpenSettings: () => void;
+  } = $props();
 </script>
 
 <header class="app-header">
   <button
     class="settings-button"
     type="button"
-    aria-label="Settings"
-    title="Settings"
+    aria-label={hasUpdate ? "Settings (new update available)" : "Settings"}
+    title={hasUpdate ? "Settings — new update available" : "Settings"}
     onclick={onOpenSettings}
   >
     <SettingsIcon size={24} />
+    {#if hasUpdate}
+      <span class="update-dot" aria-hidden="true"></span>
+    {/if}
   </button>
 
   <img class="app-logo" src={appLogo.src} alt="denokv-gui-client" />
@@ -30,6 +39,7 @@
   }
 
   .settings-button {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -67,6 +77,16 @@
     border-color: var(--ring);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
     outline: none;
+  }
+
+  .update-dot {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--destructive);
   }
 
   .app-logo {

@@ -1,6 +1,12 @@
 ---
 import DenokvGuiClientApp from "../components/denokv-gui-client/DenokvGuiClientApp.svelte";
+import type { DenokvReleaseInfo } from "../components/denokv-gui-client/release-info";
+import releaseInfoJson from "../data/denokv-gui-client-release.json";
 import "../components/denokv-gui-client/app.css";
+
+// The snapshot is read once at build time and passed to the app as props, so
+// the generated page contains the release data instead of loading it at runtime.
+const releaseInfo = releaseInfoJson as DenokvReleaseInfo;
 ---
 
 <!doctype html>
@@ -46,6 +52,6 @@ import "../components/denokv-gui-client/app.css";
     </script>
   </head>
   <body>
-    <DenokvGuiClientApp client:only="svelte" />
+    <DenokvGuiClientApp client:only="svelte" {releaseInfo} />
   </body>
 </html>

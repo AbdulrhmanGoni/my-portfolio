@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "app": {
+    "name": "denokv-gui-client",
+    "version": "1.32.0",
+    "tag": "v1.32.0",
+    "repository": "https://github.com/AbdulrhmanGoni/denokv-gui-client",
+    "publishedAt": "2026-09-19T16:25:57Z",
+    "releaseUrl": "https://github.com/AbdulrhmanGoni/denokv-gui-client/releases/tag/v1.32.0"
+  },
+  "runtime": {
+    "electron": "44.3.0",
+    "node": "24.20.0",
+    "chromium": "152.0.7977.78"
+  }
+}

@@ -1,41 +1,113 @@
 <script lang="ts">
   import CheckIcon from "@lucide/svelte/icons/check";
+  import DownloadIcon from "@lucide/svelte/icons/download";
   import HardDriveDownloadIcon from "@lucide/svelte/icons/hard-drive-download";
+  import LoaderIcon from "@lucide/svelte/icons/loader";
   import NotesIcon from "@lucide/svelte/icons/notepad-text";
   import SearchCheckIcon from "@lucide/svelte/icons/search-check";
+  import { formatTimeAgo } from "./format-time-ago";
+  import type { DenokvReleaseInfo } from "./release-info";
+  import { checkForUpdates, updateState } from "./update-state.svelte";
 
   let {
+    releaseInfo,
     autoCheckForUpdate,
     onAutoCheckForUpdateChange,
   }: {
+    releaseInfo: DenokvReleaseInfo;
     autoCheckForUpdate: boolean;
     onAutoCheckForUpdateChange: (value: boolean) => void;
   } = $props();
 
-  // Static metadata mirrored from the real application.
-  const appVersion = "1.32.1";
+  const appVersion = $derived(releaseInfo.app.version);
+  const newUpdate = $derived(
+    updateState.result?.hasUpdate ? updateState.result : null,
+  );
+
+  function handleCheckForUpdate() {
+    void checkForUpdates(releaseInfo, { force: true });
+  }
 </script>
 
 <div class="update-setting">
   <h3 class="section-title">
     <HardDriveDownloadIcon size={24} />
     App Update
+    {#if newUpdate}
+      <span class="update-dot" aria-hidden="true"></span>
+    {/if}
   </h3>
 
   <div class="current-version">
     <p class="current-version-text">
       Current Version: <span>v{appVersion}</span>
     </p>
-    <button class="notes-button" type="button">
+    <a
+      class="notes-button"
+      href={releaseInfo.app.releaseUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Open release notes on GitHub"
+    >
       <NotesIcon size={16} />
       Notes
-    </button>
+    </a>
   </div>
 
-  <button class="check-button" type="button">
-    Check for update
-    <SearchCheckIcon size={16} />
-  </button>
+  <div class="update-status" aria-live="polite">
+    {#if updateState.errorMessage}
+      <p class="error-text">{updateState.errorMessage}</p>
+    {:else if newUpdate}
+      <p>
+        New version is available:
+        <span class="strong">v{newUpdate.latestVersion}</span>
+        {#if newUpdate.latestPublishedAt}
+          (<span>{formatTimeAgo(newUpdate.latestPublishedAt)}</span>)
+        {/if}
+      </p>
+    {:else if updateState.result}
+      <p class="muted-text">No new version is available</p>
+    {/if}
+  </div>
+
+  {#if newUpdate}
+    <div class="update-actions">
+      <button
+        class="download-button"
+        type="button"
+        title="Not available in this demo"
+      >
+        Download Update
+        <DownloadIcon size={16} />
+      </button>
+      {#if newUpdate.latestReleaseUrl}
+        <a
+          class="notes-outline-button"
+          href={newUpdate.latestReleaseUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          See Release Notes
+          <NotesIcon size={16} />
+        </a>
+      {/if}
+    </div>
+  {:else}
+    <button
+      class="check-button"
+      type="button"
+      disabled={updateState.checking}
+      onclick={handleCheckForUpdate}
+    >
+      {#if updateState.checking}
+        Checking for update
+        <span class="spinner"><LoaderIcon size={16} /></span>
+      {:else}
+        Check for update
+        <SearchCheckIcon size={16} />
+      {/if}
+    </button>
+  {/if}
 
   <label class="checkbox-row">
     <span class="checkbox-box" class:checked={autoCheckForUpdate}>
@@ -75,6 +147,16 @@
     line-height: 28px;
   }
 
+  .update-dot {
+    width: 8px;
+    height: 8px;
+    margin-inline-start: -4px;
+    margin-top: 2px;
+    align-self: flex-start;
+    border-radius: 50%;
+    background: var(--destructive);
+  }
+
   .current-version {
     display: flex;
     align-items: center;
@@ -111,6 +193,7 @@
     font-weight: 500;
     white-space: nowrap;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    text-decoration: none;
     cursor: pointer;
     transition: background-color 0.15s;
   }
@@ -120,12 +203,44 @@
   }
 
   .notes-button:focus-visible,
-  .check-button:focus-visible {
+  .check-button:focus-visible,
+  .download-button:focus-visible,
+  .notes-outline-button:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
   }
 
-  .check-button {
+  .update-status {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .update-status:empty {
+    display: none;
+  }
+
+  .update-status .strong {
+    font-weight: 600;
+  }
+
+  .muted-text {
+    color: var(--muted-foreground);
+    font-style: italic;
+  }
+
+  .error-text {
+    color: var(--destructive);
+  }
+
+  .update-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .check-button,
+  .download-button,
+  .notes-outline-button {
     display: inline-flex;
     align-self: flex-start;
     align-items: center;
@@ -135,18 +250,54 @@
     padding: 0 10px;
     border: 0;
     border-radius: calc(var(--radius) - 2px);
-    background: var(--secondary-2);
-    color: var(--secondary-2-foreground);
     font-size: 14px;
     font-weight: 500;
     white-space: nowrap;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
   }
 
-  .check-button:hover {
+  .check-button {
+    background: var(--secondary-2);
+    color: var(--secondary-2-foreground);
+  }
+
+  .check-button:hover:not(:disabled) {
     background: color-mix(in oklab, var(--secondary-2) 80%, transparent);
+  }
+
+  .check-button:disabled {
+    cursor: progress;
+    opacity: 0.75;
+  }
+
+  .spinner {
+    display: inline-flex;
+    animation: spin 1s linear infinite;
+  }
+
+  .download-button {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .download-button:hover {
+    background: color-mix(in oklab, var(--primary) 90%, transparent);
+  }
+
+  .notes-outline-button {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--foreground);
+  }
+
+  .notes-outline-button:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
 
   .checkbox-row {
@@ -211,5 +362,11 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 1;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>

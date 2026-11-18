@@ -3,6 +3,13 @@
   import Header from "./Header.svelte";
   import KvStoresGrid from "./KvStoresGrid.svelte";
   import SettingsDialog from "./SettingsDialog.svelte";
+  import type { DenokvReleaseInfo } from "./release-info";
+  import { loadAppSettings } from "./settings";
+  import {
+    cancelUpdateCheck,
+    checkForUpdates,
+    updateState,
+  } from "./update-state.svelte";
   import {
     createKvStore,
     loadKvStores,
@@ -11,9 +18,22 @@
     type KvStore,
   } from "./kv-stores";
 
+  let { releaseInfo }: { releaseInfo: DenokvReleaseInfo } = $props();
+
   let kvStores = $state<KvStore[]>(loadKvStores());
   let openedView = $state<"kv-stores" | "add-kv-store">("kv-stores");
   let settingsOpen = $state(false);
+
+  // Mirrors the real application's startup check: run silently in the
+  // background when the preference is enabled, and let the header dot announce
+  // the result.
+  $effect(() => {
+    if (!loadAppSettings().autoCheckForUpdate) return;
+
+    void checkForUpdates(releaseInfo);
+
+    return () => cancelUpdateCheck();
+  });
 
   function openAddKvStoreForm() {
     openedView = "add-kv-store";
@@ -33,7 +53,10 @@
 </script>
 
 <main class="denokv-app">
-  <Header onOpenSettings={() => (settingsOpen = true)} />
+  <Header
+    hasUpdate={updateState.result?.hasUpdate ?? false}
+    onOpenSettings={() => (settingsOpen = true)}
+  />
 
   <div class="denokv-app-content">
     {#if openedView === "add-kv-store"}
@@ -46,7 +69,11 @@
     {/if}
   </div>
 
-  <SettingsDialog open={settingsOpen} onClose={() => (settingsOpen = false)} />
+  <SettingsDialog
+    open={settingsOpen}
+    {releaseInfo}
+    onClose={() => (settingsOpen = false)}
+  />
 </main>
 
 <style>

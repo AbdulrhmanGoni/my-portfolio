@@ -7,6 +7,7 @@
   import AppThemeSetting from "./AppThemeSetting.svelte";
   import HardwareAccelerationSetting from "./HardwareAccelerationSetting.svelte";
   import UpdateAppSetting from "./UpdateAppSetting.svelte";
+  import type { DenokvReleaseInfo } from "./release-info";
   import {
     applyTheme,
     loadAppSettings,
@@ -16,12 +17,15 @@
     type ThemePreference,
   } from "./settings";
 
-  let { open, onClose }: { open: boolean; onClose: () => void } = $props();
-
-  // Static runtime metadata mirrored from the real application.
-  const electronVersion = "45.2.1";
-  const nodeVersion = "24.22.1";
-  const chromiumVersion = "156.0.8078.75";
+  let {
+    open,
+    releaseInfo,
+    onClose,
+  }: {
+    open: boolean;
+    releaseInfo: DenokvReleaseInfo;
+    onClose: () => void;
+  } = $props();
 
   let dialogElement = $state<HTMLDialogElement>();
   let settings = $state<AppSettings>(loadAppSettings());
@@ -99,6 +103,7 @@
       <div class="settings-body">
         <div class="settings-grid">
           <UpdateAppSetting
+            {releaseInfo}
             autoCheckForUpdate={settings.autoCheckForUpdate}
             onAutoCheckForUpdateChange={setAutoCheckForUpdate}
           />
@@ -125,7 +130,7 @@
             />
             Electron:
           </span>
-          v{electronVersion}
+          v{releaseInfo.runtime.electron}
         </span>
         <span class="version-separator"></span>
         <span class="version-item">
@@ -133,7 +138,7 @@
             <img class="version-logo" src={nodeLogo.src} alt="Node Logo" />
             Node:
           </span>
-          v{nodeVersion}
+          v{releaseInfo.runtime.node}
         </span>
         <span class="version-separator"></span>
         <span class="version-item">
@@ -145,7 +150,7 @@
             />
             Chromium:
           </span>
-          v{chromiumVersion}
+          v{releaseInfo.runtime.chromium}
         </span>
       </div>
     </div>

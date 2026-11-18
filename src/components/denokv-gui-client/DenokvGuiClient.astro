@@ -1,5 +1,12 @@
 ---
 import AppWindow from "../desktop/AppWindow.astro";
+import releaseInfoJson from "../../data/denokv-gui-client-release.json";
+import {
+  formatReleaseVersion,
+  type DenokvReleaseInfo,
+} from "./release-info";
+
+const releaseInfo = releaseInfoJson as DenokvReleaseInfo;
 
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
@@ -16,7 +23,7 @@ const clientUrl = `${base}denokv-gui-client`;
     id="denokv-gui-client-window"
     appId="denokv-gui-client"
     dock="denokv-gui-client"
-    meta="v1.32.1"
+    meta={formatReleaseVersion(releaseInfo)}
     initialWidth={1180}
     initialHeight={690}
   >
