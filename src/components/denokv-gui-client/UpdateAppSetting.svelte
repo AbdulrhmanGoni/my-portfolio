@@ -72,15 +72,17 @@
 
   {#if newUpdate}
     <div class="update-actions">
-      <button
-        class="download-button"
-        type="button"
-        title="Not available in this demo"
-      >
-        Download Update
-        <DownloadIcon size={16} />
-      </button>
       {#if newUpdate.latestReleaseUrl}
+        <a
+          class="download-button"
+          href={newUpdate.latestReleaseUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Open release page on GitHub"
+        >
+          Download Update
+          <DownloadIcon size={16} />
+        </a>
         <a
           class="notes-outline-button"
           href={newUpdate.latestReleaseUrl}
