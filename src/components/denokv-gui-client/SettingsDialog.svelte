@@ -1,6 +1,6 @@
 <script lang="ts">
-  import SettingsIcon from "@lucide/svelte/icons/settings";
-  import XIcon from "@lucide/svelte/icons/x";
+  import SettingsIcon from "./icons/SettingsIcon.svelte";
+  import XIcon from "./icons/XIcon.svelte";
   import chromiumLogo from "../../assets/denokv-gui-client/chromium-logo.png";
   import electronLogo from "../../assets/denokv-gui-client/electron-logo.png";
   import nodeLogo from "../../assets/denokv-gui-client/node-logo.png";

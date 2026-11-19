@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SettingsIcon from "@lucide/svelte/icons/settings";
+  import SettingsIcon from "./icons/SettingsIcon.svelte";
   import appLogo from "../../assets/desktop/sidebar_applications/denokv-gui-client.webp";
 
   let {

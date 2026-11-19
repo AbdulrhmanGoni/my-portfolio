@@ -1,10 +1,10 @@
 <script lang="ts">
-  import ArrowLeftIcon from "@lucide/svelte/icons/arrow-left";
-  import CheckIcon from "@lucide/svelte/icons/check";
-  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
-  import DatabaseIcon from "@lucide/svelte/icons/database";
-  import DatabasePlusIcon from "@lucide/svelte/icons/database-plus";
-  import PlugZapIcon from "@lucide/svelte/icons/plug-zap";
+  import ArrowLeftIcon from "./icons/ArrowLeftIcon.svelte";
+  import CheckIcon from "./icons/CheckIcon.svelte";
+  import ChevronDownIcon from "./icons/ChevronDownIcon.svelte";
+  import DatabaseIcon from "./icons/DatabaseIcon.svelte";
+  import DatabasePlusIcon from "./icons/DatabasePlusIcon.svelte";
+  import PlugZapIcon from "./icons/PlugZapIcon.svelte";
   import {
     isCreatableKvStoreType,
     joinLocalKvPath,

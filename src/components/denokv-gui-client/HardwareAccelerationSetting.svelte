@@ -1,6 +1,6 @@
 <script lang="ts">
-  import CircleAlertIcon from "@lucide/svelte/icons/circle-alert";
-  import GPUIcon from "@lucide/svelte/icons/gpu";
+  import CircleAlertIcon from "./icons/CircleAlertIcon.svelte";
+  import GPUIcon from "./icons/GPUIcon.svelte";
 
   let {
     enabled,

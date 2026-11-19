@@ -1,15 +1,15 @@
 <script lang="ts">
   import type { Component } from "svelte";
-  import CircleOffIcon from "@lucide/svelte/icons/circle-off";
-  import CirclePlusIcon from "@lucide/svelte/icons/circle-plus";
-  import DatabaseIcon from "@lucide/svelte/icons/database";
-  import FileIcon from "@lucide/svelte/icons/file";
-  import FunnelIcon from "@lucide/svelte/icons/funnel";
-  import FunnelXIcon from "@lucide/svelte/icons/funnel-x";
-  import GlobeIcon from "@lucide/svelte/icons/globe";
-  import HardDriveIcon from "@lucide/svelte/icons/hard-drive";
-  import ServerIcon from "@lucide/svelte/icons/server";
-  import XIcon from "@lucide/svelte/icons/x";
+  import CircleOffIcon from "./icons/CircleOffIcon.svelte";
+  import CirclePlusIcon from "./icons/CirclePlusIcon.svelte";
+  import DatabaseIcon from "./icons/DatabaseIcon.svelte";
+  import FileIcon from "./icons/FileIcon.svelte";
+  import FunnelIcon from "./icons/FunnelIcon.svelte";
+  import FunnelXIcon from "./icons/FunnelXIcon.svelte";
+  import GlobeIcon from "./icons/GlobeIcon.svelte";
+  import HardDriveIcon from "./icons/HardDriveIcon.svelte";
+  import ServerIcon from "./icons/ServerIcon.svelte";
+  import XIcon from "./icons/XIcon.svelte";
   import FilterKvStoresChip from "./FilterKvStoresChip.svelte";
   import KvStoreCard from "./KvStoreCard.svelte";
   import type { KvStore, KvStoreType } from "./kv-stores";

@@ -1,13 +1,13 @@
 <script lang="ts">
-  import CalendarFoldIcon from "@lucide/svelte/icons/calendar-fold";
-  import CalendarSyncIcon from "@lucide/svelte/icons/calendar-sync";
-  import EllipsisVerticalIcon from "@lucide/svelte/icons/ellipsis-vertical";
-  import FileIcon from "@lucide/svelte/icons/file";
-  import FileSymlinkIcon from "@lucide/svelte/icons/file-symlink";
-  import GlobeIcon from "@lucide/svelte/icons/globe";
-  import HardDriveIcon from "@lucide/svelte/icons/hard-drive";
-  import LinkIcon from "@lucide/svelte/icons/link";
-  import ServerIcon from "@lucide/svelte/icons/server";
+  import CalendarFoldIcon from "./icons/CalendarFoldIcon.svelte";
+  import CalendarSyncIcon from "./icons/CalendarSyncIcon.svelte";
+  import EllipsisVerticalIcon from "./icons/EllipsisVerticalIcon.svelte";
+  import FileIcon from "./icons/FileIcon.svelte";
+  import FileSymlinkIcon from "./icons/FileSymlinkIcon.svelte";
+  import GlobeIcon from "./icons/GlobeIcon.svelte";
+  import HardDriveIcon from "./icons/HardDriveIcon.svelte";
+  import LinkIcon from "./icons/LinkIcon.svelte";
+  import ServerIcon from "./icons/ServerIcon.svelte";
   import { formatTimeAgo, type KvStore } from "./kv-stores";
 
   const { kvStore }: { kvStore: KvStore } = $props();

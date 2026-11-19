@@ -1,10 +1,10 @@
 <script lang="ts">
-  import CheckIcon from "@lucide/svelte/icons/check";
-  import DownloadIcon from "@lucide/svelte/icons/download";
-  import HardDriveDownloadIcon from "@lucide/svelte/icons/hard-drive-download";
-  import LoaderIcon from "@lucide/svelte/icons/loader";
-  import NotesIcon from "@lucide/svelte/icons/notepad-text";
-  import SearchCheckIcon from "@lucide/svelte/icons/search-check";
+  import CheckIcon from "./icons/CheckIcon.svelte";
+  import DownloadIcon from "./icons/DownloadIcon.svelte";
+  import HardDriveDownloadIcon from "./icons/HardDriveDownloadIcon.svelte";
+  import LoaderIcon from "./icons/LoaderIcon.svelte";
+  import NotesIcon from "./icons/NotesIcon.svelte";
+  import SearchCheckIcon from "./icons/SearchCheckIcon.svelte";
   import { formatTimeAgo } from "./format-time-ago";
   import type { DenokvReleaseInfo } from "./release-info";
   import { checkForUpdates, updateState } from "./update-state.svelte";

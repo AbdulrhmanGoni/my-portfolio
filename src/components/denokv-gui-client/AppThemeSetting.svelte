@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Component } from "svelte";
-  import MonitorCogIcon from "@lucide/svelte/icons/monitor-cog";
-  import MoonIcon from "@lucide/svelte/icons/moon";
-  import PaletteIcon from "@lucide/svelte/icons/palette";
-  import SunIcon from "@lucide/svelte/icons/sun";
+  import MonitorCogIcon from "./icons/MonitorCogIcon.svelte";
+  import MoonIcon from "./icons/MoonIcon.svelte";
+  import PaletteIcon from "./icons/PaletteIcon.svelte";
+  import SunIcon from "./icons/SunIcon.svelte";
   import type { ThemePreference } from "./settings";
 
   let {
