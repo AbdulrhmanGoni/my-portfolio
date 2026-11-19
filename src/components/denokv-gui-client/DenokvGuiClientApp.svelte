@@ -3,6 +3,8 @@
   import Header from "./Header.svelte";
   import KvStoresGrid from "./KvStoresGrid.svelte";
   import SettingsDialog from "./SettingsDialog.svelte";
+  import Toaster from "./Toaster.svelte";
+  import { notify } from "./notifications.svelte";
   import type { DenokvReleaseInfo } from "./release-info";
   import { loadAppSettings } from "./settings";
   import {
@@ -48,6 +50,7 @@
 
     kvStores = [...kvStores, newStore];
     saveKvStores(kvStores);
+    notify.success("The Kv Store was created successfully");
     openedView = "kv-stores";
   }
 </script>
@@ -68,6 +71,8 @@
       <KvStoresGrid {kvStores} onAddKvStore={openAddKvStoreForm} />
     {/if}
   </div>
+
+  <Toaster />
 
   <SettingsDialog
     open={settingsOpen}
