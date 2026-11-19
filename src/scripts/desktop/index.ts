@@ -1,8 +1,10 @@
 import { initAppWindows } from "../windows";
+import { wireEmbeddedApps } from "../windows/embedded-app";
 import { wireSidebar } from "./sidebar";
 
 initAppWindows();
 wireSidebar();
+wireEmbeddedApps();
 
 const clock = document.querySelector("[data-clock]");
 const updateClock = () =>

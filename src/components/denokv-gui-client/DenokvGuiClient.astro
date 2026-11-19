@@ -1,5 +1,6 @@
 ---
 import AppWindow from "../desktop/AppWindow.astro";
+import EmbeddedApp from "../desktop/EmbeddedApp.astro";
 
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
@@ -21,12 +22,6 @@ const clientUrl = `${base}denokv-gui-client`;
   >
     <span slot="title">denokv-gui-client</span>
 
-    <iframe
-      class="denokv-gui-client-frame"
-      src={clientUrl}
-      title="denokv-gui-client"
-      loading="lazy"
-    >
-    </iframe>
+    <EmbeddedApp src={clientUrl} title="denokv-gui-client" />
   </AppWindow>
 </template>

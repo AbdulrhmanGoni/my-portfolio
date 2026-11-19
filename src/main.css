@@ -289,16 +289,6 @@ img {
   }
 }
 
-/* ── denokv-gui-client window ── */
-
-.denokv-gui-client-frame {
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-  border: 0;
-  background: var(--color-background);
-}
-
 /* ── Window resize handles ── */
 
 .resize-handles {

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import AddKvStoreForm from "./AddKvStoreForm.svelte";
   import Header from "./Header.svelte";
   import KvStoresGrid from "./KvStoresGrid.svelte";
@@ -25,6 +26,14 @@
   let kvStores = $state<KvStore[]>(loadKvStores());
   let openedView = $state<"kv-stores" | "add-kv-store">("kv-stores");
   let settingsOpen = $state(false);
+
+  onMount(() => {
+    // Tell the portfolio window that the app is on screen. Keep the message in
+    // sync with src/scripts/windows/embedded-app.ts.
+    if (window.parent !== window) {
+      window.parent.postMessage("embedded-app-ready", window.location.origin);
+    }
+  });
 
   // Mirrors the real application's startup check: run silently in the
   // background when the preference is enabled, and let the header dot announce
