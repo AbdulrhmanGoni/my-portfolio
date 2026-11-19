@@ -58,6 +58,7 @@
 <main class="denokv-app">
   <Header
     hasUpdate={updateState.result?.hasUpdate ?? false}
+    {releaseInfo}
     onOpenSettings={() => (settingsOpen = true)}
   />
 
