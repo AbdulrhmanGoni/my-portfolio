@@ -7,6 +7,7 @@
   import SearchCheckIcon from "./icons/SearchCheckIcon.svelte";
   import { formatTimeAgo } from "./format-time-ago";
   import type { DenokvReleaseInfo } from "./release-info";
+  import ReleaseNotesDialog from "./ReleaseNotesDialog.svelte";
   import { checkForUpdates, updateState } from "./update-state.svelte";
 
   let {
@@ -18,6 +19,8 @@
     autoCheckForUpdate: boolean;
     onAutoCheckForUpdateChange: (value: boolean) => void;
   } = $props();
+
+  let releaseNotesOpen = $state(false);
 
   const appVersion = $derived(releaseInfo.app.version);
   const newUpdate = $derived(
@@ -42,16 +45,15 @@
     <p class="current-version-text">
       Current Version: <span>v{appVersion}</span>
     </p>
-    <a
+    <button
       class="notes-button"
-      href={releaseInfo.app.releaseUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      title="Open release notes on GitHub"
+      type="button"
+      title="View release notes"
+      onclick={() => (releaseNotesOpen = true)}
     >
       <NotesIcon size={16} />
       Notes
-    </a>
+    </button>
   </div>
 
   <div class="update-status" aria-live="polite">
@@ -131,6 +133,12 @@
     </span>
   </label>
 </div>
+
+<ReleaseNotesDialog
+  open={releaseNotesOpen}
+  {releaseInfo}
+  onClose={() => (releaseNotesOpen = false)}
+/>
 
 <style>
   .update-setting {

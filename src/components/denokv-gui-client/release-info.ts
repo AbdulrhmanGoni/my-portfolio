@@ -20,4 +20,8 @@ export type DenokvReleaseInfo = {
     node: string;
     chromium: string;
   };
+  // Release notes for the current version, rendered to HTML by `marked` (the
+  // same way the desktop app renders its release notes). Displayed by the
+  // in-app Release Notes dialog opened from the "Notes" button.
+  releaseNotesHtml: string | null;
 };

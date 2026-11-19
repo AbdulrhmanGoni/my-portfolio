@@ -15,6 +15,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { marked } from "marked";
 
 const REPOSITORY = "AbdulrhmanGoni/denokv-gui-client";
 const REPOSITORY_URL = `https://github.com/${REPOSITORY}`;
@@ -198,6 +199,11 @@ async function buildSnapshot(tag, previousSnapshot) {
     previousSnapshot,
   );
 
+  // The GitHub release body is the changelog entry for this release. Render it
+  // with marked, the same way the desktop app renders RELEASE_NOTES.html, so
+  // the in-app "Notes" dialog can display the notes for the current version.
+  const releaseNotesHtml = release.body ? await marked.parse(release.body) : null;
+
   console.log(
     `[denokv-release] ${packageJson.name} v${packageJson.version}: Electron ${runtime.electron}, Node ${runtime.node}, Chromium ${runtime.chromium}`,
   );
@@ -213,6 +219,7 @@ async function buildSnapshot(tag, previousSnapshot) {
       releaseUrl: release.html_url,
     },
     runtime,
+    releaseNotesHtml,
   };
 }
 
