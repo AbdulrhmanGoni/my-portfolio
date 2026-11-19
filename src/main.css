@@ -162,10 +162,16 @@ img {
   height: 100%;
   position: relative;
   overflow: hidden;
-  background-image: url(./assets/desktop/wallpaper-forest.jpg);
-  background-image: image-set(url(./assets/desktop/wallpaper-forest.avif) type("image/avif"),
-      url(./assets/desktop/wallpaper-forest.jpg) type("image/jpeg"));
   background-size: cover;
+
+  /* On small screens the window fills the desktop, so the wallpaper is never
+     visible. Keeping the URL inside a desktop-only rule avoids fetching it at
+     all for mobile visitors. */
+  @media (min-width: 768px) {
+    background-image: url(./assets/desktop/wallpaper-forest.jpg);
+    background-image: image-set(url(./assets/desktop/wallpaper-forest.avif) type("image/avif"),
+        url(./assets/desktop/wallpaper-forest.jpg) type("image/jpeg"));
+  }
 }
 
 #sidebar {
