@@ -22,7 +22,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
     <div></div>
   </span>
   <div>
-    <span class="topbar-item">
+    <span class="topbar-item" data-clock>
       {dateFormatter.format(new Date()).replace(/,/g, "")}
     </span>
   </div>
