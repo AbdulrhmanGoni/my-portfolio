@@ -1188,9 +1188,23 @@ img {
   }
 
   .app-window {
+    /* Inline geometry written by drag/resize on a wider viewport would
+       otherwise survive a resize into mobile and keep the window small.
+       !important makes the full-bleed rule win while this query matches;
+       the inline values take effect again on wider screens. */
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     border-radius: 0;
     border-left: 0;
     border-right: 0;
+  }
+
+  /* The dock is gone, so there is nothing to minimize/restore into and no
+     room for window management. Keep the titlebar, drop its controls. */
+  .window-controls {
+    display: none;
   }
 }
 

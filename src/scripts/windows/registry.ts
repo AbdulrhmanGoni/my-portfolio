@@ -3,6 +3,7 @@
 
 import {
   AppWindow,
+  smallScreenQuery,
   type AppWindowOptions,
 } from "./app-window";
 import { optionsFromElement } from "./options";
@@ -19,6 +20,7 @@ let activeWindow: AppWindow | null = null;
 let frontmostWindow: AppWindow | null = null;
 let zIndex = 0;
 let viewportClampWired = false;
+let smallScreenWired = false;
 
 /**
  * Keep the dock in sync with the windows that exist.
@@ -188,6 +190,23 @@ function wireViewportClamp(): void {
 }
 
 /**
+ * On small screens the dock and the minimize button are both hidden, so a
+ * window minimized on a wider viewport could not be restored. Reveal any
+ * minimized windows when entering that mode.
+ */
+function wireSmallScreenLayout(): void {
+  if (smallScreenWired) return;
+  smallScreenWired = true;
+
+  smallScreenQuery.addEventListener("change", (event) => {
+    if (!event.matches) return;
+    for (const win of windows.values()) {
+      if (win.isMinimized) win.restore();
+    }
+  });
+}
+
+/**
  * Create a window instance for every `[data-app-window]` element in the DOM.
  * Application modules can then look their window up by `data-app-id` and add
  * custom behavior.
@@ -204,6 +223,7 @@ export function initAppWindows(): void {
   }
 
   wireViewportClamp();
+  wireSmallScreenLayout();
 
   // Windows are stacked in creation order, so the last one registered is the
   // frontmost. Make it the active window to keep "active" and "frontmost" in
