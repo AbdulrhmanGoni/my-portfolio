@@ -1,0 +1,18 @@
+---
+// The sidebar is hidden below 768px. A <source> with a non-matching media query
+// is never fetched, so on small screens only the 1x1 transparent fallback is
+// used — no icon bytes are downloaded for visitors who can't see the dock.
+// Keep the breakpoint in sync with the #sidebar rule in main.css.
+const pixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+
+interface Props {
+  src: string;
+}
+
+const { src } = Astro.props;
+---
+
+<picture>
+  <source media="(min-width: 768px)" srcset={src} />
+  <img src={pixel} alt="" />
+</picture>

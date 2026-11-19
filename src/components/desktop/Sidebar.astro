@@ -1,4 +1,5 @@
 ---
+import SidebarIcon from "./SidebarIcon.astro";
 import braveIcon from "../../assets/desktop/sidebar_applications/brave.webp";
 import filesIcon from "../../assets/desktop/sidebar_applications/files.webp";
 import terminalIcon from "../../assets/desktop/sidebar_applications/terminal.webp";
@@ -12,8 +13,8 @@ import trashIcon from "../../assets/desktop/sidebar_applications/trash.webp";
 
 <div id="sidebar">
   <ul>
-    <li><img src={braveIcon.src} /></li>
-    <li><img src={filesIcon.src} /></li>
+    <li><SidebarIcon src={braveIcon.src} /></li>
+    <li><SidebarIcon src={filesIcon.src} /></li>
     <li class="active is-focused">
       <button
         id="terminal-app"
@@ -22,11 +23,11 @@ import trashIcon from "../../assets/desktop/sidebar_applications/trash.webp";
         aria-controls="terminal-window"
         aria-expanded="true"
       >
-        <img src={terminalIcon.src} />
+        <SidebarIcon src={terminalIcon.src} />
       </button>
     </li>
-    <li><img src={vscodeIcon.src} /></li>
-    <li><img src={dockerIcon.src} /></li>
+    <li><SidebarIcon src={vscodeIcon.src} /></li>
+    <li><SidebarIcon src={dockerIcon.src} /></li>
     <li>
       <button
         id="denokv-gui-client-app"
@@ -36,14 +37,14 @@ import trashIcon from "../../assets/desktop/sidebar_applications/trash.webp";
         aria-controls="denokv-gui-client-window"
         aria-expanded="false"
       >
-        <img src={denokvGuiClientIcon.src} />
+        <SidebarIcon src={denokvGuiClientIcon.src} />
       </button>
     </li>
-    <li><img src={opencodeIcon.src} /></li>
-    <li><img src={settingsIcon.src} /></li>
+    <li><SidebarIcon src={opencodeIcon.src} /></li>
+    <li><SidebarIcon src={settingsIcon.src} /></li>
     <span class="separator-x"></span>
     <li>
-      <img src={trashIcon.src} />
+      <SidebarIcon src={trashIcon.src} />
     </li>
   </ul>
   <div id="show-apps-icon">
