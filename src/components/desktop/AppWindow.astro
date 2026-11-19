@@ -100,6 +100,34 @@ const initialSizeStyle = [
       <slot name="title" />
     </div>
     <div class="window-controls" role="group" aria-label="window controls">
+      <button
+        class="window-control minimize"
+        data-window-action="minimize"
+        title="minimize"
+        aria-label="Minimize"
+        aria-controls={id}
+        aria-pressed="false"
+        set:html={minimizeIcon}
+      />
+      <button
+        class="window-control maximize"
+        data-window-action="maximize"
+        title="maximize"
+        aria-label="Maximize"
+        aria-controls={id}
+        aria-pressed="false"
+      >
+        <span
+          class="window-control-icon maximize-icon"
+          aria-hidden="true"
+          set:html={maximizeIcon}
+        />
+        <span
+          class="window-control-icon restore-icon"
+          aria-hidden="true"
+          set:html={restoreIcon}
+        />
+      </button>
       {
         closable !== false ? (
           <button
@@ -118,32 +146,6 @@ const initialSizeStyle = [
           />
         )
       }
-      <button
-        class="window-control minimize"
-        data-window-action="minimize"
-        title="minimize"
-        aria-label="Minimize"
-        aria-controls={id}
-        aria-pressed="false"
-        set:html={minimizeIcon}></button>
-      <button
-        class="window-control maximize"
-        data-window-action="maximize"
-        title="maximize"
-        aria-label="Maximize"
-        aria-controls={id}
-        aria-pressed="false">
-        <span
-          class="window-control-icon maximize-icon"
-          aria-hidden="true"
-          set:html={maximizeIcon}
-        />
-        <span
-          class="window-control-icon restore-icon"
-          aria-hidden="true"
-          set:html={restoreIcon}
-        />
-      </button>
     </div>
   </header>
 
