@@ -560,7 +560,7 @@ export class AppWindow {
       if (
         target instanceof Element &&
         target.closest(
-          "button, a, input, textarea, select, [data-window-action], .traffic, .resize-handle",
+          "button, a, input, textarea, select, [data-window-action], .window-controls, .resize-handle",
         )
       ) {
         return;

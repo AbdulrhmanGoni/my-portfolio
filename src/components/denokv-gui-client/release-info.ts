@@ -21,7 +21,3 @@ export type DenokvReleaseInfo = {
     chromium: string;
   };
 };
-
-export function formatReleaseVersion(releaseInfo: DenokvReleaseInfo): string {
-  return `v${releaseInfo.app.version}`;
-}

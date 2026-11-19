@@ -1,4 +1,9 @@
 ---
+import closeIcon from "../../assets/desktop/window-controls/close.svg?raw";
+import maximizeIcon from "../../assets/desktop/window-controls/maximize.svg?raw";
+import minimizeIcon from "../../assets/desktop/window-controls/minimize.svg?raw";
+import restoreIcon from "../../assets/desktop/window-controls/restore.svg?raw";
+
 // Shared desktop window chrome. Application-specific content goes in the
 // default slot; the title is supplied through the "title" slot.
 //
@@ -20,8 +25,6 @@ interface Props {
   dock?: string;
   /** Extra classes applied to the window element. */
   class?: string;
-  /** Dim text shown at the right end of the titlebar. */
-  meta?: string;
   /** Smallest width the window may be resized to, in pixels. */
   minWidth?: number;
   /** Smallest height the window may be resized to, in pixels. */
@@ -57,7 +60,6 @@ const {
   appId,
   dock,
   class: className,
-  meta,
   minWidth,
   minHeight,
   initialWidth,
@@ -94,39 +96,55 @@ const initialSizeStyle = [
   data-closable={String(closable !== false)}
 >
   <header class="titlebar">
-    <div class="traffic" role="group" aria-label="window controls">
+    <div class="titlebar-title">
+      <slot name="title" />
+    </div>
+    <div class="window-controls" role="group" aria-label="window controls">
       {
         closable !== false ? (
           <button
-            class="traffic-btn close"
+            class="window-control close"
             data-window-action="close"
             title="close"
             aria-label="Close"
             aria-controls={id}
+            set:html={closeIcon}
           />
         ) : (
-          <span class="traffic-btn close" aria-hidden="true" />
+          <span
+            class="window-control close"
+            aria-hidden="true"
+            set:html={closeIcon}
+          />
         )
       }
       <button
-        class="traffic-btn min"
+        class="window-control minimize"
         data-window-action="minimize"
         title="minimize"
         aria-label="Minimize"
         aria-controls={id}
-        aria-pressed="false"></button>
+        aria-pressed="false"
+        set:html={minimizeIcon}></button>
       <button
-        class="traffic-btn max"
+        class="window-control maximize"
         data-window-action="maximize"
         title="maximize"
         aria-label="Maximize"
         aria-controls={id}
-        aria-pressed="false"></button>
+        aria-pressed="false">
+        <span
+          class="window-control-icon maximize-icon"
+          aria-hidden="true"
+          set:html={maximizeIcon}
+        />
+        <span
+          class="window-control-icon restore-icon"
+          aria-hidden="true"
+          set:html={restoreIcon}
+        />
+      </button>
     </div>
-    <div class="titlebar-title">
-      <slot name="title" />
-    </div>
-    {meta && <span class="titlebar-meta" aria-hidden="true">{meta}</span>}
   </header>
 
   <slot />
