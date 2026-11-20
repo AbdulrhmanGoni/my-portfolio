@@ -10,7 +10,13 @@
   import KvStoreCardActions from "./KvStoreCardActions.svelte";
   import { formatTimeAgo, type KvStore } from "./kv-stores";
 
-  const { kvStore }: { kvStore: KvStore } = $props();
+  const {
+    kvStore,
+    onDeleteKvStore,
+  }: {
+    kvStore: KvStore;
+    onDeleteKvStore: (kvStore: KvStore) => void;
+  } = $props();
 
   const isLocal = $derived(
     kvStore.type === "local" || kvStore.type === "default",
@@ -33,7 +39,7 @@
 
     <p class="card-name" title={kvStore.name}>{kvStore.name}</p>
 
-    <KvStoreCardActions {kvStore} />
+    <KvStoreCardActions {kvStore} {onDeleteKvStore} />
   </div>
 
   <p class="card-line">

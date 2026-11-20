@@ -8,7 +8,13 @@
   import SquarePenIcon from "./icons/SquarePenIcon.svelte";
   import TrashIcon from "./icons/TrashIcon.svelte";
 
-  const { kvStore }: { kvStore: KvStore } = $props();
+  const {
+    kvStore,
+    onDeleteKvStore,
+  }: {
+    kvStore: KvStore;
+    onDeleteKvStore: (kvStore: KvStore) => void;
+  } = $props();
 
   const isLocal = $derived(
     kvStore.type === "local" || kvStore.type === "default",
@@ -85,8 +91,21 @@
   }
 
   function runAction() {
-    // Every menu option is currently a no-op in this recreation.
+    // The remaining menu options are still no-ops in this recreation.
     closeMenu(false);
+  }
+
+  async function copyPathOrUrl() {
+    closeMenu(false);
+
+    try {
+      await navigator.clipboard.writeText(kvStore.url);
+    } catch {}
+  }
+
+  function deleteKvStore() {
+    closeMenu(false);
+    onDeleteKvStore(kvStore);
   }
 
   function handleWindowPointerDown(event: PointerEvent) {
@@ -207,7 +226,7 @@
       type="button"
       role="menuitem"
       tabindex="-1"
-      onclick={runAction}
+      onclick={copyPathOrUrl}
     >
       <CopyIcon size={16} />
       <span>Copy {isLocal ? "Path" : "URL"}</span>
@@ -249,7 +268,7 @@
       type="button"
       role="menuitem"
       tabindex="-1"
-      onclick={runAction}
+      onclick={deleteKvStore}
     >
       <TrashIcon size={16} />
       <span>Delete</span>

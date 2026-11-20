@@ -17,9 +17,11 @@
   let {
     kvStores,
     onAddKvStore,
+    onDeleteKvStore,
   }: {
     kvStores: KvStore[];
     onAddKvStore: () => void;
+    onDeleteKvStore: (kvStore: KvStore) => void;
   } = $props();
 
   type FilterOption = {
@@ -164,7 +166,7 @@
   {:else}
     <div class="kv-stores-grid" id="kv-stores-grid">
       {#each filteredKvStores as kvStore (kvStore.id)}
-        <KvStoreCard {kvStore} />
+        <KvStoreCard {kvStore} {onDeleteKvStore} />
       {/each}
     </div>
   {/if}

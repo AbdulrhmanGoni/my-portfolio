@@ -62,6 +62,12 @@
     notify.success("The Kv Store was created successfully");
     openedView = "kv-stores";
   }
+
+  function handleDeleteKvStore(kvStore: KvStore) {
+    kvStores = kvStores.filter((store) => store.id !== kvStore.id);
+    saveKvStores(kvStores);
+    notify.success("The Kv Store was deleted successfully");
+  }
 </script>
 
 <main class="denokv-app">
@@ -78,7 +84,11 @@
         onSubmit={handleCreateKvStore}
       />
     {:else}
-      <KvStoresGrid {kvStores} onAddKvStore={openAddKvStoreForm} />
+      <KvStoresGrid
+        {kvStores}
+        onAddKvStore={openAddKvStoreForm}
+        onDeleteKvStore={handleDeleteKvStore}
+      />
     {/if}
   </div>
 
