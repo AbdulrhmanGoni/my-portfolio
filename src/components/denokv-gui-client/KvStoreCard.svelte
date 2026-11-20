@@ -14,10 +14,12 @@
     kvStore,
     onEditKvStore,
     onDeleteKvStore,
+    onOpenKvStore,
   }: {
     kvStore: KvStore;
     onEditKvStore: (kvStore: KvStore) => void;
     onDeleteKvStore: (kvStore: KvStore) => void;
+    onOpenKvStore: (kvStore: KvStore) => void;
   } = $props();
 
   const isLocal = $derived(
@@ -25,7 +27,8 @@
   );
 </script>
 
-<article class="kv-store-card">
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<article class="kv-store-card" ondblclick={() => onOpenKvStore(kvStore)}>
   <div class="card-head">
     <span class="type-icon {kvStore.type}">
       {#if kvStore.type === "remote"}
@@ -41,7 +44,12 @@
 
     <p class="card-name" title={kvStore.name}>{kvStore.name}</p>
 
-    <KvStoreCardActions {kvStore} {onEditKvStore} {onDeleteKvStore} />
+    <KvStoreCardActions
+      {kvStore}
+      {onEditKvStore}
+      {onDeleteKvStore}
+      onBrowseKvStore={() => onOpenKvStore(kvStore)}
+    />
   </div>
 
   <p class="card-line">

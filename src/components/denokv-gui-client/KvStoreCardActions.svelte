@@ -12,10 +12,12 @@
     kvStore,
     onEditKvStore,
     onDeleteKvStore,
+    onBrowseKvStore,
   }: {
     kvStore: KvStore;
     onEditKvStore: (kvStore: KvStore) => void;
     onDeleteKvStore: (kvStore: KvStore) => void;
+    onBrowseKvStore: () => void;
   } = $props();
 
   const isLocal = $derived(
@@ -93,8 +95,13 @@
   }
 
   function runAction() {
-    // Browse, Rename and Open Path are still no-ops in this recreation.
+    // Rename and Open Path are still no-ops in this recreation.
     closeMenu(false);
+  }
+
+  function browseKvStore() {
+    closeMenu(false);
+    onBrowseKvStore();
   }
 
   async function copyPathOrUrl() {
@@ -227,7 +234,7 @@
       type="button"
       role="menuitem"
       tabindex="-1"
-      onclick={runAction}
+      onclick={browseKvStore}
     >
       <SquareArrowOutUpRightIcon size={16} />
       <span>Browse</span>

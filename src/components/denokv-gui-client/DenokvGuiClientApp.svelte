@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import AddKvStoreForm from "./AddKvStoreForm.svelte";
   import Header from "./Header.svelte";
+  import KvEntriesBrowser from "./KvEntriesBrowser.svelte";
   import KvStoresGrid from "./KvStoresGrid.svelte";
   import SettingsDialog from "./SettingsDialog.svelte";
   import Toaster from "./Toaster.svelte";
@@ -26,10 +27,11 @@
   let { releaseInfo }: { releaseInfo: DenokvReleaseInfo } = $props();
 
   let kvStores = $state<KvStore[]>(loadKvStores());
-  let openedView = $state<"kv-stores" | "add-kv-store" | "edit-kv-store">(
-    "kv-stores",
-  );
+  let openedView = $state<
+    "kv-stores" | "add-kv-store" | "edit-kv-store" | "kv-browser"
+  >("kv-stores");
   let kvStoreToEdit = $state<KvStore | null>(null);
+  let openedKvStore = $state<KvStore | null>(null);
   let settingsOpen = $state(false);
 
   onMount(() => {
@@ -63,6 +65,16 @@
 
   function closeKvStoreForm() {
     kvStoreToEdit = null;
+    openedView = "kv-stores";
+  }
+
+  function openKvStore(kvStore: KvStore) {
+    openedKvStore = kvStore;
+    openedView = "kv-browser";
+  }
+
+  function closeKvStore() {
+    openedKvStore = null;
     openedView = "kv-stores";
   }
 
@@ -119,12 +131,15 @@
         onBack={closeKvStoreForm}
         onSubmit={handleUpdateKvStore}
       />
+    {:else if openedView === "kv-browser" && openedKvStore}
+      <KvEntriesBrowser kvStore={openedKvStore} onBack={closeKvStore} />
     {:else}
       <KvStoresGrid
         {kvStores}
         onAddKvStore={openAddKvStoreForm}
         onEditKvStore={openEditKvStoreForm}
         onDeleteKvStore={handleDeleteKvStore}
+        onOpenKvStore={openKvStore}
       />
     {/if}
   </div>

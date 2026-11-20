@@ -19,11 +19,13 @@
     onAddKvStore,
     onEditKvStore,
     onDeleteKvStore,
+    onOpenKvStore,
   }: {
     kvStores: KvStore[];
     onAddKvStore: () => void;
     onEditKvStore: (kvStore: KvStore) => void;
     onDeleteKvStore: (kvStore: KvStore) => void;
+    onOpenKvStore: (kvStore: KvStore) => void;
   } = $props();
 
   type FilterOption = {
@@ -168,7 +170,12 @@
   {:else}
     <div class="kv-stores-grid" id="kv-stores-grid">
       {#each filteredKvStores as kvStore (kvStore.id)}
-        <KvStoreCard {kvStore} {onEditKvStore} {onDeleteKvStore} />
+        <KvStoreCard
+          {kvStore}
+          {onEditKvStore}
+          {onDeleteKvStore}
+          {onOpenKvStore}
+        />
       {/each}
     </div>
   {/if}
