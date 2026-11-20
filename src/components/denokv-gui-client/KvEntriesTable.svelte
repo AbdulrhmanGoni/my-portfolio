@@ -1,20 +1,46 @@
 <script lang="ts">
   import Button from "./Button.svelte";
+  import Checkbox from "./Checkbox.svelte";
+  import KvEntryValue from "./KvEntryValue.svelte";
   import ArrowLeftIcon from "./icons/ArrowLeftIcon.svelte";
   import ArrowRightIcon from "./icons/ArrowRightIcon.svelte";
+  import EllipsisIcon from "./icons/EllipsisIcon.svelte";
+  import type { KvEntry } from "./kv-entries";
+
+  let { entries }: { entries: KvEntry[] } = $props();
+
+  let selectedKeys = $state<string[]>([]);
+
+  const allSelected = $derived(
+    entries.length > 0 && selectedKeys.length === entries.length,
+  );
+
+  function isSelected(key: string): boolean {
+    return selectedKeys.includes(key);
+  }
+
+  function toggleAll() {
+    selectedKeys = allSelected ? [] : entries.map((entry) => entry.key);
+  }
+
+  function toggleEntry(key: string) {
+    selectedKeys = isSelected(key)
+      ? selectedKeys.filter((selectedKey) => selectedKey !== key)
+      : [...selectedKeys, key];
+  }
 </script>
 
 <div class="entries-table">
   <div class="table-scroll">
-    <div class="table-container">
+    <div class={["table-container", { "empty-state": entries.length === 0 }]}>
       <table>
         <thead>
           <tr>
             <th class="select-column">
-              <input
-                class="table-checkbox"
-                type="checkbox"
-                aria-label="Select all"
+              <Checkbox
+                checked={allSelected}
+                ariaLabel="Select all"
+                onCheckedChange={toggleAll}
               />
             </th>
             <th>Key</th>
@@ -24,11 +50,44 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="empty-cell" colspan="5">
-              No Entries in this Deno Kv Store.
-            </td>
-          </tr>
+          {#if entries.length === 0}
+            <tr>
+              <td class="empty-cell" colspan="5">
+                No Entries in this Deno Kv Store.
+              </td>
+            </tr>
+          {:else}
+            {#each entries as entry (entry.key)}
+              <tr class={{ selected: isSelected(entry.key) }}>
+                <td class="select-cell">
+                  <Checkbox
+                    checked={isSelected(entry.key)}
+                    ariaLabel="Select row"
+                    onCheckedChange={() => toggleEntry(entry.key)}
+                  />
+                </td>
+                <td class="key-cell">
+                  <span class="entry-key" title={entry.key}>{entry.key}</span>
+                </td>
+                <td class="value-cell">
+                  <div class="value-clip" title={entry.value}>
+                    <KvEntryValue {entry} />
+                  </div>
+                </td>
+                <td class="versionstamp-cell">{entry.versionstamp}</td>
+                <td class="action-cell">
+                  <button
+                    type="button"
+                    class="action-button"
+                    title="Not implemented"
+                    aria-label="Entry actions"
+                  >
+                    <EllipsisIcon size={16} />
+                  </button>
+                </td>
+              </tr>
+            {/each}
+          {/if}
         </tbody>
       </table>
     </div>
@@ -37,7 +96,9 @@
   <div class="separator"></div>
 
   <div class="table-footer">
-    <span class="selection-info">0 of 0 row selected.</span>
+    <span class="selection-info">
+      {selectedKeys.length} of {entries.length} row selected.
+    </span>
 
     <div class="navigation">
       <Button size="sm" disabled style="opacity: 0.25">
@@ -74,6 +135,18 @@
     overflow-x: auto;
   }
 
+  /* The empty state stretches to the space left below the header instead of
+     forcing the table to scroll on short windows. */
+  .table-container.empty-state {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .table-container.empty-state table {
+    flex: 1;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -104,44 +177,89 @@
     text-align: right;
   }
 
-  .select-column {
+  .select-column,
+  .select-cell {
     padding-inline-end: 0;
   }
 
-  .table-checkbox {
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  tbody tr:hover td {
+    background: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+
+  tbody tr.selected td {
+    background: var(--muted);
+  }
+
+  td {
+    height: 51px;
+    padding: 10px;
+    background-clip: padding-box;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .entry-key {
     display: block;
-    width: 16px;
-    height: 16px;
-    margin: 0;
-    appearance: none;
-    border: 1px solid var(--input);
-    border-radius: 4px;
+    max-width: 16rem;
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: pre;
+  }
+
+  .value-clip {
+    max-width: 32rem;
+    overflow: hidden;
+  }
+
+  .versionstamp-cell {
+    text-align: right;
+  }
+
+  .action-cell {
+    text-align: right;
+  }
+
+  .action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--radius) - 2px);
     background: transparent;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    color: var(--foreground);
     cursor: pointer;
+    transition: background-color 0.15s;
   }
 
-  .table-checkbox:checked {
-    border-color: var(--primary);
-    background: var(--primary);
+  .action-button:hover {
+    background: var(--accent);
   }
 
-  .table-checkbox:focus-visible {
+  .action-button:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
-  }
-
-  :global(.dark) .table-checkbox {
-    background: color-mix(in oklab, var(--input) 30%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 50%, transparent);
   }
 
   .empty-cell {
-    height: 398px;
+    height: auto;
     padding: 10px;
     color: var(--foreground);
     font-size: 18px;
     text-align: center;
     vertical-align: middle;
+    background-color: transparent !important;
   }
 
   .separator {

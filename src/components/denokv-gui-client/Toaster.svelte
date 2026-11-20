@@ -1,48 +1,81 @@
 <script lang="ts">
   import CircleAlertIcon from "./icons/CircleAlertIcon.svelte";
   import { toasts } from "./notifications.svelte";
+
+  let layer = $state<HTMLDialogElement>();
+
+  $effect(() => {
+    const latestToastId = toasts.at(-1)?.id;
+    if (!layer) return;
+
+    // Modal dialogs are painted in the browser's top layer, above every
+    // normal z-index. Re-opening this non-modal dialog puts the toasts back
+    // on top whenever a new one arrives.
+    if (layer.open) layer.close();
+    if (latestToastId !== undefined) layer.show();
+  });
 </script>
 
-<ol
-  class="toaster"
-  aria-label="Notifications"
-  aria-live="polite"
-  aria-relevant="additions text"
-  aria-atomic="false"
->
-  {#each toasts as toast (toast.id)}
-    <li
-      class="toast"
-      class:warning={toast.variant === "warning"}
-      class:leaving={toast.leaving}
-      aria-live="polite"
-      aria-atomic="true"
-    >
-      <span class="icon" aria-hidden="true">
-        {#if toast.variant === "warning"}
-          <CircleAlertIcon size={20} />
-        {:else}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            height="20"
-            width="20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        {/if}
-      </span>
-      <span class="title">{toast.message}</span>
-    </li>
-  {/each}
-</ol>
+<dialog bind:this={layer} class="toaster-layer">
+  <ol
+    class="toaster"
+    aria-label="Notifications"
+    aria-live="polite"
+    aria-relevant="additions text"
+    aria-atomic="false"
+  >
+    {#each toasts as toast (toast.id)}
+      <li
+        class="toast"
+        class:warning={toast.variant === "warning"}
+        class:leaving={toast.leaving}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <span class="icon" aria-hidden="true">
+          {#if toast.variant === "warning"}
+            <CircleAlertIcon size={20} />
+          {:else}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              height="20"
+              width="20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          {/if}
+        </span>
+        <span class="title">{toast.message}</span>
+      </li>
+    {/each}
+  </ol>
+</dialog>
 
 <style>
+  /* Non-modal dialogs live in the browser's top layer, so notifications stay
+     visible even while a modal dialog is open. */
+  .toaster-layer {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    overflow: visible;
+    pointer-events: none;
+  }
+
   .toaster {
     position: fixed;
     right: 24px;
