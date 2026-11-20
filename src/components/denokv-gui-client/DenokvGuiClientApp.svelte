@@ -15,8 +15,10 @@
   } from "./update-state.svelte";
   import {
     createKvStore,
+    hasKvStoreChanges,
     loadKvStores,
     saveKvStores,
+    updateKvStore,
     type CreateKvStoreInput,
     type KvStore,
   } from "./kv-stores";
@@ -24,7 +26,10 @@
   let { releaseInfo }: { releaseInfo: DenokvReleaseInfo } = $props();
 
   let kvStores = $state<KvStore[]>(loadKvStores());
-  let openedView = $state<"kv-stores" | "add-kv-store">("kv-stores");
+  let openedView = $state<"kv-stores" | "add-kv-store" | "edit-kv-store">(
+    "kv-stores",
+  );
+  let kvStoreToEdit = $state<KvStore | null>(null);
   let settingsOpen = $state(false);
 
   onMount(() => {
@@ -47,10 +52,17 @@
   });
 
   function openAddKvStoreForm() {
+    kvStoreToEdit = null;
     openedView = "add-kv-store";
   }
 
-  function closeAddKvStoreForm() {
+  function openEditKvStoreForm(kvStore: KvStore) {
+    kvStoreToEdit = kvStore;
+    openedView = "edit-kv-store";
+  }
+
+  function closeKvStoreForm() {
+    kvStoreToEdit = null;
     openedView = "kv-stores";
   }
 
@@ -60,7 +72,25 @@
     kvStores = [...kvStores, newStore];
     saveKvStores(kvStores);
     notify.success("The Kv Store was created successfully");
-    openedView = "kv-stores";
+    closeKvStoreForm();
+  }
+
+  function handleUpdateKvStore(input: CreateKvStoreInput) {
+    if (!kvStoreToEdit) return;
+
+    if (!hasKvStoreChanges(kvStoreToEdit, input)) {
+      notify.warning("No changes to save");
+      return;
+    }
+
+    const updatedStore = updateKvStore(kvStoreToEdit, input);
+
+    kvStores = kvStores.map((store) =>
+      store.id === updatedStore.id ? updatedStore : store,
+    );
+    saveKvStores(kvStores);
+    notify.success("The kv store has been edited successfully");
+    closeKvStoreForm();
   }
 
   function handleDeleteKvStore(kvStore: KvStore) {
@@ -80,13 +110,20 @@
   <div class="denokv-app-content">
     {#if openedView === "add-kv-store"}
       <AddKvStoreForm
-        onBack={closeAddKvStoreForm}
+        onBack={closeKvStoreForm}
         onSubmit={handleCreateKvStore}
+      />
+    {:else if openedView === "edit-kv-store" && kvStoreToEdit}
+      <AddKvStoreForm
+        kvStore={kvStoreToEdit}
+        onBack={closeKvStoreForm}
+        onSubmit={handleUpdateKvStore}
       />
     {:else}
       <KvStoresGrid
         {kvStores}
         onAddKvStore={openAddKvStoreForm}
+        onEditKvStore={openEditKvStoreForm}
         onDeleteKvStore={handleDeleteKvStore}
       />
     {/if}

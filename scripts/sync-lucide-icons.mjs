@@ -51,6 +51,7 @@ const ICONS = [
   { source: "notepad-text", component: "NotesIcon" },
   { source: "palette", component: "PaletteIcon" },
   { source: "plug-zap", component: "PlugZapIcon" },
+  { source: "save", component: "SaveIcon" },
   { source: "search-check", component: "SearchCheckIcon" },
   { source: "server", component: "ServerIcon" },
   { source: "settings", component: "SettingsIcon" },

@@ -51,6 +51,23 @@ export function joinLocalKvPath(directory: string, fileName: string): string {
   return `${trimmedDirectory}/${trimmedFileName}`;
 }
 
+export function splitLocalKvPath(path: string): {
+  directory: string;
+  fileName: string;
+} {
+  const trimmedPath = path.trim();
+  const separatorIndex = trimmedPath.lastIndexOf("/");
+
+  if (separatorIndex === -1) {
+    return { directory: "", fileName: trimmedPath };
+  }
+
+  return {
+    directory: trimmedPath.slice(0, separatorIndex) || "/",
+    fileName: trimmedPath.slice(separatorIndex + 1),
+  };
+}
+
 function createId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
@@ -127,6 +144,34 @@ export function createKvStore(input: CreateKvStoreInput): KvStore {
     type: input.type,
     createdAt: now,
     updatedAt: now,
+    accessToken: input.accessToken ?? null,
+    authToken: input.authToken ?? null,
+  };
+}
+
+export function hasKvStoreChanges(
+  kvStore: KvStore,
+  input: CreateKvStoreInput,
+): boolean {
+  return (
+    kvStore.name !== input.name.trim() ||
+    kvStore.url !== input.url.trim() ||
+    kvStore.type !== input.type ||
+    (kvStore.accessToken ?? null) !== (input.accessToken ?? null) ||
+    (kvStore.authToken ?? null) !== (input.authToken ?? null)
+  );
+}
+
+export function updateKvStore(
+  kvStore: KvStore,
+  input: CreateKvStoreInput,
+): KvStore {
+  return {
+    ...kvStore,
+    name: input.name.trim(),
+    url: input.url.trim(),
+    type: input.type,
+    updatedAt: new Date().toISOString(),
     accessToken: input.accessToken ?? null,
     authToken: input.authToken ?? null,
   };

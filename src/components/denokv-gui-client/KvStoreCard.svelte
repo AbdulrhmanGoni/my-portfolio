@@ -12,9 +12,11 @@
 
   const {
     kvStore,
+    onEditKvStore,
     onDeleteKvStore,
   }: {
     kvStore: KvStore;
+    onEditKvStore: (kvStore: KvStore) => void;
     onDeleteKvStore: (kvStore: KvStore) => void;
   } = $props();
 
@@ -39,7 +41,7 @@
 
     <p class="card-name" title={kvStore.name}>{kvStore.name}</p>
 
-    <KvStoreCardActions {kvStore} {onDeleteKvStore} />
+    <KvStoreCardActions {kvStore} {onEditKvStore} {onDeleteKvStore} />
   </div>
 
   <p class="card-line">

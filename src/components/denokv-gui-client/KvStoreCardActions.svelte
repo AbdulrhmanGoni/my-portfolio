@@ -10,9 +10,11 @@
 
   const {
     kvStore,
+    onEditKvStore,
     onDeleteKvStore,
   }: {
     kvStore: KvStore;
+    onEditKvStore: (kvStore: KvStore) => void;
     onDeleteKvStore: (kvStore: KvStore) => void;
   } = $props();
 
@@ -91,7 +93,7 @@
   }
 
   function runAction() {
-    // The remaining menu options are still no-ops in this recreation.
+    // Browse, Rename and Open Path are still no-ops in this recreation.
     closeMenu(false);
   }
 
@@ -106,6 +108,16 @@
   function deleteKvStore() {
     closeMenu(false);
     onDeleteKvStore(kvStore);
+  }
+
+  function editKvStore() {
+    closeMenu(false);
+
+    // Default kv stores are renamed, not edited, in the original app. The
+    // rename dialog is not part of this recreation yet.
+    if (kvStore.type === "default") return;
+
+    onEditKvStore(kvStore);
   }
 
   function handleWindowPointerDown(event: PointerEvent) {
@@ -237,7 +249,7 @@
       type="button"
       role="menuitem"
       tabindex="-1"
-      onclick={runAction}
+      onclick={editKvStore}
     >
       {#if kvStore.type === "default"}
         <FilePenIcon size={16} />

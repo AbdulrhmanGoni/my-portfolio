@@ -1,32 +1,57 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import ArrowLeftIcon from "./icons/ArrowLeftIcon.svelte";
   import CheckIcon from "./icons/CheckIcon.svelte";
   import ChevronDownIcon from "./icons/ChevronDownIcon.svelte";
   import DatabaseIcon from "./icons/DatabaseIcon.svelte";
   import DatabasePlusIcon from "./icons/DatabasePlusIcon.svelte";
   import PlugZapIcon from "./icons/PlugZapIcon.svelte";
+  import SaveIcon from "./icons/SaveIcon.svelte";
+  import SquarePenIcon from "./icons/SquarePenIcon.svelte";
+  import XIcon from "./icons/XIcon.svelte";
   import {
     isCreatableKvStoreType,
     joinLocalKvPath,
+    splitLocalKvPath,
     type CreateKvStoreInput,
     type CreatableKvStoreType,
+    type KvStore,
   } from "./kv-stores";
 
   let {
+    kvStore = null,
     onBack,
     onSubmit,
   }: {
+    kvStore?: KvStore | null;
     onBack: () => void;
     onSubmit: (input: CreateKvStoreInput) => void;
   } = $props();
 
-  let kvStoreName = $state("");
-  let selectedType = $state<CreatableKvStoreType | "">("");
-  let kvStoreUrl = $state("");
-  let accessToken = $state("");
-  let authToken = $state("");
-  let localKvFileName = $state("kv.sqlite3");
-  let localKvDirectory = $state("");
+  const isEditing = $derived(kvStore !== null);
+
+  // The form fields are editable copies, so they are seeded once when the form
+  // opens rather than tracking later changes to the store being edited.
+  const initialKvStore = untrack(() => kvStore);
+  const initialLocalPath = splitLocalKvPath(
+    initialKvStore?.type === "local" ? initialKvStore.url : "",
+  );
+
+  let kvStoreName = $state(initialKvStore?.name ?? "");
+  let selectedType = $state<CreatableKvStoreType | "">(
+    initialKvStore && isCreatableKvStoreType(initialKvStore.type)
+      ? initialKvStore.type
+      : "",
+  );
+  let kvStoreUrl = $state(
+    initialKvStore && initialKvStore.type !== "local"
+      ? initialKvStore.url
+      : "",
+  );
+  let accessToken = $state(initialKvStore?.accessToken ?? "");
+  let authToken = $state(initialKvStore?.authToken ?? "");
+  let localKvFileName = $state(initialLocalPath.fileName || "kv.sqlite3");
+  let localKvDirectory = $state(initialLocalPath.directory);
   let replaceExisting = $state(false);
 
   const isLocalStore = $derived(selectedType === "local");
@@ -74,8 +99,13 @@
 
 <form class="add-kv-store-form" onsubmit={handleSubmit}>
   <h1 class="form-title">
-    <DatabaseIcon size={24} />
-    Add KV Store
+    {#if isEditing}
+      <SquarePenIcon size={24} />
+      Edit KV Store
+    {:else}
+      <DatabaseIcon size={24} />
+      Add KV Store
+    {/if}
   </h1>
 
   <div class="form-fields">
@@ -258,8 +288,13 @@
   <div class="form-actions">
     <div class="form-buttons">
       <button class="button button-outline" type="button" onclick={onBack}>
-        <ArrowLeftIcon size={16} />
-        Back
+        {#if isEditing}
+          <XIcon size={16} />
+          Cancel
+        {:else}
+          <ArrowLeftIcon size={16} />
+          Back
+        {/if}
       </button>
       <button
         class="button button-connection"
@@ -270,8 +305,13 @@
         <PlugZapIcon size={16} />
       </button>
       <button class="button button-primary" type="submit">
-        Add
-        <DatabasePlusIcon size={16} />
+        {#if isEditing}
+          Save
+          <SaveIcon size={16} />
+        {:else}
+          Add
+          <DatabasePlusIcon size={16} />
+        {/if}
       </button>
     </div>
   </div>

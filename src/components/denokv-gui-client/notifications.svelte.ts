@@ -1,17 +1,21 @@
 // Toast notifications for the recreated denokv-gui-client window.
 //
 // The real application uses svelte-sonner. This window only needs the success
-// notification, so the store is kept small while the appearance copies the
-// success toast of the real app. Any component can call `notify.success` and
-// the single <Toaster /> mounted by the app renders the message.
+// and warning notifications, so the store is kept small while the appearance
+// copies the corresponding toasts of the real app. Any component can call
+// `notify.success` or `notify.warning` and the single <Toaster /> mounted by the
+// app renders the message.
 
 const TOAST_DURATION = 4000;
 const EXIT_DURATION = 200;
 const MAX_VISIBLE_TOASTS = 3;
 
+export type ToastVariant = "success" | "warning";
+
 export type ToastItem = {
   id: number;
   message: string;
+  variant: ToastVariant;
   leaving: boolean;
 };
 
@@ -53,10 +57,10 @@ function dismissToast(id: number): void {
   );
 }
 
-function showToast(message: string): number {
+function showToast(message: string, variant: ToastVariant): number {
   const id = nextId++;
 
-  toasts.push({ id, message, leaving: false });
+  toasts.push({ id, message, variant, leaving: false });
 
   while (toasts.length > MAX_VISIBLE_TOASTS) {
     removeToast(toasts[0].id);
@@ -72,6 +76,9 @@ function showToast(message: string): number {
 
 export const notify = {
   success(message: string): number {
-    return showToast(message);
+    return showToast(message, "success");
+  },
+  warning(message: string): number {
+    return showToast(message, "warning");
   },
 };
