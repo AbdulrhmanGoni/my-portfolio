@@ -1,13 +1,13 @@
 <script lang="ts">
   import CalendarFoldIcon from "./icons/CalendarFoldIcon.svelte";
   import CalendarSyncIcon from "./icons/CalendarSyncIcon.svelte";
-  import EllipsisVerticalIcon from "./icons/EllipsisVerticalIcon.svelte";
   import FileIcon from "./icons/FileIcon.svelte";
   import FileSymlinkIcon from "./icons/FileSymlinkIcon.svelte";
   import GlobeIcon from "./icons/GlobeIcon.svelte";
   import HardDriveIcon from "./icons/HardDriveIcon.svelte";
   import LinkIcon from "./icons/LinkIcon.svelte";
   import ServerIcon from "./icons/ServerIcon.svelte";
+  import KvStoreCardActions from "./KvStoreCardActions.svelte";
   import { formatTimeAgo, type KvStore } from "./kv-stores";
 
   const { kvStore }: { kvStore: KvStore } = $props();
@@ -33,14 +33,7 @@
 
     <p class="card-name" title={kvStore.name}>{kvStore.name}</p>
 
-    <button
-      class="card-menu"
-      type="button"
-      aria-label="Kv Store actions"
-      title="Kv Store actions"
-    >
-      <EllipsisVerticalIcon size={20} />
-    </button>
+    <KvStoreCardActions {kvStore} />
   </div>
 
   <p class="card-line">
@@ -119,31 +112,6 @@
     line-height: 1.5;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .card-menu {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    border: 0;
-    border-radius: calc(var(--radius) - 2px);
-    background: transparent;
-    color: var(--foreground);
-    cursor: pointer;
-    transition: background-color 0.15s;
-  }
-
-  .card-menu:hover {
-    background: color-mix(in oklab, var(--accent) 50%, transparent);
-  }
-
-  .card-menu:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
   }
 
   .card-line {
