@@ -4,6 +4,7 @@
   import BrowseParams from "./BrowseParams.svelte";
   import Button from "./Button.svelte";
   import KvEntriesTable from "./KvEntriesTable.svelte";
+  import KvEntryDialog from "./KvEntryDialog.svelte";
   import KvStorePicker from "./KvStorePicker.svelte";
   import ArrowLeftFromLineIcon from "./icons/ArrowLeftFromLineIcon.svelte";
   import AtomIcon from "./icons/AtomIcon.svelte";
@@ -16,8 +17,10 @@
     addKvEntry,
     deleteKvEntry,
     loadKvEntries,
+    updateKvEntry,
     type AddKvEntryInput,
     type KvEntry,
+    type UpdateKvEntryInput,
   } from "./kv-entries";
   import type { KvStore } from "./kv-stores";
   import { notify } from "./notifications.svelte";
@@ -34,6 +37,9 @@
     untrack(() => loadKvEntries(kvStore.id)),
   );
   let addEntryOpen = $state(false);
+  let entryDialogOpen = $state(false);
+  let viewedEntry = $state<KvEntry | null>(null);
+  let entryDialogEditOnOpen = $state(false);
 
   function reloadEntries() {
     entries = loadKvEntries(kvStore.id);
@@ -52,9 +58,42 @@
     return true;
   }
 
+  function openEntry(entry: KvEntry, openEditor = false) {
+    viewedEntry = entry;
+    entryDialogEditOnOpen = openEditor;
+    entryDialogOpen = true;
+  }
+
+  function closeEntry() {
+    entryDialogOpen = false;
+  }
+
   function handleDeleteEntry(entry: KvEntry) {
     entries = deleteKvEntry(kvStore.id, entry.key);
     notify.success("The entry was deleted successfully");
+
+    if (viewedEntry?.key === entry.key) {
+      entryDialogOpen = false;
+      viewedEntry = null;
+    }
+  }
+
+  function handleUpdateEntry(
+    entry: KvEntry,
+    input: UpdateKvEntryInput,
+  ): boolean {
+    const result = updateKvEntry(kvStore.id, entry.key, input);
+
+    if (!result.ok) {
+      notify.warning(result.error);
+      return false;
+    }
+
+    entries = result.entries;
+    viewedEntry = result.entry;
+    entryDialogEditOnOpen = false;
+    notify.success("The changes was saved successfully");
+    return true;
   }
 </script>
 
@@ -112,12 +151,26 @@
     </Button>
   </div>
 
-  <KvEntriesTable {entries} onDeleteEntry={handleDeleteEntry} />
+  <KvEntriesTable
+    {entries}
+    onViewEntry={openEntry}
+    onEditEntry={(entry) => openEntry(entry, true)}
+    onDeleteEntry={handleDeleteEntry}
+  />
 
   <AddKvEntryDialog
     open={addEntryOpen}
     onClose={() => (addEntryOpen = false)}
     onSubmit={handleAddEntry}
+  />
+
+  <KvEntryDialog
+    open={entryDialogOpen}
+    entry={viewedEntry}
+    editOnOpen={entryDialogEditOnOpen}
+    onClose={closeEntry}
+    onDeleteEntry={handleDeleteEntry}
+    onUpdateEntry={handleUpdateEntry}
   />
 </div>
 

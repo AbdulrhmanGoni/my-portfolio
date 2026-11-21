@@ -8,6 +8,7 @@
     | "secondary"
     | "secondary1"
     | "secondary2"
+    | "destructive"
     | "ghost";
 
   type ButtonSize = "default" | "sm" | "icon";
@@ -147,6 +148,15 @@
 
   .app-button[data-variant="secondary2"]:hover {
     background: color-mix(in oklab, var(--secondary-2) 80%, transparent);
+  }
+
+  .app-button[data-variant="destructive"] {
+    background: var(--destructive);
+    color: var(--secondary-foreground);
+  }
+
+  .app-button[data-variant="destructive"]:hover {
+    background: color-mix(in oklab, var(--destructive) 85%, transparent);
   }
 
   .app-button[data-variant="ghost"] {

@@ -5,25 +5,29 @@
   let {
     onSelect,
     destructive = false,
+    disabled = false,
     children,
   }: {
     onSelect?: () => void;
     destructive?: boolean;
+    disabled?: boolean;
     children: Snippet;
   } = $props();
 
   const actionsMenu = getActionsMenuContext();
 
   function handleClick() {
+    if (disabled) return;
     actionsMenu.close();
     onSelect?.();
   }
 </script>
 
 <button
-  class={["menu-item", { destructive }]}
+  class={["menu-item", { destructive, disabled }]}
   type="button"
   role="menuitem"
+  aria-disabled={disabled}
   tabindex="-1"
   onclick={handleClick}
 >
@@ -80,5 +84,20 @@
   :global(.dark) .menu-item.destructive:hover,
   :global(.dark) .menu-item.destructive:focus-visible {
     background: color-mix(in oklab, var(--destructive) 20%, transparent);
+  }
+
+  /* Disabled actions stay visible but cannot be triggered. A real `disabled`
+     attribute would swallow the hover cursor, so aria-disabled is used and the
+     pointer is styled here instead. */
+  .menu-item.disabled,
+  .menu-item.disabled:hover,
+  .menu-item.disabled:focus-visible {
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: not-allowed;
+  }
+
+  .menu-item.disabled :global(svg) {
+    opacity: 0.5;
   }
 </style>

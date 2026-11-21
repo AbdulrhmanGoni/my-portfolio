@@ -20,9 +20,13 @@
 
   let {
     entries,
+    onViewEntry,
+    onEditEntry,
     onDeleteEntry,
   }: {
     entries: KvEntry[];
+    onViewEntry: (entry: KvEntry) => void;
+    onEditEntry: (entry: KvEntry) => void;
     onDeleteEntry: (entry: KvEntry) => void;
   } = $props();
 
@@ -79,8 +83,14 @@
             </tr>
           {:else}
             {#each entries as entry (entry.key)}
-              <tr class={{ selected: isSelected(entry.key) }}>
-                <td class="select-cell">
+              <tr
+                class={{ selected: isSelected(entry.key) }}
+                ondblclick={() => onViewEntry(entry)}
+              >
+                <td
+                  class="select-cell"
+                  ondblclick={(event) => event.stopPropagation()}
+                >
                   <Checkbox
                     checked={isSelected(entry.key)}
                     ariaLabel="Select row"
@@ -88,7 +98,9 @@
                   />
                 </td>
                 <td class="key-cell">
-                  <span class="entry-key" title={entry.key}><HighlightedCode code={entry.key} /></span>
+                  <span class="entry-key" title={entry.key}
+                    ><HighlightedCode code={entry.key} /></span
+                  >
                 </td>
                 <td class="value-cell">
                   <div class="value-clip" title={entry.value}>
@@ -96,14 +108,16 @@
                   </div>
                 </td>
                 <td class="versionstamp-cell">{entry.versionstamp}</td>
-                <td class="action-cell">
-                  <!-- The other entry actions are placeholders until implemented. -->
+                <td
+                  class="action-cell"
+                  ondblclick={(event) => event.stopPropagation()}
+                >
                   <ActionsMenu
                     label="Entry actions"
                     icon={EllipsisIcon}
                     iconSize={16}
                   >
-                    <ActionsMenuItem>
+                    <ActionsMenuItem onSelect={() => onViewEntry(entry)}>
                       <NotesIcon size={16} />
                       <span>View</span>
                     </ActionsMenuItem>
@@ -118,24 +132,29 @@
                       <span>Copy Value</span>
                     </ActionsMenuItem>
 
-                    <ActionsMenuItem onSelect={() => copyText(entry.versionstamp)}>
+                    <ActionsMenuItem
+                      onSelect={() => copyText(entry.versionstamp)}
+                    >
                       <TagsIcon size={16} />
                       <span>Copy Version</span>
                     </ActionsMenuItem>
 
-                    <ActionsMenuItem>
+                    <ActionsMenuItem onSelect={() => onEditEntry(entry)}>
                       <PencilIcon size={16} />
                       <span>Edit</span>
                     </ActionsMenuItem>
 
-                    <ActionsMenuItem>
+                    <ActionsMenuItem disabled>
                       <EyeIcon size={16} />
                       <span>Watch</span>
                     </ActionsMenuItem>
 
                     <ActionsMenuSeparator />
 
-                    <ActionsMenuItem destructive onSelect={() => onDeleteEntry(entry)}>
+                    <ActionsMenuItem
+                      destructive
+                      onSelect={() => onDeleteEntry(entry)}
+                    >
                       <TrashIcon size={16} />
                       <span>Delete</span>
                     </ActionsMenuItem>
@@ -246,12 +265,9 @@
     border-bottom: 0;
   }
 
+  tbody tr.selected td,
   tbody tr:hover td {
     background: color-mix(in oklab, var(--muted) 50%, transparent);
-  }
-
-  tbody tr.selected td {
-    background: var(--muted);
   }
 
   td {

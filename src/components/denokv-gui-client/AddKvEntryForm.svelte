@@ -69,7 +69,7 @@
 
   <div class="key-section">
     <p class="section-title">
-      <FileKeyIcon size={18} />
+      <FileKeyIcon size={22} />
       Key
     </p>
     <KvCodeEditor ariaLabel="Key" bind:value={keyText} />
@@ -92,7 +92,7 @@
 
   <div class="expiration-row">
     <p class="section-title">
-      <CalendarClockIcon size={18} />
+      <CalendarClockIcon size={22} />
       Expires after?
     </p>
 

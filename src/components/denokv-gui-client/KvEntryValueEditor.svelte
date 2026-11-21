@@ -149,7 +149,7 @@
 <div class="value-section">
   <div class="value-header">
     <p class="section-title">
-      <FileBracesIcon size={18} />
+      <FileBracesIcon size={22} />
       Value
     </p>
 

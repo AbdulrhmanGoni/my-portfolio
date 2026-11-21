@@ -62,6 +62,15 @@ export type AddKvEntryResult =
   | { ok: true; entries: KvEntry[] }
   | { ok: false; error: string };
 
+export type UpdateKvEntryInput = {
+  valueType: KvValueType;
+  value: string;
+};
+
+export type UpdateKvEntryResult =
+  | { ok: true; entries: KvEntry[]; entry: KvEntry }
+  | { ok: false; error: string };
+
 const KV_ENTRIES_STORAGE_PREFIX = "denokv-gui-client:kv-entries:";
 
 const kvValueTypes: KvValueType[] = [
@@ -258,4 +267,34 @@ export function deleteKvEntry(kvStoreId: string, key: string): KvEntry[] {
   const entries = loadKvEntries(kvStoreId).filter((entry) => entry.key !== key);
   saveKvEntries(kvStoreId, entries);
   return entries;
+}
+
+// Editing an entry keeps its key and creation date, just like the original app
+// (which only sends the updated value through the bridge client). A fresh
+// versionstamp marks the new revision.
+export function updateKvEntry(
+  kvStoreId: string,
+  key: string,
+  input: UpdateKvEntryInput,
+): UpdateKvEntryResult {
+  const valueError = validateKvEntryValue(input.valueType, input.value);
+  if (valueError) return { ok: false, error: valueError };
+
+  const entries = loadKvEntries(kvStoreId);
+  const index = entries.findIndex((entry) => entry.key === key);
+
+  if (index === -1) {
+    return { ok: false, error: "The kv entry no longer exists" };
+  }
+
+  const updatedEntry: KvEntry = {
+    ...entries[index],
+    valueType: input.valueType,
+    value: input.value,
+    versionstamp: createVersionstamp(),
+  };
+
+  entries[index] = updatedEntry;
+  saveKvEntries(kvStoreId, entries);
+  return { ok: true, entries, entry: updatedEntry };
 }
