@@ -161,6 +161,10 @@ export function validateKvEntryKey(key: string): string | null {
     return "Invalid key, must be an array";
   }
 
+  if (!result.value.length) {
+    return "Invalid key, must not be an empty array";
+  }
+
   return null;
 }
 
@@ -248,4 +252,10 @@ export function addKvEntry(
 
   saveKvEntries(kvStoreId, entries);
   return { ok: true, entries };
+}
+
+export function deleteKvEntry(kvStoreId: string, key: string): KvEntry[] {
+  const entries = loadKvEntries(kvStoreId).filter((entry) => entry.key !== key);
+  saveKvEntries(kvStoreId, entries);
+  return entries;
 }

@@ -33,6 +33,7 @@ const ICONS = [
   { source: "circle-alert", component: "CircleAlertIcon" },
   { source: "circle-off", component: "CircleOffIcon" },
   { source: "circle-plus", component: "CirclePlusIcon" },
+  { source: "clipboard-copy", component: "ClipboardCopyIcon" },
   { source: "copy", component: "CopyIcon" },
   { source: "database", component: "DatabaseIcon" },
   { source: "database-plus", component: "DatabasePlusIcon" },
@@ -61,6 +62,7 @@ const ICONS = [
   { source: "moon", component: "MoonIcon" },
   { source: "notepad-text", component: "NotesIcon" },
   { source: "palette", component: "PaletteIcon" },
+  { source: "pencil", component: "PencilIcon" },
   { source: "pencil-line", component: "PencilLineIcon" },
   { source: "plug-zap", component: "PlugZapIcon" },
   { source: "plus", component: "PlusIcon" },
@@ -74,6 +76,7 @@ const ICONS = [
   { source: "square-arrow-out-up-right", component: "SquareArrowOutUpRightIcon" },
   { source: "square-pen", component: "SquarePenIcon" },
   { source: "sun", component: "SunIcon" },
+  { source: "tags", component: "TagsIcon" },
   { source: "trash", component: "TrashIcon" },
   { source: "x", component: "XIcon" },
 ];

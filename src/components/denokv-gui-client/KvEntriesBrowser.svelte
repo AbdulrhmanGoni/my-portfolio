@@ -14,6 +14,7 @@
   import SearchIcon from "./icons/SearchIcon.svelte";
   import {
     addKvEntry,
+    deleteKvEntry,
     loadKvEntries,
     type AddKvEntryInput,
     type KvEntry,
@@ -49,6 +50,11 @@
     entries = result.entries;
     notify.success("The kv entry was added successfully");
     return true;
+  }
+
+  function handleDeleteEntry(entry: KvEntry) {
+    entries = deleteKvEntry(kvStore.id, entry.key);
+    notify.success("The entry was deleted successfully");
   }
 </script>
 
@@ -106,7 +112,7 @@
     </Button>
   </div>
 
-  <KvEntriesTable {entries} />
+  <KvEntriesTable {entries} onDeleteEntry={handleDeleteEntry} />
 
   <AddKvEntryDialog
     open={addEntryOpen}

@@ -1,14 +1,30 @@
 <script lang="ts">
+  import ActionsMenu from "./ActionsMenu.svelte";
+  import ActionsMenuItem from "./ActionsMenuItem.svelte";
+  import ActionsMenuSeparator from "./ActionsMenuSeparator.svelte";
   import Button from "./Button.svelte";
   import Checkbox from "./Checkbox.svelte";
   import HighlightedCode from "./HighlightedCode.svelte";
   import KvEntryValue from "./KvEntryValue.svelte";
   import ArrowLeftIcon from "./icons/ArrowLeftIcon.svelte";
   import ArrowRightIcon from "./icons/ArrowRightIcon.svelte";
+  import ClipboardCopyIcon from "./icons/ClipboardCopyIcon.svelte";
+  import CopyIcon from "./icons/CopyIcon.svelte";
   import EllipsisIcon from "./icons/EllipsisIcon.svelte";
+  import EyeIcon from "./icons/EyeIcon.svelte";
+  import NotesIcon from "./icons/NotesIcon.svelte";
+  import PencilIcon from "./icons/PencilIcon.svelte";
+  import TagsIcon from "./icons/TagsIcon.svelte";
+  import TrashIcon from "./icons/TrashIcon.svelte";
   import type { KvEntry } from "./kv-entries";
 
-  let { entries }: { entries: KvEntry[] } = $props();
+  let {
+    entries,
+    onDeleteEntry,
+  }: {
+    entries: KvEntry[];
+    onDeleteEntry: (entry: KvEntry) => void;
+  } = $props();
 
   let selectedKeys = $state<string[]>([]);
 
@@ -28,6 +44,10 @@
     selectedKeys = isSelected(key)
       ? selectedKeys.filter((selectedKey) => selectedKey !== key)
       : [...selectedKeys, key];
+  }
+
+  function copyText(text: string) {
+    void navigator.clipboard.writeText(text).catch(() => {});
   }
 </script>
 
@@ -77,14 +97,49 @@
                 </td>
                 <td class="versionstamp-cell">{entry.versionstamp}</td>
                 <td class="action-cell">
-                  <button
-                    type="button"
-                    class="action-button"
-                    title="Not implemented"
-                    aria-label="Entry actions"
+                  <!-- The other entry actions are placeholders until implemented. -->
+                  <ActionsMenu
+                    label="Entry actions"
+                    icon={EllipsisIcon}
+                    iconSize={16}
                   >
-                    <EllipsisIcon size={16} />
-                  </button>
+                    <ActionsMenuItem>
+                      <NotesIcon size={16} />
+                      <span>View</span>
+                    </ActionsMenuItem>
+
+                    <ActionsMenuItem onSelect={() => copyText(entry.key)}>
+                      <CopyIcon size={16} />
+                      <span>Copy Key</span>
+                    </ActionsMenuItem>
+
+                    <ActionsMenuItem onSelect={() => copyText(entry.value)}>
+                      <ClipboardCopyIcon size={16} />
+                      <span>Copy Value</span>
+                    </ActionsMenuItem>
+
+                    <ActionsMenuItem onSelect={() => copyText(entry.versionstamp)}>
+                      <TagsIcon size={16} />
+                      <span>Copy Version</span>
+                    </ActionsMenuItem>
+
+                    <ActionsMenuItem>
+                      <PencilIcon size={16} />
+                      <span>Edit</span>
+                    </ActionsMenuItem>
+
+                    <ActionsMenuItem>
+                      <EyeIcon size={16} />
+                      <span>Watch</span>
+                    </ActionsMenuItem>
+
+                    <ActionsMenuSeparator />
+
+                    <ActionsMenuItem destructive onSelect={() => onDeleteEntry(entry)}>
+                      <TrashIcon size={16} />
+                      <span>Delete</span>
+                    </ActionsMenuItem>
+                  </ActionsMenu>
                 </td>
               </tr>
             {/each}
@@ -227,30 +282,6 @@
 
   .action-cell {
     text-align: right;
-  }
-
-  .action-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    border: 0;
-    border-radius: calc(var(--radius) - 2px);
-    background: transparent;
-    color: var(--foreground);
-    cursor: pointer;
-    transition: background-color 0.15s;
-  }
-
-  .action-button:hover {
-    background: var(--accent);
-  }
-
-  .action-button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 50%, transparent);
   }
 
   .empty-cell {
