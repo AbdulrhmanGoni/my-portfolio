@@ -144,7 +144,10 @@
                       <span>Edit</span>
                     </ActionsMenuItem>
 
-                    <ActionsMenuItem disabled>
+                    <ActionsMenuItem
+                      disabled
+                      title="Watch is not implemented"
+                    >
                       <EyeIcon size={16} />
                       <span>Watch</span>
                     </ActionsMenuItem>

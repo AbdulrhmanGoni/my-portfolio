@@ -83,7 +83,7 @@
   }
 
   function formatValue() {
-    // Formatting is intentionally not implemented in this demo.
+    // Formatting is intentionally not implemented.
   }
 
   function setSpecialNumber(value: string) {

@@ -118,7 +118,7 @@
 
       <div class="form-actions">
         <!-- Watching is not backed by a backend in this demo. -->
-        <span class="watch-control" title="Watch is not available in this demo">
+        <span class="watch-control" title="Watch is not implemented">
           <Button variant="secondary" size="sm" disabled>
             <EyeIcon size={16} />
             Watch
@@ -234,7 +234,7 @@
   }
 
   /* The disabled button ignores pointer events, so the wrapper owns the
-     not-allowed cursor shown for the unavailable Watch action. */
+     not-allowed cursor shown for the disabled Watch action. */
   .watch-control {
     display: inline-flex;
     cursor: not-allowed;

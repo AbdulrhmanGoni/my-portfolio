@@ -299,7 +299,7 @@
       <button
         class="button button-connection"
         type="button"
-        title="Not available in this demo"
+        title="Not implemented"
       >
         Test Connection
         <PlugZapIcon size={16} />

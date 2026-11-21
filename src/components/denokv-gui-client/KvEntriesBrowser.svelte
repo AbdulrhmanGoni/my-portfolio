@@ -111,10 +111,12 @@
       <KvStorePicker {kvStore} />
     </div>
 
-    <Button variant="outline" size="sm">
-      <EyeIcon size={16} />
-      Watched Keys (0)
-    </Button>
+    <span class="disabled-control" title="Watched Keys are not implemented">
+      <Button variant="outline" size="sm" disabled>
+        <EyeIcon size={16} />
+        Watched Keys (0)
+      </Button>
+    </span>
   </div>
 
   <div class="actions-row">
@@ -130,15 +132,19 @@
       <RotateCwIcon size={16} />
     </Button>
 
-    <Button variant="secondary2" size="sm">
-      Atomic
-      <AtomIcon size={16} />
-    </Button>
+    <span class="disabled-control" title="Atomic is not implemented">
+      <Button variant="secondary2" size="sm" disabled>
+        Atomic
+        <AtomIcon size={16} />
+      </Button>
+    </span>
 
-    <Button variant="secondary" size="sm">
-      Enqueue
-      <MessageSquarePlusIcon size={16} />
-    </Button>
+    <span class="disabled-control" title="Enqueue is not implemented">
+      <Button variant="secondary" size="sm" disabled>
+        Enqueue
+        <MessageSquarePlusIcon size={16} />
+      </Button>
+    </span>
 
     <Button variant="secondary1" size="sm" gap="4px">
       Look Up
@@ -209,6 +215,13 @@
 
   :global(.reload) {
     margin-inline-end: auto;
+  }
+
+  /* Disabled buttons ignore pointer events, so the wrapper owns the tooltip
+     and the not-allowed cursor for actions not implemented. */
+  .disabled-control {
+    display: inline-flex;
+    cursor: not-allowed;
   }
 
   .lookup-icon :global(svg) {

@@ -6,11 +6,13 @@
     onSelect,
     destructive = false,
     disabled = false,
+    title,
     children,
   }: {
     onSelect?: () => void;
     destructive?: boolean;
     disabled?: boolean;
+    title?: string;
     children: Snippet;
   } = $props();
 
@@ -28,6 +30,7 @@
   type="button"
   role="menuitem"
   aria-disabled={disabled}
+  {title}
   tabindex="-1"
   onclick={handleClick}
 >
