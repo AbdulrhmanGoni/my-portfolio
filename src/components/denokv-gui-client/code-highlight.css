@@ -1,0 +1,128 @@
+/*
+ * Syntax highlighting theme for the code editor.
+ *
+ * Ported from the original application's `code-highlight.css` so highlighted
+ * JavaScript values use the same palette. The neutral colors are taken from
+ * the app's theme tokens instead of hard-coded GitHub colors so the editor
+ * stays readable in both light and dark mode.
+ */
+
+.hljs {
+  color: var(--foreground);
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-literal,
+.hljs-variable.language_ {
+  color: #006ac7;
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__ {
+  color: #e5ab00;
+}
+
+.dark .hljs-title,
+.dark .hljs-title.class_,
+.dark .hljs-title.class_.inherited__ {
+  color: #ffdd00;
+}
+
+.hljs-title.function_ {
+  color: #fff700;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-meta,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: #3aa3ff;
+}
+
+.dark .hljs-attr,
+.dark .hljs-attribute,
+.dark .hljs-meta,
+.dark .hljs-operator,
+.dark .hljs-variable,
+.dark .hljs-selector-attr,
+.dark .hljs-selector-class,
+.dark .hljs-selector-id {
+  color: #79c0ff;
+}
+
+.hljs-regexp,
+.hljs-meta .hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-string {
+  color: #c6834e;
+}
+
+.hljs-number {
+  color: #59a500;
+}
+
+.dark .hljs-number {
+  color: #b3ff59;
+}
+
+.hljs-built_in,
+.hljs-symbol {
+  color: #ffa657;
+}
+
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+  color: #8b949e;
+}
+
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+  color: #7ee787;
+}
+
+.hljs-subst {
+  color: var(--foreground);
+}
+
+.hljs-section {
+  color: #1f6feb;
+  font-weight: bold;
+}
+
+.hljs-bullet {
+  color: #f2cc60;
+}
+
+.hljs-emphasis {
+  color: var(--foreground);
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: var(--foreground);
+  font-weight: bold;
+}
+
+.hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}

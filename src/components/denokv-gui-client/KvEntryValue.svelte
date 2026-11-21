@@ -1,5 +1,6 @@
 <script lang="ts">
   import CalendarClockIcon from "./icons/CalendarClockIcon.svelte";
+  import HighlightedCode from "./HighlightedCode.svelte";
   import type { KvEntry } from "./kv-entries";
 
   let { entry }: { entry: KvEntry } = $props();
@@ -41,8 +42,10 @@
     <span class="punctuation">/</span><span class="regexp-source"
       >{regExp.source}</span
     ><span class="punctuation">/</span><span class="flags">{regExp.flags}</span>
-  {:else}
+  {:else if entry.valueType === "Number" || entry.valueType === "Null" || entry.valueType === "Undefined"}
     <span>{entry.value}</span>
+  {:else}
+    <HighlightedCode code={entry.value} />
   {/if}
 </div>
 

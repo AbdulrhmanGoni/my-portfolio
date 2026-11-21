@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "./Button.svelte";
   import Checkbox from "./Checkbox.svelte";
+  import HighlightedCode from "./HighlightedCode.svelte";
   import KvEntryValue from "./KvEntryValue.svelte";
   import ArrowLeftIcon from "./icons/ArrowLeftIcon.svelte";
   import ArrowRightIcon from "./icons/ArrowRightIcon.svelte";
@@ -67,7 +68,7 @@
                   />
                 </td>
                 <td class="key-cell">
-                  <span class="entry-key" title={entry.key}>{entry.key}</span>
+                  <span class="entry-key" title={entry.key}><HighlightedCode code={entry.key} /></span>
                 </td>
                 <td class="value-cell">
                   <div class="value-clip" title={entry.value}>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "./Button.svelte";
   import Checkbox from "./Checkbox.svelte";
+  import KvCodeEditor from "./KvCodeEditor.svelte";
   import KvEntryValueEditor from "./KvEntryValueEditor.svelte";
   import CalendarClockIcon from "./icons/CalendarClockIcon.svelte";
   import ChevronDownIcon from "./icons/ChevronDownIcon.svelte";
@@ -71,13 +72,7 @@
       <FileKeyIcon size={18} />
       Key
     </p>
-    <textarea
-      class="key-editor"
-      rows="1"
-      aria-label="Key"
-      spellcheck="false"
-      bind:value={keyText}
-    ></textarea>
+    <KvCodeEditor ariaLabel="Key" bind:value={keyText} />
   </div>
 
   <div class="overwrite-row">
@@ -206,28 +201,6 @@
     font-size: 18px;
     font-weight: 700;
     line-height: 1.4;
-  }
-
-  .key-editor {
-    display: block;
-    width: 100%;
-    min-height: 42px;
-    padding: 10px 12px;
-    border: 0;
-    border-radius: calc(var(--radius) - 2px);
-    background: var(--card);
-    color: var(--foreground);
-    font: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.5;
-    resize: none;
-    outline: none;
-    field-sizing: content;
-  }
-
-  .key-editor:focus-visible {
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
   }
 
   .overwrite-row {
