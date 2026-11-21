@@ -37,6 +37,7 @@ const ICONS = [
   { source: "copy", component: "CopyIcon" },
   { source: "database", component: "DatabaseIcon" },
   { source: "database-plus", component: "DatabasePlusIcon" },
+  { source: "database-search", component: "DatabaseSearchIcon" },
   { source: "download", component: "DownloadIcon" },
   { source: "ellipsis", component: "EllipsisIcon" },
   { source: "ellipsis-vertical", component: "EllipsisVerticalIcon" },

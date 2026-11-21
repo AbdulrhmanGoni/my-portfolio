@@ -6,6 +6,7 @@
   import KvEntriesTable from "./KvEntriesTable.svelte";
   import KvEntryDialog from "./KvEntryDialog.svelte";
   import KvStorePicker from "./KvStorePicker.svelte";
+  import LookUpKvEntryDialog from "./LookUpKvEntryDialog.svelte";
   import ArrowLeftFromLineIcon from "./icons/ArrowLeftFromLineIcon.svelte";
   import AtomIcon from "./icons/AtomIcon.svelte";
   import EyeIcon from "./icons/EyeIcon.svelte";
@@ -37,6 +38,7 @@
     untrack(() => loadKvEntries(kvStore.id)),
   );
   let addEntryOpen = $state(false);
+  let lookUpOpen = $state(false);
   let entryDialogOpen = $state(false);
   let viewedEntry = $state<KvEntry | null>(null);
   let entryDialogEditOnOpen = $state(false);
@@ -66,6 +68,16 @@
 
   function closeEntry() {
     entryDialogOpen = false;
+  }
+
+  // Opens the entry on top of the lookup dialog, which stays open so another
+  // key can be searched right after closing the entry.
+  function handleLookUp(key: string): KvEntry | null {
+    const entry = entries.find((item) => item.key === key) ?? null;
+
+    if (entry) openEntry(entry);
+
+    return entry;
   }
 
   function handleDeleteEntry(entry: KvEntry) {
@@ -146,7 +158,12 @@
       </Button>
     </span>
 
-    <Button variant="secondary1" size="sm" gap="4px">
+    <Button
+      variant="secondary1"
+      size="sm"
+      gap="4px"
+      onclick={() => (lookUpOpen = true)}
+    >
       Look Up
       <span class="lookup-icon"><SearchIcon size={16} /></span>
     </Button>
@@ -168,6 +185,12 @@
     open={addEntryOpen}
     onClose={() => (addEntryOpen = false)}
     onSubmit={handleAddEntry}
+  />
+
+  <LookUpKvEntryDialog
+    open={lookUpOpen}
+    onClose={() => (lookUpOpen = false)}
+    onSearch={handleLookUp}
   />
 
   <KvEntryDialog
