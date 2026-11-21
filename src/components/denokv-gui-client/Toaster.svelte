@@ -2,21 +2,46 @@
   import CircleAlertIcon from "./icons/CircleAlertIcon.svelte";
   import { toasts } from "./notifications.svelte";
 
-  let layer = $state<HTMLDialogElement>();
+  let layer = $state<HTMLDivElement>();
+
+  // Popovers are painted in the browser's top layer, above modal dialogs and
+  // their backdrops. Hiding and re-showing moves the toasts back to the top
+  // whenever something else (such as an open dialog) is stacked above them.
+  function raiseToasts() {
+    if (!layer) return;
+
+    if (layer.matches(":popover-open")) layer.hidePopover();
+    layer.showPopover();
+  }
 
   $effect(() => {
     const latestToastId = toasts.at(-1)?.id;
     if (!layer) return;
 
-    // Modal dialogs are painted in the browser's top layer, above every
-    // normal z-index. Re-opening this non-modal dialog puts the toasts back
-    // on top whenever a new one arrives.
-    if (layer.open) layer.close();
-    if (latestToastId !== undefined) layer.show();
+    if (latestToastId === undefined) {
+      if (layer.matches(":popover-open")) layer.hidePopover();
+    } else {
+      raiseToasts();
+    }
   });
+
+  // A dialog opened after the toasts would otherwise cover them, so put the
+  // toasts back on top whenever a dialog opens. `toggle` does not bubble, hence
+  // the capture listener in the markup below.
+  function handleDialogToggle(event: Event) {
+    if (
+      event.target instanceof HTMLDialogElement &&
+      event.target.open &&
+      toasts.length > 0
+    ) {
+      raiseToasts();
+    }
+  }
 </script>
 
-<dialog bind:this={layer} class="toaster-layer">
+<svelte:document ontogglecapture={handleDialogToggle} />
+
+<div bind:this={layer} popover="manual" class="toaster-layer">
   <ol
     class="toaster"
     aria-label="Notifications"
@@ -55,11 +80,11 @@
       </li>
     {/each}
   </ol>
-</dialog>
+</div>
 
 <style>
-  /* Non-modal dialogs live in the browser's top layer, so notifications stay
-     visible even while a modal dialog is open. */
+  /* Popovers live in the browser's top layer, so notifications stay visible
+     even while a modal dialog is open. */
   .toaster-layer {
     position: fixed;
     inset: 0;
