@@ -238,6 +238,37 @@ img {
   }
 }
 
+#sidebar [data-tooltip] {
+  position: relative;
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background-color: #000;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px -2px rgb(0 0 0 / 60%);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .15s ease, visibility .15s ease;
+  }
+
+  &:hover::after,
+  &:focus-within::after {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 /* ── App windows (shared chrome) ── */
 
 .app-window {

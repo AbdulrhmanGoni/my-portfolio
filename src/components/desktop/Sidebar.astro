@@ -13,9 +13,9 @@ import trashIcon from "../../assets/desktop/sidebar_applications/trash.webp";
 
 <div id="sidebar">
   <ul>
-    <li><SidebarIcon src={braveIcon.src} /></li>
-    <li><SidebarIcon src={filesIcon.src} /></li>
-    <li class="active is-focused">
+    <li data-tooltip="Brave" tabindex="0" aria-label="Brave"><SidebarIcon src={braveIcon.src} /></li>
+    <li data-tooltip="Files" tabindex="0" aria-label="Files"><SidebarIcon src={filesIcon.src} /></li>
+    <li class="active is-focused" data-tooltip="Terminal">
       <button
         id="terminal-app"
         data-dock-app="terminal"
@@ -26,9 +26,9 @@ import trashIcon from "../../assets/desktop/sidebar_applications/trash.webp";
         <SidebarIcon src={terminalIcon.src} />
       </button>
     </li>
-    <li><SidebarIcon src={vscodeIcon.src} /></li>
-    <li><SidebarIcon src={dockerIcon.src} /></li>
-    <li>
+    <li data-tooltip="Visual Studio Code" tabindex="0" aria-label="Visual Studio Code"><SidebarIcon src={vscodeIcon.src} /></li>
+    <li data-tooltip="Docker Desktop" tabindex="0" aria-label="Docker Desktop"><SidebarIcon src={dockerIcon.src} /></li>
+    <li data-tooltip="Denokv GUI Client">
       <button
         id="denokv-gui-client-app"
         type="button"
@@ -40,14 +40,14 @@ import trashIcon from "../../assets/desktop/sidebar_applications/trash.webp";
         <SidebarIcon src={denokvGuiClientIcon.src} />
       </button>
     </li>
-    <li><SidebarIcon src={opencodeIcon.src} /></li>
-    <li><SidebarIcon src={settingsIcon.src} /></li>
+    <li data-tooltip="OpenCode" tabindex="0" aria-label="OpenCode"><SidebarIcon src={opencodeIcon.src} /></li>
+    <li data-tooltip="Settings" tabindex="0" aria-label="Settings"><SidebarIcon src={settingsIcon.src} /></li>
     <span class="separator-x"></span>
-    <li>
+    <li data-tooltip="Trash" tabindex="0" aria-label="Trash">
       <SidebarIcon src={trashIcon.src} />
     </li>
   </ul>
-  <div id="show-apps-icon">
+  <div id="show-apps-icon" data-tooltip="Show Applications" tabindex="0" aria-label="Show Applications">
     <svg version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
       <g fill="#ffffff">
         <path
