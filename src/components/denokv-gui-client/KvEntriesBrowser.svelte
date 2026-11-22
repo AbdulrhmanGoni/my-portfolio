@@ -34,17 +34,24 @@
     onBack: () => void;
   } = $props();
 
-  let entries = $state<KvEntry[]>(
-    untrack(() => loadKvEntries(kvStore.id)),
-  );
+  let entries = $state<KvEntry[]>(untrack(() => loadKvEntries(kvStore.id)));
   let addEntryOpen = $state(false);
   let lookUpOpen = $state(false);
   let entryDialogOpen = $state(false);
   let viewedEntry = $state<KvEntry | null>(null);
   let entryDialogEditOnOpen = $state(false);
+  let reloading = $state(false);
 
-  function reloadEntries() {
-    entries = loadKvEntries(kvStore.id);
+  async function reloadEntries() {
+    if (reloading) return;
+
+    reloading = true;
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2200));
+      entries = loadKvEntries(kvStore.id);
+    } finally {
+      reloading = false;
+    }
   }
 
   function handleAddEntry(input: AddKvEntryInput): boolean {
@@ -138,6 +145,7 @@
       variant="outline"
       size="sm"
       class="reload"
+      disabled={reloading}
       onclick={reloadEntries}
     >
       Reload
@@ -176,6 +184,7 @@
 
   <KvEntriesTable
     {entries}
+    loading={reloading}
     onViewEntry={openEntry}
     onEditEntry={(entry) => openEntry(entry, true)}
     onDeleteEntry={handleDeleteEntry}

@@ -12,6 +12,7 @@
   import CopyIcon from "./icons/CopyIcon.svelte";
   import EllipsisIcon from "./icons/EllipsisIcon.svelte";
   import EyeIcon from "./icons/EyeIcon.svelte";
+  import LoaderIcon from "./icons/LoaderIcon.svelte";
   import NotesIcon from "./icons/NotesIcon.svelte";
   import PencilIcon from "./icons/PencilIcon.svelte";
   import TagsIcon from "./icons/TagsIcon.svelte";
@@ -20,11 +21,13 @@
 
   let {
     entries,
+    loading = false,
     onViewEntry,
     onEditEntry,
     onDeleteEntry,
   }: {
     entries: KvEntry[];
+    loading?: boolean;
     onViewEntry: (entry: KvEntry) => void;
     onEditEntry: (entry: KvEntry) => void;
     onDeleteEntry: (entry: KvEntry) => void;
@@ -57,7 +60,12 @@
 
 <div class="entries-table">
   <div class="table-scroll">
-    <div class={["table-container", { "empty-state": entries.length === 0 }]}>
+    <div
+      class={[
+        "table-container",
+        { "empty-state": loading || entries.length === 0 },
+      ]}
+    >
       <table>
         <thead>
           <tr>
@@ -75,7 +83,13 @@
           </tr>
         </thead>
         <tbody>
-          {#if entries.length === 0}
+          {#if loading}
+            <tr>
+              <td class="loading-cell" colspan="5">
+                <span class="spinner"><LoaderIcon size={20} /></span>
+              </td>
+            </tr>
+          {:else if entries.length === 0}
             <tr>
               <td class="empty-cell" colspan="5">
                 No Entries in this Deno Kv Store.
@@ -213,8 +227,8 @@
     overflow-x: auto;
   }
 
-  /* The empty state stretches to the space left below the header instead of
-     forcing the table to scroll on short windows. */
+  /* The empty and loading states stretch to the space left below the header
+     instead of forcing the table to scroll on short windows. */
   .table-container.empty-state {
     display: flex;
     flex-direction: column;
@@ -311,6 +325,24 @@
     text-align: center;
     vertical-align: middle;
     background-color: transparent !important;
+  }
+
+  .loading-cell {
+    height: auto;
+    text-align: center;
+    vertical-align: middle;
+    background-color: transparent !important;
+  }
+
+  .spinner {
+    display: inline-flex;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .separator {
