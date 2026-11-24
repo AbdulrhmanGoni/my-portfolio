@@ -186,6 +186,13 @@ img {
     user-select: none;
   }
 
+  /* <picture> is inline by default but the reset makes <img> block-level.
+     Firefox adds a line-height of space before that block inside the inline
+     <picture>, pushing icons down into the next slot. */
+  picture {
+    display: block;
+  }
+
   ul {
     display: flex;
     flex-direction: column;
