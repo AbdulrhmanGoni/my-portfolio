@@ -17,8 +17,6 @@ const releaseInfo = releaseInfoJson as DenokvReleaseInfo;
     <meta name="color-scheme" content="dark light" />
     <title>denokv-gui-client</title>
     <script is:inline>
-      // Apply the saved theme before the app renders to avoid a flash of the
-      // wrong color scheme. Keep the storage key in sync with settings.ts.
       (() => {
         let theme = "dark";
 
@@ -37,9 +35,7 @@ const releaseInfo = releaseInfoJson as DenokvReleaseInfo;
           ) {
             theme = parsedSettings.theme;
           }
-        } catch {
-          // Fall back to the dark theme when storage is unavailable.
-        }
+        } catch {}
 
         const isDark =
           theme === "dark" ||
