@@ -5,7 +5,9 @@
   },
   "include": [
     "src/components/denokv-gui-client/**/*.svelte",
-    "src/components/denokv-gui-client/**/*.ts"
+    "src/components/denokv-gui-client/**/*.ts",
+    "src/components/vscode/**/*.svelte",
+    "src/components/vscode/**/*.ts"
   ],
   "exclude": []
 }

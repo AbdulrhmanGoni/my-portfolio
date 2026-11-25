@@ -4,17 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "demo:sync": "node scripts/sync-vscode-demo.mjs",
+    "demo:update": "node scripts/sync-vscode-demo.mjs --latest",
+    "dev": "node scripts/sync-vscode-demo.mjs && astro dev",
+    "build": "node scripts/sync-vscode-demo.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "typecheck": "astro check && svelte-check --tsconfig ./tsconfig.denokv-gui-client.json",
+    "typecheck": "astro check && svelte-check --tsconfig ./tsconfig.svelte.json",
     "sync:denokv-release": "node scripts/sync-denokv-release-info.mjs",
     "sync:lucide-icons": "node scripts/sync-lucide-icons.mjs"
   },
   "dependencies": {
     "@astrojs/svelte": "^9.1.6",
-    "astro": "^7.4.4",
+    "@vscode/codicons": "0.0.46-24",
+    "astro": "^7.4.13",
     "codejar": "4.3.0",
     "highlight.js": "11.12.0",
     "svelte": "^5.57.3"
@@ -22,8 +25,11 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@lucide/svelte": "^1.73.0",
+    "@types/node": "^24.5.2",
     "marked": "18.1.2",
+    "shiki": "4.6.0",
     "svelte-check": "^4.7.8",
+    "tar": "^7.5.23",
     "typescript": "^6.0.3"
   }
 }

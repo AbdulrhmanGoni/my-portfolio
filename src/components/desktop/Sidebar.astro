@@ -26,7 +26,18 @@ import trashIcon from "../../assets/desktop/sidebar_applications/trash.webp";
         <SidebarIcon src={terminalIcon.src} />
       </button>
     </li>
-    <li data-tooltip="Visual Studio Code" tabindex="0" aria-label="Visual Studio Code"><SidebarIcon src={vscodeIcon.src} /></li>
+    <li data-tooltip="Visual Studio Code">
+      <button
+        id="vscode-app"
+        type="button"
+        data-dock-app="vscode"
+        aria-label="Visual Studio Code"
+        aria-controls="vscode-window"
+        aria-expanded="false"
+      >
+        <SidebarIcon src={vscodeIcon.src} />
+      </button>
+    </li>
     <li data-tooltip="Docker Desktop" tabindex="0" aria-label="Docker Desktop"><SidebarIcon src={dockerIcon.src} /></li>
     <li data-tooltip="Denokv GUI Client">
       <button

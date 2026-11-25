@@ -1,0 +1,109 @@
+/*
+ * VS Code Dark+ theme tokens for the read-only demo window.
+ *
+ * The iframe is a separate document, so these values are deliberately scoped
+ * to it and do not use the portfolio's design tokens. Values mirror the
+ * default Dark+ workbench colors.
+ */
+
+@font-face {
+  font-family: "seti";
+  src: url("../../assets/vscode/seti.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  color-scheme: dark;
+
+  --vscode-menu-bg: #3c3c3c;
+  --vscode-activitybar-bg: #333333;
+  --vscode-sidebar-bg: #252526;
+  --vscode-editor-bg: #1e1e1e;
+  --vscode-tab-inactive-bg: #2d2d2d;
+  --vscode-statusbar-bg: #007acc;
+  --vscode-statusbar-hover: #1f8ad2;
+  --vscode-text: #cccccc;
+  --vscode-text-strong: #ffffff;
+  --vscode-text-muted: #969696;
+  --vscode-line-number: #858585;
+  --vscode-hover: #2a2d2e;
+  --vscode-active: #37373d;
+  --vscode-selection: #264f78;
+  --vscode-focus: #007fd4;
+  --vscode-accent: #007acc;
+
+  --vscode-ui-font:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", "Droid Sans",
+    sans-serif;
+  --vscode-code-font:
+    "JetBrains Mono", "Droid Sans Mono", "DejaVu Sans Mono", Consolas,
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--vscode-editor-bg);
+  color: var(--vscode-text);
+  font-family: var(--vscode-ui-font);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+}
+
+button:not(:disabled),
+a[href] {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--vscode-selection);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #424242 transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #424242;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.seti {
+  flex: none;
+  font-family: "seti";
+  font-size: 18px;
+  line-height: 1;
+}

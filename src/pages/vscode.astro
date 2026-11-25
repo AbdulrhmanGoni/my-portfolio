@@ -1,0 +1,39 @@
+---
+import "@vscode/codicons/dist/codicon.css";
+import VscodeApp from "../components/vscode/VscodeApp.svelte";
+import { demoManifest, PROJECT_NAME } from "../lib/vscode-demo/manifest";
+import "../components/vscode/vscode-theme.css";
+
+// The page only carries metadata. Token data and image bytes are fetched from
+// these URLs on demand by VscodeApp, so the initial page stays small no matter
+// how many files the demo project contains.
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const files = demoManifest.map((file) => ({
+  path: file.path,
+  language: file.language,
+  kind: file.kind,
+  url: `${base}vscode/files/${file.id}.${file.kind === "image" ? "png" : "json"}`,
+}));
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>denokv-gui-client — Visual Studio Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <VscodeApp client:only="svelte" {files} projectName={PROJECT_NAME} />
+  </body>
+</html>
