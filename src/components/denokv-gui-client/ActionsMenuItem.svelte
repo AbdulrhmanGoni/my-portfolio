@@ -54,7 +54,7 @@
     line-height: 20px;
     text-align: left;
     white-space: nowrap;
-    cursor: default;
+    cursor: pointer;
     user-select: none;
     outline: none;
   }

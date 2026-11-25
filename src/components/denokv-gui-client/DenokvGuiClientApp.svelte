@@ -35,7 +35,7 @@
   let settingsOpen = $state(false);
 
   onMount(() => {
-    // Tell the portfolio window that the app is on screen. Keep the message in
+    // Tell the desktop that the app window is ready. Keep the message in
     // sync with src/scripts/windows/embedded-app.ts.
     if (window.parent !== window) {
       window.parent.postMessage("embedded-app-ready", window.location.origin);
